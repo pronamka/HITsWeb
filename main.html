@@ -4,7 +4,7 @@
         HITsWeb
     </title>
     <link rel="stylesheet" type="text/css" href="main.css">
-
+    <link rel="stylesheet" type="text/css" href="neural_network/neural_network.css">
 </head>
 <body>
     <div id="header">
@@ -64,9 +64,18 @@
         </div>
         <div id="algorithm-neural-network" class="algorithm-button">
             <p>Neural Network</p>
+            <div id="algorithm-neural-network-settings">
+                <button id="algorithm-neural-network-clean-canvas-button">
+                    Clean Canvas
+                </button>
+            </div>
+            <div>
+                <canvas id="algorithm-neural-network-drawing-canvas"></canvas>
+            </div>
         </div>
     </div>
     <script src="main.js"></script>
     <script src="board.js"></script>
     <script src="decision_tree.js"></script>
+    <script src="neural_network/neural_network.js"></script>
 </body>
