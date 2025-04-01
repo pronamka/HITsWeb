@@ -3,7 +3,7 @@ const algorithmNames = new Array(
     'clusterize',
     'genetics',
     'ant',
-    'solution-tree',
+    'decision-tree',
     'neural-network'
 );
 
@@ -27,4 +27,4 @@ const displayTab = (tabIndex) => {
     algoirthmTabs[tabIndex].style.display = 'block';
 };
 
-displayTab(0);
+displayTab(4);
