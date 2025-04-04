@@ -1,20 +1,53 @@
-let train_data_input = document.getElementById('algorithm-decision-tree-file-upload');
-let train_tree_button = document.getElementById('algorithm-decision-tree-train-button');
+import { DecisionTree } from './decision_tree.js';
+
+let trainDataInput = document.getElementById('algorithm-decision-tree-file-upload');
+let targetAttributeInput = document.getElementById(
+    'algorithm-decision-tree-target-attribute-input'
+);
+let trainTreeButton = document.getElementById('algorithm-decision-tree-train-button');
 
 function handleInput() {
-    let files = train_data_input.files;
+    readFile().then((data) => {
+        let targetAttribute = targetAttributeInput.value;
+        console.log(data, targetAttribute);
+
+        if (!data || !targetAttribute) {
+            alert('Fill in all the fields.');
+            return;
+        }
+
+        let tree = new DecisionTree(data, targetAttribute);
+        console.log(tree);
+    });
+}
+
+function readFile() {
+    let files = trainDataInput.files;
     if (files.length == 0) {
         alert('No file chosen!');
         return;
     }
     let file = files[0];
-    let file_reader = new FileReader();
-    file_reader.onload = function (file) {
-        let text = file_reader.result;
+    return new Promise((resolve, reject) => {
+        let reader = new FileReader();
+        reader.onload = function () {
+            let text = reader.result;
+            let data = parseFile(text);
+            resolve(data);
+        };
+        reader.onerror = function () {
+            reject(new Error('Error reading file'));
+        };
+        reader.readAsText(file);
+    });
+    /*
+    let reader = new FileReader();
+    reader.onload = function (file) {
+        let text = reader.result;
         let data = parseFile(text);
-        console.log(data);
+        return data;
     };
-    file_reader.readAsText(file);
+    return reader.readAsText(file);*/
 }
 
 function parseFile(input) {
@@ -36,4 +69,4 @@ function parseFile(input) {
     return data;
 }
 
-train_tree_button.addEventListener('click', handleInput);
+trainTreeButton.addEventListener('click', handleInput);
