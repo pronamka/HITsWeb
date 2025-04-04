@@ -175,7 +175,7 @@ class DataSplitter {
     }
 }
 
-class DecisionTree {
+export class DecisionTree {
     constructor(trainingData, targetAttribute) {
         let split = new DataSplitter(trainingData, targetAttribute).findBestSplit();
         this.maximumDepth = 5;
@@ -191,8 +191,29 @@ class DecisionTree {
             this.minimalGroupSize
         );
     }
+
+    getPrediction(data) {
+        let currentNode = this.root;
+        while (!currentNode.isTerminal) {
+            if (typeof currentNode.attributeValue == 'string') {
+                if (data[currentNode.attributeName] == currentNode.attributeValue) {
+                    currentNode = currentNode.children[0];
+                } else {
+                    currentNode = currentNode.children[1];
+                }
+                continue;
+            }
+            if (data[currentNode.attributeName] < currentNode.attributeValue) {
+                currentNode = currentNode.children[0];
+            } else {
+                currentNode = currentNode.children[1];
+            }
+        }
+        return currentNode.value;
+    }
 }
 
+/*
 let dataExample = [
     {
         Age: 18,
@@ -233,3 +254,4 @@ let dataExample = [
 console.log(dataExample);
 let tree = new DecisionTree(dataExample, 'LoanApproved');
 console.log(tree);
+*/
