@@ -4,7 +4,7 @@
         HITsWeb
     </title>
     <link rel="stylesheet" type="text/css" href="main.css">
-
+    <link rel="stylesheet" type="text/css" href="decision_tree/decision_tree.css">
 </head>
 <body>
     <div id="header">
@@ -53,6 +53,7 @@
                 <div id="algorithm-settings-decision-tree-train-tree">
                     Input train data: 
                     <input type="file" id="algorithm-decision-tree-file-upload" name="algorithm-decision-tree-file-upload" accept=".csv">
+                    <input type="text" id="algorithm-decision-tree-target-attribute-input" placeholder="Input the name of the value to predict">
                     <button id="algorithm-decision-tree-train-button">Start Training</button>
                 </div>
                 <div id="algorith-decision-tree-graph"></div>
@@ -68,5 +69,6 @@
     </div>
     <script src="main.js"></script>
     <script src="board.js"></script>
-    <script src="decision_tree.js"></script>
+    <script src="decision_tree/decision_tree.js" type="module"></script>
+    <script src="decision_tree/get_input.js" type="module"></script>
 </body>
