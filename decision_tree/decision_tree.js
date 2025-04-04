@@ -38,7 +38,7 @@ class DecisionTree {
     calculateGiniIndex(groups) {
         let giniIndex = 0;
         for (let i = 0; i < groups.length; i++) {
-            let entropy = this.calculateEntropyOnGroup(this.data);
+            let entropy = this.calculateEntropyOnGroup(groups[i]);
             giniIndex += (1.0 - entropy) * (groups[i].length / this.data.length);
         }
         return giniIndex;
@@ -48,6 +48,14 @@ class DecisionTree {
         let left = [];
         let right = [];
         for (let i = 0; i < this.data.length; i++) {
+            if (typeof this.data[i][attribute] == 'string') {
+                if (this.data[i][attribute] == value) {
+                    left.push(this.data[i]);
+                } else {
+                    right.push(this.data[i]);
+                }
+                continue;
+            }
             if (this.data[i][attribute] < value) {
                 left.push(this.data[i]);
             } else {
