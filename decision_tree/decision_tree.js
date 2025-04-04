@@ -26,45 +26,89 @@ class TerminalNode {
 }
 
 class DecisionNode {
-    constructor(attributeName, attributeValue, left, right) {
+    constructor(
+        attributeName,
+        attributeValue,
+        targetAttribute,
+        dataGroups,
+        currentDepth,
+        maximumDepth,
+        minimalGroupSize
+    ) {
         this.attributeName = attributeName;
         this.attributeValue = attributeValue;
-        this.left = left;
-        this.right = right;
+        this.targetAttribute = targetAttribute;
+        this.groups = dataGroups;
+        this.depth = currentDepth;
+        this.maximumDepth = maximumDepth;
+        this.minimalGroupSize = minimalGroupSize;
         this.isTerminal = false;
+        this.children = [];
+        this.addChildren();
+    }
+
+    addChildren() {
+        if (this.groups[0].length == 0 || this.groups[1].length == 0) {
+            this.children[0] = new TerminalNode(
+                Array.prototype.concat(...this.groups),
+                this.attributeName
+            );
+            return;
+        }
+
+        if (this.depth >= this.maximumDepth) {
+            for (let i = 0; i < this.groups.length; i++) {
+                this.children[i] = new TerminalNode(this.groups[i], this.targetAttribute);
+            }
+            return;
+        }
+
+        for (let i = 0; i < this.groups.length; i++) {
+            if (this.groups[i].length < this.minimalGroupSize) {
+                this.children[i] = new TerminalNode(this.groups[i], this.targetAttribute);
+                continue;
+            }
+            let split = new DataSplitter(this.groups[i], this.targetAttribute).findBestSplit();
+
+            this.children[i] = new DecisionNode(
+                split[0],
+                split[1],
+                this.targetAttribute,
+                split[2],
+                this.depth + 1,
+                this.maximumDepth,
+                this.minimalGroupSize
+            );
+        }
     }
 }
 
-class DecisionTree {
-    constructor(trainingData, targetValue) {
+class DataSplitter {
+    constructor(trainingData, targetAttribute) {
         this.data = trainingData;
-        this.targetValue = targetValue;
+        this.targetAttribute = targetAttribute;
 
         this.attributes = Object.keys(trainingData[0]);
-        this.attributes.splice(this.attributes.indexOf(this.targetValue, 1));
+        this.attributes.splice(this.attributes.indexOf(this.targetAttribute, 1));
 
         this.classesDistribution = {};
         for (let i = 0; i < trainingData.length; i++) {
-            if (!this.classesDistribution[trainingData[i][this.targetValue]]) {
-                this.classesDistribution[trainingData[i][this.targetValue]] = 0;
+            if (!this.classesDistribution[trainingData[i][this.targetAttribute]]) {
+                this.classesDistribution[trainingData[i][this.targetAttribute]] = 0;
             }
-            this.classesDistribution[trainingData[i][this.targetValue]]++;
+            this.classesDistribution[trainingData[i][this.targetAttribute]]++;
         }
 
         this.classes = Object.keys(this.classesDistribution);
-
-        this.maximumDepth = 5;
-
-        this.tree;
     }
 
     calculateEntropyOnGroup(data) {
         let targetValues = {};
         for (let i = 0; i < data.length; i++) {
-            if (!targetValues[data[i][this.targetValue]]) {
-                targetValues[data[i][this.targetValue]] = 0;
+            if (!targetValues[data[i][this.targetAttribute]]) {
+                targetValues[data[i][this.targetAttribute]] = 0;
             }
-            targetValues[data[i][this.targetValue]]++;
+            targetValues[data[i][this.targetAttribute]]++;
         }
 
         let entropy = 0;
@@ -127,7 +171,25 @@ class DecisionTree {
                 }
             }
         }
-        return [bestAttribute, bestValue, bestGiniIndex, splitGroups];
+        return [bestAttribute, bestValue, splitGroups, bestGiniIndex];
+    }
+}
+
+class DecisionTree {
+    constructor(trainingData, targetAttribute) {
+        let split = new DataSplitter(trainingData, targetAttribute).findBestSplit();
+        this.maximumDepth = 5;
+        this.minimalGroupSize = 5;
+
+        this.root = new DecisionNode(
+            split[0],
+            split[1],
+            targetAttribute,
+            split[2],
+            1,
+            this.maximumDepth,
+            this.minimalGroupSize
+        );
     }
 }
 
@@ -170,5 +232,4 @@ let dataExample = [
 ];
 console.log(dataExample);
 let tree = new DecisionTree(dataExample, 'LoanApproved');
-let dataKeys = Object.keys(dataExample[0]);
-console.log(tree.findBestSplit());
+console.log(tree);
