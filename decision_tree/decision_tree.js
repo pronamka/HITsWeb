@@ -1,3 +1,40 @@
+class TerminalNode {
+    constructor(data, targetAttribute) {
+        this.isTerminal = true;
+        this.value = this.getMostFrequentTargetValue(data, targetAttribute);
+    }
+
+    getMostFrequentTargetValue(data, targetAttribute) {
+        let targetValues = {};
+        for (let i = 0; i < data.length; i++) {
+            if (!targetValues[data[i][targetAttribute]]) {
+                targetValues[data[i][targetAttribute]] = 0;
+            }
+            targetValues[data[i][targetAttribute]]++;
+        }
+        let keys = Object.keys(targetValues);
+        let maxOccurances = 0;
+        let index = 0;
+        for (let i = 0; i < keys.length; i++) {
+            if (targetValues[keys[i]] > maxOccurances) {
+                maxOccurances = targetValues[keys[i]];
+                index = i;
+            }
+        }
+        return keys[index];
+    }
+}
+
+class DecisionNode {
+    constructor(attributeName, attributeValue, left, right) {
+        this.attributeName = attributeName;
+        this.attributeValue = attributeValue;
+        this.left = left;
+        this.right = right;
+        this.isTerminal = false;
+    }
+}
+
 class DecisionTree {
     constructor(trainingData, targetValue) {
         this.data = trainingData;
@@ -15,6 +52,10 @@ class DecisionTree {
         }
 
         this.classes = Object.keys(this.classesDistribution);
+
+        this.maximumDepth = 5;
+
+        this.tree;
     }
 
     calculateEntropyOnGroup(data) {
