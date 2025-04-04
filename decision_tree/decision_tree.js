@@ -1,21 +1,89 @@
-let train_data_input = document.getElementById('algorithm-decision-tree-file-upload');
-let train_tree_button = document.getElementById('algorithm-decision-tree-train-button');
-
-function handleInput() {
-    let files = train_data_input.files;
-    if (files.length == 0) {
-        alert('No file chosen!');
-        return;
+class DecisionTree {
+    constructor(trainingData, targetValue) {
+        this.data = trainingData;
+        this.targetValue = targetValue;
     }
-    let file = files[0];
+
+    calculateEntropyOnGroup(data) {
+        let targetValues = {};
+        for (let i = 0; i < data.length; i++) {
+            if (!targetValues[data[i][this.targetValue]]) {
+                targetValues[data[i][this.targetValue]] = 0;
+            }
+            targetValues[data[i][this.targetValue]]++;
+        }
+
+        let entropy = 0;
+        targetValues = Object.values(targetValues);
+        for (let i = 0; i < targetValues.length; i++) {
+            let proportion = targetValues[i] / data.length;
+            entropy += proportion * proportion;
+        }
+        return entropy;
+    }
+
+    calculateGiniIndex(attribute) {
+        let attributeValues = {};
+        for (let i = 0; i < this.data.length; i++) {
+            if (!attributeValues[this.data[i][attribute]]) {
+                attributeValues[this.data[i][attribute]] = [];
+            }
+            attributeValues[this.data[i][attribute]].push(this.data[i]);
+        }
+        let groupsEntropy = {};
+        let attributeKeys = Object.keys(attributeValues);
+        attributeValues = Object.values(attributeValues);
+
+        let gini = 0;
+        for (let i = 0; i < attributeValues.length; i++) {
+            gini +=
+                (attributeValues[i].length / this.data.length) *
+                (1 - this.calculateEntropyOnGroup(attributeValues[i]));
+        }
+        return gini;
+    }
 }
 
-function parseFile(file) {
-    let file_reader = new FileReader();
-    file_reader.onload = function () {
-        let text = file_reader.result;
-    };
-    file_reader.readAsText(file);
+let dataExample = [
+    {
+        Age: 18,
+        Occupation: 'Student',
+        Income: 'Low',
+        CreditHistory: 'None',
+        LoanApproved: 'No',
+    },
+    {
+        Age: 22,
+        Occupation: 'Programmer',
+        Income: 'Medium',
+        CreditHistory: 'Good',
+        LoanApproved: 'Yes',
+    },
+    {
+        Age: 30,
+        Occupation: 'Programmer',
+        Income: 'High',
+        CreditHistory: 'Good',
+        LoanApproved: 'Yes',
+    },
+    {
+        Age: 50,
+        Occupation: 'Teacher',
+        Income: 'Medium',
+        CreditHistory: 'Bad',
+        LoanApproved: 'No',
+    },
+    {
+        Age: 65,
+        Occupation: 'Pensioner',
+        Income: 'Low',
+        CreditHistory: 'Good',
+        LoanApproved: 'No',
+    },
+];
+console.log(dataExample);
+let tree = new DecisionTree(dataExample, 'LoanApproved');
+let dataKeys = Object.keys(dataExample[0]);
+for (let i = 0; i < dataKeys.length - 1; i++) {
+    console.log(tree.calculateGiniIndex(dataKeys[i]));
 }
-
-train_tree_button.addEventListener('click', handleInput);
