@@ -5,6 +5,16 @@ class DecisionTree {
 
         this.attributes = Object.keys(trainingData[0]);
         this.attributes.splice(this.attributes.indexOf(this.targetValue, 1));
+
+        this.classesDistribution = {};
+        for (let i = 0; i < trainingData.length; i++) {
+            if (!this.classesDistribution[trainingData[i][this.targetValue]]) {
+                this.classesDistribution[trainingData[i][this.targetValue]] = 0;
+            }
+            this.classesDistribution[trainingData[i][this.targetValue]]++;
+        }
+
+        this.classes = Object.keys(this.classesDistribution);
     }
 
     calculateEntropyOnGroup(data) {
@@ -25,43 +35,50 @@ class DecisionTree {
         return entropy;
     }
 
-    calculateGiniIndex(attribute) {
-        let attributeValues = {};
-        for (let i = 0; i < this.data.length; i++) {
-            if (!attributeValues[this.data[i][attribute]]) {
-                attributeValues[this.data[i][attribute]] = [];
-            }
-            attributeValues[this.data[i][attribute]].push(this.data[i]);
+    calculateGiniIndex(groups) {
+        let giniIndex = 0;
+        for (let i = 0; i < groups.length; i++) {
+            let entropy = this.calculateEntropyOnGroup(this.data);
+            giniIndex += (1.0 - entropy) * (groups[i].length / this.data.length);
         }
-        let attributeKeys = Object.keys(attributeValues);
-        attributeValues = Object.values(attributeValues);
+        return giniIndex;
+    }
 
-        let gini = {};
-        for (let i = 0; i < attributeValues.length; i++) {
-            gini[attributeKeys[i]] =
-                (attributeValues[i].length / this.data.length) *
-                (1 - this.calculateEntropyOnGroup(attributeValues[i]));
+    splitIntoTwo(attribute, value) {
+        let left = [];
+        let right = [];
+        for (let i = 0; i < this.data.length; i++) {
+            if (this.data[i][attribute] < value) {
+                left.push(this.data[i]);
+            } else {
+                right.push(this.data[i]);
+            }
         }
-        return gini;
+        return [left, right];
     }
 
     findBestSplit() {
-        let attribute;
-        let value;
-        let giniIndex = 1;
-        for (let i = 0; i < this.attributes.length; i++) {
-            let indices = this.calculateGiniIndex(this.attributes[i]);
-            let keys = Object.keys(indices);
-            let values = Object.values(indices);
-            for (let j = 0; j < keys.length; j++) {
-                if (values[j] < giniIndex) {
-                    attribute = this.attributes[i];
-                    value = keys[j];
-                    giniIndex = values[j];
+        let bestAttribute;
+        let bestValue;
+        let bestGiniIndex = 1;
+        let splitGroups;
+        for (let attributeValue = 0; attributeValue < this.attributes.length; attributeValue++) {
+            for (let rowIndex = 0; rowIndex < this.data.length; rowIndex++) {
+                let groups = this.splitIntoTwo(
+                    this.attributes[attributeValue],
+                    this.data[rowIndex][this.attributes[attributeValue]]
+                );
+                let giniIndex = this.calculateGiniIndex(groups);
+
+                if (giniIndex < bestGiniIndex) {
+                    bestAttribute = this.attributes[attributeValue];
+                    bestValue = this.data[rowIndex][this.attributes[attributeValue]];
+                    bestGiniIndex = giniIndex;
+                    splitGroups = groups;
                 }
             }
         }
-        console.log(attribute, value, giniIndex);
+        return [bestAttribute, bestValue, bestGiniIndex, splitGroups];
     }
 }
 
@@ -105,4 +122,4 @@ let dataExample = [
 console.log(dataExample);
 let tree = new DecisionTree(dataExample, 'LoanApproved');
 let dataKeys = Object.keys(dataExample[0]);
-tree.findBestSplit();
+console.log(tree.findBestSplit());
