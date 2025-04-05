@@ -1,24 +1,53 @@
 import { DecisionTree } from './decision_tree.js';
+import { DecisionTreeVisualizer } from './visualizer.js';
 
 let trainDataInput = document.getElementById('algorithm-decision-tree-file-upload');
+let testDataInput = document.getElementById('algorithm-decision-tree-test-data-input');
 let targetAttributeInput = document.getElementById(
     'algorithm-decision-tree-target-attribute-input'
 );
-let trainTreeButton = document.getElementById('algorithm-decision-tree-train-button');
+let buildTreeButton = document.getElementById('algorithm-decision-tree-train-button');
+let useTreeButton = document.getElementById('algorithm-decision-tree-use-tree-button');
 
-function handleInput() {
-    readFile().then((data) => {
-        let targetAttribute = targetAttributeInput.value;
-        console.log(data, targetAttribute);
+let tree;
+let treeVisualization;
+let dataAttributes;
+let targetAttribute;
+let trainingData;
 
-        if (!data || !targetAttribute) {
+function buildTree() {
+    readFile().then(() => {
+        targetAttribute = targetAttributeInput.value;
+        console.log(trainingData, dataAttributes, targetAttribute);
+
+        if (!trainingData || !targetAttribute) {
             alert('Fill in all the fields.');
             return;
         }
 
-        let tree = new DecisionTree(data, targetAttribute);
+        tree = new DecisionTree(trainingData, targetAttribute);
+        treeVisualization = new DecisionTreeVisualizer(tree.root, 'algorith-decision-tree-graph');
+
         console.log(tree);
     });
+}
+
+function getPrediction() {
+    let data = testDataInput.value;
+    if (!data) {
+        alert('Input test data');
+        return;
+    }
+    if (!tree) {
+        alert('Build a tree first');
+        return;
+    }
+    let headers = dataAttributes;
+    headers.splice(headers.indexOf(targetAttribute), 1);
+    console.log(headers);
+    data = parseLine(data, headers);
+    let prediciton = tree.getPrediction(data);
+    console.log(prediciton);
 }
 
 function readFile() {
@@ -32,22 +61,14 @@ function readFile() {
         let reader = new FileReader();
         reader.onload = function () {
             let text = reader.result;
-            let data = parseFile(text);
-            resolve(data);
+            parseFile(text);
+            resolve();
         };
         reader.onerror = function () {
             reject(new Error('Error reading file'));
         };
         reader.readAsText(file);
     });
-    /*
-    let reader = new FileReader();
-    reader.onload = function (file) {
-        let text = reader.result;
-        let data = parseFile(text);
-        return data;
-    };
-    return reader.readAsText(file);*/
 }
 
 function parseFile(input) {
@@ -55,18 +76,24 @@ function parseFile(input) {
     const headers = lines[0].split(',');
     let data = Array();
     for (let i = 1; i < lines.length; i++) {
-        let values = lines[i].split(',');
-        let oneSet = {};
-        for (let j = 0; j < values.length; j++) {
-            let value = Number(values[j]);
-            if (isNaN(value)) {
-                value = values[j].trim();
-            }
-            oneSet[headers[j].trim()] = value;
-        }
-        data.push(oneSet);
+        data.push(parseLine(lines[i], headers));
     }
-    return data;
+    dataAttributes = headers;
+    trainingData = data;
 }
 
-trainTreeButton.addEventListener('click', handleInput);
+function parseLine(line, headers) {
+    let values = line.split(',');
+    let oneSet = {};
+    for (let j = 0; j < values.length; j++) {
+        let value = Number(values[j]);
+        if (isNaN(value)) {
+            value = values[j].trim();
+        }
+        oneSet[headers[j].trim()] = value;
+    }
+    return oneSet;
+}
+
+buildTreeButton.addEventListener('click', buildTree);
+useTreeButton.addEventListener('click', getPrediction);
