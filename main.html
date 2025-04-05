@@ -5,6 +5,7 @@
     </title>
     <link rel="stylesheet" type="text/css" href="main.css">
     <link rel="stylesheet" type="text/css" href="decision_tree/decision_tree.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
     <div id="header">
@@ -57,9 +58,9 @@
                     <button id="algorithm-decision-tree-train-button">Start Training</button>
                 </div>
                 <div id="algorith-decision-tree-graph"></div>
-                <div id="use-algorithm-decision-tree">
-                    <input type="text" placeholder="Input Test Data">
-                    <button>Use tree</button>
+                <div id="algorithm-decision-tree-use-tree-section">
+                    <input type="text" placeholder="Input Test Data" id="algorithm-decision-tree-test-data-input">
+                    <button id="algorithm-decision-tree-use-tree-button">Use tree</button>
                 </div>
             </div>
         </div>
