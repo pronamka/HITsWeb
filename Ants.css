@@ -1,0 +1,266 @@
+body {
+    margin: 0;
+    display: flex;
+    min-width: 1200px;
+    min-height: 800px;
+    overflow: auto;
+}
+
+.grid {
+    display: inline-block;
+    min-width: 1000px;
+    min-height: 1000px;
+}
+
+.cell {
+    width: 8px;
+    height: 8px;
+    border: 1px solid #eee;
+    display: inline-block;
+}
+.nest-btn{
+    background-image: url("images/homeIcon.png");
+}
+.screen {
+    display: inline;
+}
+
+.main-part {
+    width: 64%;
+    text-align: center;
+    margin-left: 18%;
+    display: table-column;
+}
+
+.interview-right{
+    font-weight: 120;
+    margin-left: 5%;
+    width: 80%;
+    margin-top: 10px;
+    text-align: left;
+    font-size: 20px;
+    font-family: "Arial", serif;
+    padding: 0;
+    display: inline-block;
+    line-height: 1;
+}
+
+
+.interview-left{
+    font-weight: 120;
+    margin-left: 25%;
+    width: 70%;
+    margin-top: 10px;
+    text-align: left;
+    font-size: 20px;
+    font-family: "Arial", serif;
+    padding: 0;
+    display: inline-block;
+    line-height: 1;
+}
+
+.bottom {
+    width: 100%;
+    height: 300px;
+}
+
+.food {
+    background-color: #4CAF50;
+}
+
+.pheromone {
+    background-color: #2196F3;
+}
+
+.side-border-left {
+    background-image: url('images/sideBarImage.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: fixed;
+    left: 0;
+    width: 18%;
+    height: 100%;
+
+}
+
+.side-border-right {
+    background-image: url('images/sideBarImage.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: fixed;
+    right: 0;
+    width: 18%;
+    height: 100%;
+
+}
+
+.column{
+    margin-left: 10px;
+    margin-right: 10px;
+    flex-direction: column;
+    gap: 10px;
+    width: 40px;
+}
+
+.interactive-elements{
+    margin-top: 70px;
+    flex-direction: row;
+    gap: 10px;
+    display: inline-flex;
+}
+
+.ant-Pic{
+    margin-left: 20px;
+    margin-top: 275px;
+    rotate: 30deg;
+    width: 256px;
+    height: 256px;
+}
+
+.ants11-20{
+    background-color: #8ae300;
+}
+
+.ants5-10{
+    background-color: #f1da3f;
+}
+
+.ant {
+    background-color: rgba(184, 170, 133, 0.50);
+}
+
+.aed{
+    background-color: rgb(200, 50, 50);
+}
+
+.start {
+    background-color: #f1521a;
+}
+
+button {
+    margin-bottom: 10px;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.btnStartState1{
+    background-image: url("images/startIcon.png");
+}
+
+.btnStartState2{
+    background-image: url("images/startIcon2.png");
+}
+
+button[onclick="startSimulation()"]:hover {
+    background-image: url("images/startIcon2.png");
+}
+
+
+button[onclick="startSimulation()"]:active {
+    background-image: url("images/startIcon2.png");
+}
+
+
+button[onclick="removeAll()"]{
+    background-image: url("images/krest.png");
+}
+
+button[onclick="removeAll()"]:hover {
+    background-image: url("images/krest2.png");
+}
+
+
+button[onclick="removeAll()"]:active {
+    background-image: url("images/krest2.png");
+}
+
+button[onclick="clr()"] {
+    background-image: url(images/refreshIcon.png);
+}
+
+button[onclick="clr()"]:hover {
+    background-image: url("images/refreshIcon2.png");
+}
+
+button[onclick="clr()"]:active {
+    background-image: url("images/refreshIcon2.png");
+}
+
+
+.wall-btn {
+    background-image: url(images/wallIcon.png);
+}
+
+
+.food-btn{
+    background-image: url(images/foodIcon.png);
+}
+
+.remove-btn{
+  background-image: url(images/mopIcon.png);
+}
+
+
+
+.underline {
+    width: 500px;
+    height: 1px;
+    background-color: black;
+    margin: 10px auto 10px 5%;
+}
+
+.user-info {
+    margin: 20px;
+    font-family: monospace;
+    color: #666;
+}
+
+.row {
+    height: 9px;
+}
+
+.header-text {
+    margin-top: 300px;
+    text-align: left;
+    font-size: 100px;
+    font-family: "Arial", serif;
+    padding: 0;
+    display: inline-block;
+    line-height: 1;
+}
+
+.wall {
+    background-color: rgb(152, 152, 159);
+}
+
+.side-wall{
+    background-color: black;
+}
+
+
+.text-field {
+    margin-top: 5px;
+    margin-bottom: 1rem;
+}
+.text-field__input {
+    text-align: center;
+    display: block;
+    height: 40px;
+    width: 45px;
+    font-family: Arial, serif;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #212529;
+    background-clip: padding-box;
+    border: 2px solid black;
+    border-radius: 0.25rem;
+}
