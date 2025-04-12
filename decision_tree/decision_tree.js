@@ -1,5 +1,6 @@
 class TerminalNode {
-    constructor(data, targetAttribute) {
+    constructor(nodeId, data, targetAttribute) {
+        this.nodeId = nodeId;
         this.isTerminal = true;
         this.value = this.getMostFrequentTargetValue(data, targetAttribute);
     }
@@ -27,6 +28,7 @@ class TerminalNode {
 
 class DecisionNode {
     constructor(
+        nodeId,
         attributeName,
         attributeValue,
         targetAttribute,
@@ -35,6 +37,7 @@ class DecisionNode {
         maximumDepth,
         minimalGroupSize
     ) {
+        this.nodeId = nodeId;
         this.attributeName = attributeName;
         this.attributeValue = attributeValue;
         this.targetAttribute = targetAttribute;
@@ -50,6 +53,7 @@ class DecisionNode {
     addChildren() {
         if (this.groups[0].length == 0 || this.groups[1].length == 0) {
             this.children[0] = new TerminalNode(
+                this.nodeId * 2,
                 Array.prototype.concat(...this.groups),
                 this.attributeName
             );
@@ -58,19 +62,28 @@ class DecisionNode {
 
         if (this.depth >= this.maximumDepth) {
             for (let i = 0; i < this.groups.length; i++) {
-                this.children[i] = new TerminalNode(this.groups[i], this.targetAttribute);
+                this.children[i] = new TerminalNode(
+                    this.nodeId * 2 + i,
+                    this.groups[i],
+                    this.targetAttribute
+                );
             }
             return;
         }
 
         for (let i = 0; i < this.groups.length; i++) {
             if (this.groups[i].length < this.minimalGroupSize) {
-                this.children[i] = new TerminalNode(this.groups[i], this.targetAttribute);
+                this.children[i] = new TerminalNode(
+                    this.nodeId * 2 + i,
+                    this.groups[i],
+                    this.targetAttribute
+                );
                 continue;
             }
             let split = new DataSplitter(this.groups[i], this.targetAttribute).findBestSplit();
 
             this.children[i] = new DecisionNode(
+                this.nodeId * 2 + i,
                 split[0],
                 split[1],
                 this.targetAttribute,
@@ -182,6 +195,7 @@ export class DecisionTree {
         this.minimalGroupSize = 5;
 
         this.root = new DecisionNode(
+            0,
             split[0],
             split[1],
             targetAttribute,
@@ -194,22 +208,37 @@ export class DecisionTree {
 
     getPrediction(data) {
         let currentNode = this.root;
+        this.highlightNode(currentNode);
+        let prevNode;
         while (!currentNode.isTerminal) {
+            prevNode = currentNode;
             if (typeof currentNode.attributeValue == 'string') {
                 if (data[currentNode.attributeName] == currentNode.attributeValue) {
                     currentNode = currentNode.children[0];
                 } else {
                     currentNode = currentNode.children[1];
                 }
-                continue;
-            }
-            if (data[currentNode.attributeName] < currentNode.attributeValue) {
-                currentNode = currentNode.children[0];
             } else {
-                currentNode = currentNode.children[1];
+                if (data[currentNode.attributeName] < currentNode.attributeValue) {
+                    currentNode = currentNode.children[0];
+                } else {
+                    currentNode = currentNode.children[1];
+                }
             }
+            this.highlightNode(currentNode);
         }
         return currentNode.value;
+    }
+
+    highlightNode(node) {
+        d3.select(`#algorithm-decision-tree-node-${node.nodeId} rect`).attr('fill', 'orange');
+    }
+
+    dehighlightNode(node) {
+        d3.select(`#algorithm-decision-tree-node-${node.nodeId} rect`).attr(
+            'fill',
+            node.isTerminal ? 'lightblue' : 'red'
+        );
     }
 }
 
