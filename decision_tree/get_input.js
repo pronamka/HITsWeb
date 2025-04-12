@@ -9,6 +9,8 @@ let targetAttributeInput = document.getElementById(
 let buildTreeButton = document.getElementById('algorithm-decision-tree-train-button');
 let useTreeButton = document.getElementById('algorithm-decision-tree-use-tree-button');
 
+let predictionField = document.getElementById('algorithm-decision-tree-prediction');
+
 let tree;
 let treeVisualization;
 let dataAttributes;
@@ -42,11 +44,12 @@ function getPrediction() {
         alert('Build a tree first');
         return;
     }
-    let headers = dataAttributes;
+    let headers = [...dataAttributes];
     headers.splice(headers.indexOf(targetAttribute), 1);
     console.log(headers);
     data = parseLine(data, headers);
     let prediciton = tree.getPrediction(data);
+    predictionField.innerText = `Prediction: ${prediciton}`;
     console.log(prediciton);
 }
 
