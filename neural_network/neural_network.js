@@ -10,11 +10,14 @@ canvas.height = Math.floor((window.innerHeight - canvasOffsetY - 300) / 28) * 28
 canvas.width = canvas.height;
 
 let isPainting = false;
-let lineWidth = 40;
+let lineWidth = 65;
 
 canvasContext.lineWidth = lineWidth;
+canvasContext.fillStyle = 'white';
+canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 canvasContext.lineCap = 'round';
 canvasContext.strokeStyle = 'black';
+canvasContext.fillStyle = 'black';
 
 canvas.addEventListener('mousedown', (e) => {
     isPainting = true;
