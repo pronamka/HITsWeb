@@ -402,3 +402,6 @@ FodyWeavers.xsd
 
 
 .prettierrc
+.idea
+snippets.txt
+neural_network/snippets.txt
