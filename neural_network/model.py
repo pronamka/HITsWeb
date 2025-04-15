@@ -26,12 +26,15 @@ class ActivationFunctions:
 
 class DigitsRecognizer:
 
-    def __init__(self,
-                 network_structure: tuple = (784, 256, 128, 64, 10),
-                 learning_rate: float = 0.01,
-                 dropout_rate: float = 0.2,
-                 l2_regularization_rate: float = 0.01,
-                 batch_size: int = 64):
+    def __init__(
+            self,
+            network_structure: tuple = (784, 256, 128, 64, 10),
+            learning_rate: float = 0.01,
+            dropout_rate: float = 0.2,
+            l2_regularization_rate: float = 0.01,
+            batch_size: int = 64,
+            initialize_from_existing_parameters: bool = False
+    ) -> None:
         self.network_structure = network_structure
         self.learning_rate = learning_rate
         self.dropout_rate = dropout_rate
@@ -40,16 +43,26 @@ class DigitsRecognizer:
 
         self.layers_amount = len(network_structure) - 1
 
+        if initialize_from_existing_parameters:
+            self.weights, self.biases = self._load_parameters()
+            return
+
         self.labels, self.data = self._load_data()
         self.samples_amount = self.data.shape[1]
 
         self.weights, self.biases = self._init_weights_and_biases()
 
     @staticmethod
+    def _load_parameters() -> tuple[list[np.ndarray], list[np.ndarray]]:
+        weights = np.load(PATH_TO_WEIGHTS, allow_pickle=True)
+        biases = np.load(PATH_TO_BIASES, allow_pickle=True)
+        return weights, biases
+
+    @staticmethod
     def _load_data() -> tuple[np.ndarray, np.ndarray]:
         datasets = []
         for i in DATASET_NAMES:
-            datasets.append(pd.read_csv(PATH_TO_DATA+i).to_numpy())
+            datasets.append(pd.read_csv(PATH_TO_DATA + i).to_numpy())
 
         data = np.concatenate(datasets, axis=0)
         np.random.shuffle(data)
@@ -113,13 +126,13 @@ class DigitsRecognizer:
 
         error = activated_results[-1] - one_hot
         weights_gradients[-1] = np.dot(error, activated_results[-2].T) / input_data.shape[1] + \
-                                self.l2_regularization_rate/input_data.shape[1]*self.weights[-1]
+                                self.l2_regularization_rate / input_data.shape[1] * self.weights[-1]
         biases_gradients[-1] = np.sum(error, axis=1, keepdims=True) / input_data.shape[1]
 
         for i in reversed(range(self.layers_amount - 1)):
             error = np.dot(self.weights[i + 1].T, error) * ActivationFunctions.LeakyReLU_derivative(raw_results[i])
             weights_gradients[i] = np.dot(error, activated_results[i].T) / input_data.shape[1] + \
-                                   self.l2_regularization_rate/input_data.shape[1]*self.weights[i]
+                                   self.l2_regularization_rate / input_data.shape[1] * self.weights[i]
             biases_gradients[i] = np.sum(error, axis=1, keepdims=True) / input_data.shape[1]
 
         return weights_gradients, biases_gradients
@@ -153,7 +166,7 @@ class DigitsRecognizer:
 
             predictions = self.forward_propagation(self.data)[1][-1]
             accuracy = self._calculate_accuracy(predictions, self.labels)
-            print(f"Epoch {epoch+1}/{epochs} - Accuracy on training data: {accuracy:.3f} ")
+            print(f"Epoch {epoch + 1}/{epochs} - Accuracy on training data: {accuracy:.3f} ")
 
     def predict(self, input_data: np.ndarray, with_percentage: bool) -> np.ndarray:
         if input_data.ndim == 1:
@@ -174,8 +187,10 @@ def main():
         learning_rate=0.001,
         dropout_rate=0.2,
         l2_regularization_rate=0.01,
-        batch_size=64
+        batch_size=64,
+        initialize_from_existing_parameters=True
     )
-    recognizer.train(epochs=30)
-    recognizer.save_model()
+    #recognizer.train(epochs=30)
+    #recognizer.save_model()
+
 main()
