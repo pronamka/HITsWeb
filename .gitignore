@@ -405,3 +405,4 @@ FodyWeavers.xsd
 .idea
 snippets.txt
 neural_network/snippets.txt
+neural_network/training_data
