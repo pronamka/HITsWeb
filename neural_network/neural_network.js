@@ -54,7 +54,7 @@ class ImageEditor {
     extractAlphaChannel(imageData) {
         let alphaChannel = [];
         for (let i = 0; i < imageData.length; i += 4) {
-            alphaChannel.push(data[i + 3]);
+            alphaChannel.push(imageData[i + 3]);
         }
         return alphaChannel;
     }
@@ -67,14 +67,14 @@ class ImageEditor {
         return matrix;
     }
 
-    getBorderCoordinates() {
+    getBorderCoordinates(imageMatrix) {
         let minX = this.originalWidth,
             minY = this.originalHeight,
             maxX = 0,
             maxY = 0;
         for (let y = 0; y < this.originalHeight; y++) {
             for (let x = 0; x < this.originalWidth; x++) {
-                if (matrixRepresentation[y][x] > 10) {
+                if (imageMatrix[y][x] > 10) {
                     minX = Math.min(minX, x);
                     minY = Math.min(minY, y);
                     maxX = Math.max(maxX, x);
@@ -147,6 +147,7 @@ class ImageEditor {
                 imageData[y * 28 + x] = avg;
             }
         }
+        return imageData;
     }
 
     getImage() {
@@ -154,7 +155,11 @@ class ImageEditor {
             canvasContext.getImageData(0, 0, canvas.width, canvas.height).data
         );
 
-        let matrixRepresentation = this.arrayToMatrix(originalImage, originalWidth, originalHeight);
+        let matrixRepresentation = this.arrayToMatrix(
+            originalImage,
+            this.originalWidth,
+            this.originalHeight
+        );
         let imageBorders = this.getBorderCoordinates(matrixRepresentation);
 
         if (imageBorders[0] >= imageBorders[2] || imageBorders[1] >= imageBorders[3]) {
@@ -174,7 +179,10 @@ function sendPicture(resizedArray) {
             'Content-Type': 'application/json',
         },
         mode: 'cors',
-        body: JSON.stringify({ image: Array.from(resizedArray) }),
+        body: JSON.stringify({
+            image: Array.from(resizedArray),
+            digit: document.getElementById('algorithm-neural-network-retrain-model-input').value,
+        }),
     })
         .then((response) => response.json())
         .then((data) => {
@@ -193,4 +201,12 @@ let sendPictureButton = document.getElementById('algorithm-neural-network-send-p
 sendPictureButton.addEventListener('click', () => {
     let imageEditor = new ImageEditor();
     sendPicture(imageEditor.getImage());
+});
+
+let saveModelButton = document.getElementById('algorithm-neural-network-save-model-button');
+saveModelButton.addEventListener('click', () => {
+    fetch('http://127.0.0.1:5000/save_model', {
+        method: 'GET',
+        mode: 'cors',
+    });
 });
