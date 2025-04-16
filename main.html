@@ -4,6 +4,8 @@
         HITsWeb
     </title>
     <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="stylesheet" type="text/css" href="decision_tree/decision_tree.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <link rel="stylesheet" type="text/css" href="neural_network/neural_network.css">
 </head>
 <body>
@@ -53,13 +55,15 @@
                 <div id="algorithm-settings-decision-tree-train-tree">
                     Input train data: 
                     <input type="file" id="algorithm-decision-tree-file-upload" name="algorithm-decision-tree-file-upload" accept=".csv">
+                    <input type="text" id="algorithm-decision-tree-target-attribute-input" placeholder="Input the name of the value to predict">
                     <button id="algorithm-decision-tree-train-button">Start Training</button>
                 </div>
-                <div id="algorith-decision-tree-graph"></div>
-                <div id="use-algorithm-decision-tree">
-                    <input type="text" placeholder="Input Test Data">
-                    <button>Use tree</button>
+                <div id="algorithm-decision-tree-use-tree-section">
+                    <input type="text" placeholder="Input Test Data" id="algorithm-decision-tree-test-data-input">
+                    <button id="algorithm-decision-tree-use-tree-button">Use tree</button>
+                    <p id="algorithm-decision-tree-prediction">Prediction: </p>
                 </div>
+                <div id="algorith-decision-tree-graph"></div>
             </div>
         </div>
         <div id="algorithm-neural-network" class="algorithm-button">
@@ -85,5 +89,7 @@
     <script src="main.js"></script>
     <script src="board.js"></script>
     <script src="decision_tree.js"></script>
+    <script src="decision_tree/decision_tree.js" type="module"></script>
+    <script src="decision_tree/get_input.js" type="module"></script>
     <script src="neural_network/neural_network.js"></script>
 </body>
