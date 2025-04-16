@@ -1,15 +1,13 @@
 body {
     margin: 0;
-    display: flex;
-    min-width: 1200px;
-    min-height: 800px;
+    display: inline-flex;
     overflow: auto;
 }
 
 .grid {
     display: inline-block;
-    min-width: 1000px;
-    min-height: 1000px;
+    min-width: 1025px;
+    min-height: 1025px;
 }
 
 .cell {
@@ -79,8 +77,9 @@ body {
     background-repeat: no-repeat;
     position: fixed;
     left: 0;
-    width: 18%;
+    width: 18vw;
     height: 100%;
+    z-index: 10;
 
 }
 
@@ -91,8 +90,9 @@ body {
     background-repeat: no-repeat;
     position: fixed;
     right: 0;
-    width: 18%;
+    width: 18vw;
     height: 100%;
+    z-index: 10;
 
 }
 
@@ -103,6 +103,8 @@ body {
     gap: 10px;
     width: 40px;
 }
+
+
 
 .interactive-elements{
     margin-top: 70px;
@@ -264,3 +266,29 @@ button[onclick="clr()"]:active {
     border: 2px solid black;
     border-radius: 0.25rem;
 }
+
+
+@media  screen and (max-width: 1850px) {
+    .side-border-left, .side-border-right{
+        display: none;
+    }
+    .interview-right{
+        margin-left: 5%;
+        width: 90%;
+    }
+    .interview-left{
+        margin-left: 25%;
+        width: 90%;
+
+    }
+
+    .main-part {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    body {
+        min-width: 100%;
+    }
+}
+

@@ -1,7 +1,7 @@
 const WIDTH = 101
 const HEIGHT = 101
-const EVAPORATION_FOOD = 0.00001
-const EVAPORATION_HOME = 0.00001
+const EVAPORATION_FOOD = 0.0001
+const EVAPORATION_HOME = 0.0001
 const BASE_WALL_FILLING = 0.0
 const TO_FOOD_REFUSE_COEF = 0.99
 const MAX_DISTANCE = 500
@@ -350,6 +350,30 @@ function initDesk(wallFilling = BASE_WALL_FILLING) {
             row.appendChild(cell)
         }
         grid.appendChild(row)
+    }
+    for (let i = 0; i < HEIGHT; i++) {
+        for (let j = 0; j < WIDTH; j++) {
+            let cell = document.getElementById(`cell-${i}-${j}`)
+            cell.addEventListener("mouseenter", () => {
+                if (draw) {
+                    if (paintState === 1) {
+                        for (let y = -1; y < 2; y++) {
+                            for (let x = -1; x < 2; x++) {
+                                if (i + y >= 0 && i + y < HEIGHT && j + x >= 0 && j + x < WIDTH)
+                                    matrix[i + y][j + x].wall = true
+                                matrix[i + y][j + x].food = 0
+                                let curCell = document.getElementById(`cell-${i + y}-${j + x}`)
+                                console.log(`cell-${i + y}-${j + x}`)
+                                curCell.style.backgroundColor = ""
+                                curCell.classList.add('wall')
+                                //  cell.classList.add('wall')
+                            }
+                        }
+                        cell.classList.remove('food')
+                    }
+                }
+            })
+        }
     }
     generateMaze(wallFilling)
 }
