@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 
+from scipy.ndimage import shift, rotate, zoom
+
 PATH_TO_DATA = "training_data/"
 DATASET_NAMES = ["standard.csv", "extended.csv"]
 
@@ -24,6 +26,41 @@ class ActivationFunctions:
         return exp_values / np.sum(exp_values, axis=0, keepdims=True)
 
 
+class ImageEditor:
+    @staticmethod
+    def _augment_image(image: np.ndarray) -> np.ndarray:
+        shifted = shift(
+            image,
+            shift=(
+                np.random.uniform(-2, 2),
+                np.random.uniform(-2, 2)
+            ),
+            mode='nearest'
+        )
+
+        rotated = rotate(
+            shifted,
+            angle=np.random.uniform(-10, 10),
+            reshape=False,
+            mode='nearest'
+        )
+
+        return rotated
+
+    @classmethod
+    def augment_batch(cls, batch_data):
+        augmented = []
+
+        for i in range(batch_data.shape[1]):
+            image = batch_data[:, i].reshape(28, 28)
+            augmented_image = cls._augment_image(image)
+            augmented.append(augmented_image.flatten())
+
+        if not len(augmented):
+            return []
+        return np.stack(augmented, axis=1)
+
+
 class DigitsRecognizer:
 
     def __init__(
@@ -33,6 +70,7 @@ class DigitsRecognizer:
             dropout_rate: float = 0.2,
             l2_regularization_rate: float = 0.01,
             batch_size: int = 64,
+            with_augmentation: bool = True,
             initialize_from_existing_parameters: bool = False
     ) -> None:
         self.network_structure = network_structure
@@ -40,6 +78,7 @@ class DigitsRecognizer:
         self.dropout_rate = dropout_rate
         self.l2_regularization_rate = l2_regularization_rate
         self.batch_size = batch_size
+        self.with_augmentation = with_augmentation
 
         self.layers_amount = len(network_structure) - 1
 
@@ -47,7 +86,7 @@ class DigitsRecognizer:
             self.weights, self.biases = self._load_parameters()
             return
 
-        self.labels, self.data = self._load_data()
+        self.labels, self.data = self.load_data()
         self.samples_amount = self.data.shape[1]
 
         self.weights, self.biases = self._init_weights_and_biases()
@@ -59,7 +98,7 @@ class DigitsRecognizer:
         return weights, biases
 
     @staticmethod
-    def _load_data() -> tuple[np.ndarray, np.ndarray]:
+    def load_data() -> tuple[np.ndarray, np.ndarray]:
         datasets = []
         for i in DATASET_NAMES:
             datasets.append(pd.read_csv(PATH_TO_DATA + i).to_numpy())
@@ -146,6 +185,12 @@ class DigitsRecognizer:
             self.weights[i] -= self.learning_rate * weights_gradients[i]
             self.biases[i] -= self.learning_rate * biases_gradients[i]
 
+    def calculate_loss(self, results: np.ndarray, one_hot: np.ndarray):
+        cross_entropy = -np.mean(np.sum(one_hot * np.log(results + 1e-8), axis=0))
+        l2_loss = self.l2_regularization_rate * sum(np.sum(w ** 2) for w in self.weights)
+        total_loss = cross_entropy + l2_loss
+        return total_loss
+
     def train(self, epochs: int = 30) -> None:
         classes_amount = self.network_structure[-1]
 
@@ -156,6 +201,8 @@ class DigitsRecognizer:
 
             for batch_start in range(0, self.samples_amount, self.batch_size):
                 x_batch = shuffled_data[:, batch_start:batch_start + self.batch_size]
+                if self.with_augmentation:
+                    x_batch = ImageEditor.augment_batch(x_batch)
                 y_batch = shuffled_labels[batch_start:batch_start + self.batch_size]
                 one_hot = self.one_hot_Y(y_batch, classes_amount)
 
@@ -166,15 +213,34 @@ class DigitsRecognizer:
 
             predictions = self.forward_propagation(self.data)[1][-1]
             accuracy = self._calculate_accuracy(predictions, self.labels)
-            print(f"Epoch {epoch + 1}/{epochs} - Accuracy on training data: {accuracy:.3f} ")
+            print(f"Epoch {epoch + 1}/{epochs}: \n"
+                  f"Accuracy on training data: {accuracy:.3f}; \n"
+                  f"Loss: {self.calculate_loss(predictions, self.one_hot_Y(self.labels, classes_amount)):.4f}")
 
-    def predict(self, input_data: np.ndarray, with_percentage: bool) -> np.ndarray:
+    def retrain(self, input_data: np.ndarray, correct_prediction):
+        if input_data.ndim == 1:
+            input_data = input_data.reshape(-1, 1)
+        x_batch = input_data
+        if isinstance(correct_prediction, str):
+            one_hot = self.one_hot_Y(np.array(correct_prediction, dtype=int), 10)
+        else:
+            one_hot = self.one_hot_Y(correct_prediction, 10)
+        if one_hot.ndim == 1:
+            one_hot = one_hot.reshape(-1, 1)
+
+        raw_results, activated_results = self.forward_propagation(x_batch, True)
+        weights_gradients, biases_gradients = self.backward_propagation(
+            x_batch, raw_results, activated_results, one_hot)
+        self.update_parameters(weights_gradients, biases_gradients)
+        return np.argmax(activated_results[-1], axis=0)
+
+    def predict(self, input_data: np.ndarray, with_percentage: bool = False) -> np.ndarray:
         if input_data.ndim == 1:
             input_data = input_data.reshape(-1, 1)
         results = self.forward_propagation(input_data)[1][-1]
         if with_percentage:
             return results
-        return np.argmax(results[-1], axis=0)
+        return np.argmax(results, axis=0)
 
     def save_model(self) -> None:
         np.save(PATH_TO_WEIGHTS, np.array(self.weights, dtype=object), allow_pickle=True)
@@ -187,10 +253,10 @@ def main():
         learning_rate=0.001,
         dropout_rate=0.2,
         l2_regularization_rate=0.01,
-        batch_size=64,
-        initialize_from_existing_parameters=True
+        batch_size=1,
+        with_augmentation=True,
+        initialize_from_existing_parameters=False
     )
-    #recognizer.train(epochs=30)
-    #recognizer.save_model()
-
-main()
+    recognizer.train(epochs=30)
+    recognizer.save_model()
+#main()
