@@ -16,17 +16,22 @@ body {
     border: 1px solid #eee;
     display: inline-block;
 }
+
+.row {
+    height: 9px;
+}
+
 .nest-btn{
-    background-image: url("images/homeIcon.png");
+    background-image: url("../images/homeIcon.png");
 }
 .screen {
     display: inline;
 }
 
 .main-part {
-    width: 64%;
+    width: 74%;
     text-align: center;
-    margin-left: 18%;
+    margin-left: 13%;
     display: table-column;
 }
 
@@ -71,26 +76,26 @@ body {
 }
 
 .side-border-left {
-    background-image: url('images/sideBarImage.png');
+    background-image: url('../images/sideBarImage.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     position: fixed;
     left: 0;
-    width: 18vw;
+    width: 13vw;
     height: 100%;
     z-index: 10;
 
 }
 
 .side-border-right {
-    background-image: url('images/sideBarImage.png');
+    background-image: url('../images/sideBarImage.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     position: fixed;
     right: 0;
-    width: 18vw;
+    width: 13vw;
     height: 100%;
     z-index: 10;
 
@@ -154,60 +159,60 @@ button {
 }
 
 .btnStartState1{
-    background-image: url("images/startIcon.png");
+    background-image: url("../images/startIcon.png");
 }
 
 .btnStartState2{
-    background-image: url("images/startIcon2.png");
+    background-image: url("../images/startIcon2.png");
 }
 
 button[onclick="startSimulation()"]:hover {
-    background-image: url("images/startIcon2.png");
+    background-image: url("../images/startIcon2.png");
 }
 
 
 button[onclick="startSimulation()"]:active {
-    background-image: url("images/startIcon2.png");
+    background-image: url("../images/startIcon2.png");
 }
 
 
 button[onclick="removeAll()"]{
-    background-image: url("images/krest.png");
+    background-image: url("../images/krest.png");
 }
 
 button[onclick="removeAll()"]:hover {
-    background-image: url("images/krest2.png");
+    background-image: url("../images/krest2.png");
 }
 
 
 button[onclick="removeAll()"]:active {
-    background-image: url("images/krest2.png");
+    background-image: url("../images/krest2.png");
 }
 
 button[onclick="clr()"] {
-    background-image: url(images/refreshIcon.png);
+    background-image: url(../images/refreshIcon.png);
 }
 
 button[onclick="clr()"]:hover {
-    background-image: url("images/refreshIcon2.png");
+    background-image: url("../images/refreshIcon2.png");
 }
 
 button[onclick="clr()"]:active {
-    background-image: url("images/refreshIcon2.png");
+    background-image: url("../images/refreshIcon2.png");
 }
 
 
 .wall-btn {
-    background-image: url(images/wallIcon.png);
+    background-image: url(../images/wallIcon.png);
 }
 
 
 .food-btn{
-    background-image: url(images/foodIcon.png);
+    background-image: url(../images/foodIcon.png);
 }
 
 .remove-btn{
-  background-image: url(images/mopIcon.png);
+  background-image: url(../images/mopIcon.png);
 }
 
 
@@ -225,9 +230,7 @@ button[onclick="clr()"]:active {
     color: #666;
 }
 
-.row {
-    height: 9px;
-}
+
 
 .header-text {
     margin-top: 300px;

@@ -1,11 +1,12 @@
 const WIDTH = 101
 const HEIGHT = 101
-const EVAPORATION_FOOD = 0.0001
-const EVAPORATION_HOME = 0.0001
+const EVAPORATION_FOOD = 0.00001
+const EVAPORATION_HOME = 0.00001
 const BASE_WALL_FILLING = 0.0
 const TO_FOOD_REFUSE_COEF = 0.99
 const MAX_DISTANCE = 500
 const CHANCE_TO_GO_HOME = 0.005
+const RANGE = 15
 
 let ants_ = []
 let matrix = []
@@ -89,7 +90,7 @@ class Ant {
         const vec = [nextLoc.Y - this.curLoc.Y, nextLoc.X - this.curLoc.X]
         let wish = 0
         let endsCnt = 0
-        for (let i = 1; i < 25; i++) {
+        for (let i = 1; i < RANGE; i++) {
             const checkY = this.curLoc.Y + vec[0] * i
             const checkX = this.curLoc.X + vec[1] * i
             const checkYLeft = this.curLoc.Y + vec[0] * i + vec[1]
@@ -130,7 +131,7 @@ class Ant {
     getWishForToHome(nextLoc) {
         const vec = [nextLoc.Y - this.curLoc.Y, nextLoc.X - this.curLoc.X]
         let wish = 0
-        for (let i = 0; i < 25; i++) {
+        for (let i = 0; i < RANGE; i++) {
             const checkY = this.curLoc.Y + vec[0] * i
             const checkX = this.curLoc.X + vec[1] * i
             const checkYLeft = this.curLoc.Y + vec[0] * i + vec[1]
@@ -201,7 +202,7 @@ class Ant {
                 sumWish += singleWish
             }
             this.dst++
-            this.curLoc.toHomePheromones += 1000000000 / Math.pow(this.dst, 3)
+            this.curLoc.toHomePheromones += 10000000 / Math.pow(this.dst, 3)
 
         } else {
             for (let f of neighborFields) {
@@ -212,7 +213,7 @@ class Ant {
                 }
             }
             for (let f of neighborFields) {
-                const singleWish = this.getWishForToHome(f) + 1
+                const singleWish = Math.pow((this.getWishForToHome(f) + 1), 2)  / (this.getWishForToFood(f)[0] + 1)
                 wish.push(singleWish)
                 sumWish += singleWish
             }
