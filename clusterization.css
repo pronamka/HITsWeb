@@ -1,0 +1,20 @@
+.grid {
+    display: inline-block;
+    min-width: 1000px;
+    min-height: 1000px;
+}
+
+.cell {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #eee;
+    display: inline-block;
+}
+
+.chosen-cell {
+    background: rgba(244,207,21,0.71);
+}
+
+.row {
+    height: 21px;
+}
