@@ -1,7 +1,8 @@
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ant Colony Optimization</title>
-    <link rel="stylesheet" href="Ants.css">
+    <link rel="stylesheet" href="../Styles/Ants.css">
 </head>
 <body>
 
@@ -13,7 +14,7 @@
             ALGORITHM
             <div class="underline"></div>
         </h1>
-        <img src="images/antIcon.png" alt="" class="ant-Pic">
+        <img src="../images/antIcon.png" alt="" class="ant-Pic">
     </div>
     <div style="text-align: left">
         <h2 class="interview-right">Ant algorithm is one of the effective polynomial algorithms for finding approximate
@@ -35,7 +36,6 @@
     <div class="interactive-elements">
         <div class="column">
             <button onclick="startSimulation()" id="startBtn" class="btnStartState1"></button>
-            <button onclick="clr()" id=clearBtn></button>
             <button onclick="removeAll()" id=removeAllBtn></button>
         </div>
         <div id="grid" class="grid"></div>
@@ -43,7 +43,7 @@
             <button onclick="" id="wallBtn" class = "wall-btn"></button>
             <button onclick="" id="foodBtn" class = "food-btn"></button>
             <div class="text-field">
-                <input class="text-field__input" type="text" pattern="\d*" name="ants" id="ants" placeholder="ants" value="250">
+                <input class="text-field__input" type="text" pattern="\d*" name="ants" id="ants" placeholder="ants" value="350">
             </div>
             <button onclick="" id="removeBtn" class = "remove-btn"></button>
             <button onclick="" id="nestBtn" class = "nest-btn"></button>
@@ -52,6 +52,6 @@
     <div class="bottom"></div>
 </div>
 <div class="side-border-right"></div>
-<script type="module" src="./Ants.js"></script>
+<script src="../Scripts/Ants.js"></script>
 </body>
 </html>
