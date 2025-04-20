@@ -1,4 +1,5 @@
 let predictionValue = document.getElementById('algorithm-neural-network-digit-prediction');
+let retrainModelInput = document.getElementById('algorithm-neural-network-retrain-model-input');
 
 let canvas = document.getElementById('algorithm-neural-network-drawing-canvas');
 let canvasContext = canvas.getContext('2d');
@@ -10,7 +11,7 @@ canvas.height = Math.floor((window.innerHeight - canvasOffsetY - 300) / 28) * 28
 canvas.width = canvas.height;
 
 let isPainting = false;
-let lineWidth = 60;
+let lineWidth = 30;
 
 canvasContext.lineWidth = lineWidth;
 canvasContext.lineCap = 'round';
@@ -181,13 +182,13 @@ function sendPicture(resizedArray) {
         mode: 'cors',
         body: JSON.stringify({
             image: Array.from(resizedArray),
-            digit: document.getElementById('algorithm-neural-network-retrain-model-input').value,
+            digit: retrainModelInput.value,
         }),
     })
         .then((response) => response.json())
         .then((data) => {
             console.log('Predicted digit:', data.digit);
-            predictionValue.textContent = `Digit: ${data.digit}`;
+            predictionValue.textContent = `Prediction: ${data.digit}`;
         })
         .catch((error) => console.error('Error:', error));
 }
@@ -201,6 +202,15 @@ let sendPictureButton = document.getElementById('algorithm-neural-network-send-p
 sendPictureButton.addEventListener('click', () => {
     let imageEditor = new ImageEditor();
     sendPicture(imageEditor.getImage());
+    canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+});
+
+let retrainModelButton = document.getElementById('algorithm-neural-network-retrain-model-button');
+retrainModelButton.addEventListener('click', () => {
+    let imageEditor = new ImageEditor();
+    sendPicture(imageEditor.getImage());
+    retrainModelInput.value = '';
+    canvasContext.clearRect(0, 0, canvas.width, canvas.height);
 });
 
 let saveModelButton = document.getElementById('algorithm-neural-network-save-model-button');
