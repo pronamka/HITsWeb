@@ -1,40 +1,219 @@
+body {
+    margin: 0;
+    display: inline-flex;
+    overflow: auto;
+}
+
+* {
+    box-sizing: border-box;
+}
+
 #header {
-    height: 7vh;
-    background-color: beige;
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
+    background-color: white;
     position: sticky;
+    border-bottom: 1px solid black;
+    /*border: 1px solid black;
+    border-radius: 10px;
+    margin-top: 2vh;
+    margin-right: 4px;
+    margin-left: 4px;*/
 }
 
 .go-to-algorithm-button {
     display: inline-block;
-    padding: 0.5vw;
+    padding: 3vh;
     padding-right: 2vw;
     padding-left: 2vw;
     border-right: 1px solid black;
+    flex-grow: 1;
+    font-weight: 120;
+    font-size: 20px;
+    font-family: 'Arial', serif;
+    display: inline-block;
+    line-height: 1;
     /*margin-left:1vw;
     margin-right:1vw;*/
 }
 
 .go-to-algorithm-button:hover {
     cursor: pointer;
-    background-color: cyan;
+    background-color: rgb(60, 51, 51);
+    color: white;
 }
 
-#board {
-    display: grid;
-    width: fit-content;
-    padding: 20px;
+.algorithm-main-part {
+    display: inline-flex;
 }
 
-.board-tile {
-    background-color: white;
-    width: 4vw;
-    height: 4vw;
-    border: 1px solid black;
+.interview-container {
+    text-align: left;
+}
+
+.grid {
+    display: inline-block;
+    min-width: 1025px;
+    min-height: 1025px;
+}
+
+.cell {
+    width: 8px;
+    height: 8px;
+    border: 1px solid #eee;
     display: inline-block;
 }
+.nest-btn {
+    background-image: url('images/homeIcon.png');
+}
+.screen {
+    display: inline;
+}
 
-/*.tile-empty {
-}*/
-.tile-filled {
-    background-color: brown;
+.main-part {
+    width: 64%;
+    text-align: center;
+    margin-left: 18%;
+    display: table-column;
+}
+
+.interview-right {
+    font-weight: 120;
+    margin-left: 5%;
+    width: 80%;
+    margin-top: 10px;
+    text-align: left;
+    font-size: 20px;
+    font-family: 'Arial', serif;
+    padding: 0;
+    display: inline-block;
+    line-height: 1;
+}
+
+.interview-left {
+    font-weight: 120;
+    margin-left: 25%;
+    width: 70%;
+    margin-top: 10px;
+    text-align: left;
+    font-size: 20px;
+    font-family: 'Arial', serif;
+    padding: 0;
+    display: inline-block;
+    line-height: 1;
+}
+
+.bottom {
+    width: 100%;
+    height: 300px;
+}
+
+.food {
+    background-color: #4caf50;
+}
+
+.pheromone {
+    background-color: #2196f3;
+}
+
+.side-border-left {
+    background-image: url('images/sideBarImage.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: fixed;
+    left: 0;
+    width: 18vw;
+    height: 100%;
+    z-index: 10;
+}
+
+.side-border-right {
+    background-image: url('images/sideBarImage.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: fixed;
+    right: 0;
+    width: 18vw;
+    height: 100%;
+    z-index: 10;
+}
+
+.algorithm-settings {
+    margin-left: 10px;
+    margin-right: 10px;
+    flex-direction: column;
+    gap: 10px;
+    width: fit-content;
+}
+
+.interactive-elements {
+    margin-top: 70px;
+    flex-direction: row;
+    gap: 10px;
+    display: inline-flex;
+}
+
+.algorithm-symbol {
+    margin-left: 20px;
+    margin-top: 275px;
+    rotate: 30deg;
+    width: 256px;
+    height: 256px;
+}
+
+button {
+    margin-bottom: 10px;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.underline {
+    width: 500px;
+    height: 1px;
+    background-color: black;
+    margin: 10px auto 10px 5%;
+}
+
+.header-text {
+    margin-top: 300px;
+    text-align: left;
+    font-size: 100px;
+    font-family: 'Arial', serif;
+    padding: 0;
+    display: inline-block;
+    line-height: 1;
+}
+
+@media screen and (max-width: 1850px) {
+    .side-border-left,
+    .side-border-right {
+        display: none;
+    }
+    .interview-right {
+        margin-left: 5%;
+        width: 90%;
+    }
+    .interview-left {
+        margin-left: 25%;
+        width: 90%;
+    }
+
+    .main-part {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    body {
+        min-width: 100%;
+    }
 }
