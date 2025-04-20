@@ -1,3 +1,42 @@
 #algorithm-neural-network-drawing-canvas {
     border: 2px solid black;
 }
+
+.neural-network-button {
+    display: block;
+    border: 1px solid black;
+    width: 10vw;
+    height: 4vh;
+    padding: 0.5vw;
+    color: black;
+    border-radius: 10px;
+}
+
+.neural-network-button:hover {
+    background-color: black;
+    color: white;
+}
+
+#algorithm-neural-network-retrain-model-input {
+    display: block;
+    border: 1px solid black;
+    width: 10vw;
+    height: 4vh;
+    padding: 0.5vw;
+    color: black;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+#algorithm-neural-network-digit-prediction {
+    font-weight: 120;
+    margin-left: 5%;
+    width: 100%;
+    margin-top: 10px;
+    text-align: left;
+    font-size: 20px;
+    font-family: 'Arial', serif;
+    padding: 0;
+    display: inline-block;
+    line-height: 1;
+}
