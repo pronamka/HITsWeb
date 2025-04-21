@@ -1,0 +1,44 @@
+<div class="algorithm-main-part">
+    <h1 class="header-text">
+        DECISION<br>TREE
+        <div class="underline"></div>
+    </h1>
+    <img src="decision_tree/decision-tree.png" alt="" class="algorithm-symbol">
+</div>
+<div class="interview-container">
+    <h2 class="interview-right">Decision trees are intuitive and interpretable models used for classification and regression tasks. They work by recursively splitting data based on feature values, forming a tree-like structure where each leaf represents a final decision or prediction. This makes them ideal for understanding how decisions are made.
+        <div class="underline"></div>
+    </h2>
+    <h2 class="interview-left">The tree is trained on labeled data, learning to divide information in a way that maximizes the distinction between different outcomes. Once trained, the model can take new input and follow the path of logical decisions down the tree to reach a prediction.
+        <div class="underline"></div>
+    </h2>
+    <h2 class="interview-right">Upload your dataset, then try out your own inputs and watch the tree in action! As your data moves through each decision, the path to the final prediction lights up step by step.
+        <div class="underline"></div>
+    </h2>
+</div>
+<div class="interactive-elements algorithm-decision-tree-interactive-elements">
+    <div class="algorithm-settings algorithm-decision-tree-algorithm-settings">
+        <div id="algorithm-decision-tree-settings">
+            <div id="algorithm-settings-decision-tree-train-tree" class="algorithm-settings-decision-tree-settings-block">
+                <h3 class="algorithm-decision-tree-settings-section-header">Tree Building Section</h3>
+                Input train data: 
+                <input type="file" id="algorithm-decision-tree-file-upload" name="algorithm-decision-tree-file-upload" accept=".csv">
+                <label for="algorithm-decision-tree-file-upload" class="algorithm-decision-tree-file-upload-file-upload-label">
+                    Upload Dataset
+                </label>
+                <input type="text" id="algorithm-decision-tree-target-attribute-input" placeholder="Input the name of the value to predict" class="algorithm-decision-tree-input">
+                <button id="algorithm-decision-tree-train-button" class="algorithm-decision-tree-button">Start Training</button>
+            </div>
+            <div id="algorithm-decision-tree-use-tree-section" class="algorithm-settings-decision-tree-settings-block">
+                <h3 class="algorithm-decision-tree-settings-section-header">Prediction Section</h3>
+                <input type="text" placeholder="Input Test Data" id="algorithm-decision-tree-test-data-input" class="algorithm-decision-tree-input">
+                <button id="algorithm-decision-tree-use-tree-button" class="algorithm-decision-tree-button">Predict</button>
+                <p id="algorithm-decision-tree-prediction">Prediction: </p>
+            </div>
+        </div>
+    </div>
+    <div class="algorithm-board">
+        <div id="algorith-decision-tree-graph"></div>
+    </div>
+</div>
+<div class="bottom"></div>
