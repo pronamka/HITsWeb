@@ -11,14 +11,14 @@ body {
 }
 
 .cell {
-    width: 6px;
-    height: 6px;
+    width: 9px;
+    height: 9px;
     border: 1px solid #eee;
     display: inline-block;
 }
 
 .row {
-    height: 7px;
+    height: 10px;
 }
 
 .nest-btn{
