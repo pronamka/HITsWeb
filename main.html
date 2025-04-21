@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
         HITsWeb
     </title>
     <link rel="stylesheet" type="text/css" href="main.css">
     <link rel="stylesheet" type="text/css" href="decision_tree/decision_tree.css">
-    <link rel="stylesheet" type="text/css" href="Ants.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="neural_network/neural_network.css">
 </head>
 <body>
     <div class="side-border-left"></div>
@@ -50,122 +49,14 @@
                 <p>Genetics</p>
             </div>
             <div id="algorithm-ant" class="algorithm-button">
-                <div style="display: inline-flex">
-                    <h1 class="header-text">
-                        ANT<br>
-                        ALGORITHM
-                        <div class="underline"></div>
-                    </h1>
-                    <img src="images/antIcon.png" alt="" class="ant-Pic">
-                </div>
-                <div style="text-align: left">
-                    <h2 class="interview-right">Ant algorithm is one of the effective polynomial algorithms for finding approximate
-                        solutions <br> to the traveling salesman problem, as well as for solving similar problems of route finding
-                        on graphs. The essence of the approach is to analyze and use the model of ants' behavior, looking for paths
-                        <br> from a colony to a food source, and represents a metaheuristic optimization.
-                        <div class="underline"></div>
-                    </h2>
-                    <h2 class="interview-left">All choices are ranked according to their suitability. The amount of deposited
-                        pheromones <br>
-                        for each solution is weighted so that more suitable solutions receive more pheromones than less suitable
-                        ones.
-                        <div class="underline"></div>
-                    </h2>
-                    <h2 class="interview-right">Draw a maze, place food sources and colony. And watch the ants work!
-                        <div class="underline"></div>
-                    </h2>
-                </div>
-                <div class="interactive-elements">
-                    <div class="column">
-                        <button onclick="startSimulation()" id="startBtn" class="btnStartState1"></button>
-                        <button onclick="removeAll()" id=removeAllBtn></button>
-                    </div>
-                    <div id="grid" class="grid"></div>
-                    <div class="column">
-                        <button onclick="" id="wallBtn" class = "wall-btn"></button>
-                        <button onclick="" id="foodBtn" class = "food-btn"></button>
-                        <div class="text-field">
-                            <input class="text-field__input" type="text" pattern="\d*" name="ants" id="ants" placeholder="ants" value="350">
-                        </div>
-                        <button onclick="" id="removeBtn" class = "remove-btn"></button>
-                        <button onclick="" id="nestBtn" class = "nest-btn"></button>
-                    </div>
-                </div>
-                <div class="bottom"></div>
             </div>
             <div id="algorithm-decision-tree" class="algorithm-button">
-                <p>Decision Tree</p>
-                <div id="algorithm-settings-decision-tree">
-                    <div id="algorithm-settings-decision-tree-train-tree">
-                        Input train data: 
-                        <input type="file" id="algorithm-decision-tree-file-upload" name="algorithm-decision-tree-file-upload" accept=".csv">
-                        <input type="text" id="algorithm-decision-tree-target-attribute-input" placeholder="Input the name of the value to predict">
-                        <button id="algorithm-decision-tree-train-button">Start Training</button>
-                    </div>
-                    <div id="algorithm-decision-tree-use-tree-section">
-                        <input type="text" placeholder="Input Test Data" id="algorithm-decision-tree-test-data-input">
-                        <button id="algorithm-decision-tree-use-tree-button">Use tree</button>
-                        <p id="algorithm-decision-tree-prediction">Prediction: </p>
-                    </div>
-                    <div id="algorith-decision-tree-graph"></div>
-                </div>
+                
             </div>
-            <div id="algorithm-neural-network" class="algorithm-button">
-                <div class="algorithm-main-part">
-                    <h1 class="header-text">
-                        NEURAL<br>NETWORK
-                        <div class="underline"></div>
-                    </h1>
-                    <img src="neural_network/neural-network.png" alt="" class="algorithm-symbol">
-                </div>
-                <div class="interview-container">
-                    <h2 class="interview-right">Neural networks are powerful tools used for pattern recognition and classification. One common type, the multilayer perceptron, can be trained to recognize handwritten digits by learning from examples. It belongs to a broader class of machine learning models that approximate complex functions through layers of interconnected nodes.
-                        <div class="underline"></div>
-                    </h2>
-                    <h2 class="interview-left">The network processes input as a grid of pixel values and predicts the most likely digit. During training, the model adjusts internal weights to reduce prediction errors. The more examples it sees, the better it becomes at recognizing digits with high accuracy.
-                        <div class="underline"></div>
-                    </h2>
-                    <h2 class="interview-right">Draw a digit on the canvas and let the neural network guess what it is. Want to teach it? Just input the correct digit and help the model learn!
-                        <div class="underline"></div>
-                    </h2>
-                </div>
-                <div class="interactive-elements">
-                    <div class="algorithm-settings">
-                        <div id="algorithm-neural-network-settings">
-                            <button id="algorithm-neural-network-clean-canvas-button" class="neural-network-button">
-                                Clean Canvas    
-                            </button>
-                            <button id="algorithm-neural-network-send-picture-button" class="neural-network-button">
-                                Recognize Digit
-                            </button>
-                            <h3 id="algorithm-neural-network-digit-prediction">Prediction: </h3>
-                        </div>
-                    </div>
-                    <div class="algorithm-board">
-                        <canvas id="algorithm-neural-network-drawing-canvas"></canvas>
-                    </div>
-                    <div class="algorithm-settings">
-                        <div id="algorithm-neural-network-settings">
-                            <input type="number" id="algorithm-neural-network-retrain-model-input">
-                            <button id="algorithm-neural-network-retrain-model-button" class="neural-network-button">
-                                Train Model
-                            </button>
-                            <button id="algorithm-neural-network-save-model-button" class="neural-network-button">
-                                Save Model
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="bottom"></div>
+            <div id="algorithm-neural-network" class="algorithm-button">   
             </div>
         </div>
     </div>
     <div class="side-border-right"></div>
     <script src="main.js"></script>
-    <script src="board.js"></script>
-    <script src="decision_tree.js"></script>
-    <script src="decision_tree/decision_tree.js" type="module"></script>
-    <script src="decision_tree/get_input.js" type="module"></script>
-    <script src="Ants.js" type="module"></script>
-    <script src="neural_network/neural_network.js"></script>
 </body>
