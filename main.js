@@ -1,14 +1,12 @@
-const algorithmNames = new Array(
-    'a-star',
+const algorithmNames = ['a-star',
     'clusterize',
     'genetics',
     'ant',
     'decision-tree',
-    'neural-network'
-);
+    'neural-network'];
 
 const algorithmFiles = {
-    ant: ['Ants/Screens/Ants.html', ['Ants/Styles/Ants.css'], ['Ants/Scripts/Ants.js']],
+    'ant': ['Ants/Screens/Ants.html', ['Ants/Styles/Ants.css'], ['Ants/Scripts/Ants.js']],
     'decision-tree': [
         'decision_tree/decision_tree.html',
         ['decision_tree/decision_tree.css'],
@@ -28,21 +26,21 @@ const algorithmFiles = {
 const headerButtonPrefix = 'go-to-algorithm-';
 const algorithmTabPrefix = 'algorithm-';
 
-const headerButtons = new Array();
-const algoirthmTabs = new Array();
+const headerButtons = [];
+const algorithmTabs = [];
 
 for (let i = 0; i < algorithmNames.length; i++) {
     headerButtons.push(document.getElementById(headerButtonPrefix + algorithmNames[i]));
-    algoirthmTabs.push(document.getElementById(algorithmTabPrefix + algorithmNames[i]));
+    algorithmTabs.push(document.getElementById(algorithmTabPrefix + algorithmNames[i]));
 
     headerButtons[i].addEventListener('click', () => displayTab(i));
 }
 
 const displayTab = (tabIndex) => {
-    for (let i = 0; i < algoirthmTabs.length; i++) {
-        algoirthmTabs[i].style.display = 'none';
+    for (let i = 0; i < algorithmTabs.length; i++) {
+        algorithmTabs[i].style.display = 'none';
     }
-    algoirthmTabs[tabIndex].style.display = 'block';
+    algorithmTabs[tabIndex].style.display = 'block';
 };
 
 displayTab(4);
