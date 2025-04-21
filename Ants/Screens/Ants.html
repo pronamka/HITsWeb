@@ -1,57 +1,43 @@
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ant Colony Optimization</title>
-    <link rel="stylesheet" href="../Styles/Ants.css">
-</head>
-<body>
 
-<div class="side-border-left"></div>
-<div class=main-part>
-    <div style="display: inline-flex">
-        <h1 class="header-text">
-            ANT<br>
-            ALGORITHM
-            <div class="underline"></div>
-        </h1>
-        <img src="../images/antIcon.png" alt="" class="ant-Pic">
-    </div>
-    <div style="text-align: left">
-        <h2 class="interview-right">Ant algorithm is one of the effective polynomial algorithms for finding approximate
-            solutions <br> to the traveling salesman problem, as well as for solving similar problems of route finding
-            on graphs. The essence of the approach is to analyze and use the model of ants' behavior, looking for paths
-            <br> from a colony to a food source, and represents a metaheuristic optimization.
-            <div class="underline"></div>
-        </h2>
-        <h2 class="interview-left">All choices are ranked according to their suitability. The amount of deposited
-            pheromones <br>
-            for each solution is weighted so that more suitable solutions receive more pheromones than less suitable
-            ones.
-            <div class="underline"></div>
-        </h2>
-        <h2 class="interview-right">Draw a maze, place food sources and colony. And watch the ants work!
-            <div class="underline"></div>
-        </h2>
-    </div>
-    <div class="interactive-elements">
-        <div class="column">
-            <button onclick="startSimulation()" id="startBtn" class="btnStartState1"></button>
-            <button onclick="removeAll()" id=removeAllBtn></button>
-        </div>
-        <div id="grid" class="grid"></div>
-        <div class="column">
-            <button onclick="" id="wallBtn" class = "wall-btn"></button>
-            <button onclick="" id="foodBtn" class = "food-btn"></button>
-            <div class="text-field">
-                <input class="text-field__input" type="text" pattern="\d*" name="ants" id="ants" placeholder="ants" value="350">
-            </div>
-            <button onclick="" id="removeBtn" class = "remove-btn"></button>
-            <button onclick="" id="nestBtn" class = "nest-btn"></button>
-        </div>
-    </div>
-    <div class="bottom"></div>
+<div style="display: inline-flex">
+    <h1 class="header-text">
+        ANT<br>
+        ALGORITHM
+        <div class="underline"></div>
+    </h1>
+    <img src="Ants/images/antIcon.png" alt="" class="ant-Pic">
 </div>
-<div class="side-border-right"></div>
-<script src="../Scripts/Ants.js"></script>
-</body>
-</html>
+<div style="text-align: left">
+    <h2 class="interview-right">Ant algorithm is one of the effective polynomial algorithms for finding approximate
+        solutions <br> to the traveling salesman problem, as well as for solving similar problems of route finding
+        on graphs. The essence of the approach is to analyze and use the model of ants' behavior, looking for paths
+        <br> from a colony to a food source, and represents a metaheuristic optimization.
+        <div class="underline"></div>
+    </h2>
+    <h2 class="interview-left">All choices are ranked according to their suitability. The amount of deposited
+        pheromones <br>
+        for each solution is weighted so that more suitable solutions receive more pheromones than less suitable
+        ones.
+        <div class="underline"></div>
+    </h2>
+    <h2 class="interview-right">Draw a maze, place food sources and colony. And watch the ants work!
+        <div class="underline"></div>
+    </h2>
+</div>
+<div class="interactive-elements">
+    <div class="column">
+        <button onclick="startSimulation()" id="startBtn" class="btnStartState1"></button>
+        <button onclick="removeAll()" id=removeAllBtn></button>
+    </div>
+    <div id="grid" class="grid"></div>
+    <div class="column">
+        <button onclick="" id="wallBtn" class = "wall-btn"></button>
+        <button onclick="" id="foodBtn" class = "food-btn"></button>
+        <div class="text-field">
+            <input class="text-field__input" type="text" pattern="\d*" name="ants" id="ants" placeholder="ants" value="350">
+        </div>
+        <button onclick="" id="removeBtn" class = "remove-btn"></button>
+        <button onclick="" id="nestBtn" class = "nest-btn"></button>
+    </div>
+</div>
+<div class="bottom"></div>

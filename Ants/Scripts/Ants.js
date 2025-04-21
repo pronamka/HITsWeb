@@ -1,12 +1,12 @@
-const WIDTH = 101
-const HEIGHT = 101
-const EVAPORATION_FOOD = 0.00001
-const EVAPORATION_HOME = 0.00001
+const WIDTH = 151
+const HEIGHT = 151
+const EVAPORATION_FOOD = 0.000014
+const EVAPORATION_HOME = 0.000014
 const BASE_WALL_FILLING = 0.0
 const TO_FOOD_REFUSE_COEF = 0.99
 const MAX_DISTANCE = 500
 const CHANCE_TO_GO_HOME = 0.005
-const RANGE = 15
+const RANGE = 25
 
 let ants_ = []
 let matrix = []
@@ -90,6 +90,7 @@ class Ant {
         const vec = [nextLoc.Y - this.curLoc.Y, nextLoc.X - this.curLoc.X]
         let wish = 0
         let endsCnt = 0
+        let wallCnt = 0
         for (let i = 1; i < RANGE; i++) {
             const checkY = this.curLoc.Y + vec[0] * i
             const checkX = this.curLoc.X + vec[1] * i
@@ -117,11 +118,15 @@ class Ant {
                         }
                         wish += matrix[checkY][checkX].toFoodPheromones
                     }
+                    wallCnt = 0
                 } else {
-                    break
+                    if (wallCnt < 2) {
+                        wallCnt++
+                    } else {
+                        break
+                    }
                 }
-            }
-            else{
+            } else {
                 endsCnt++
             }
         }
@@ -131,6 +136,7 @@ class Ant {
     getWishForToHome(nextLoc) {
         const vec = [nextLoc.Y - this.curLoc.Y, nextLoc.X - this.curLoc.X]
         let wish = 0
+        let wallCnt = 0
         for (let i = 0; i < RANGE; i++) {
             const checkY = this.curLoc.Y + vec[0] * i
             const checkX = this.curLoc.X + vec[1] * i
@@ -159,12 +165,15 @@ class Ant {
                         }
                         wish += matrix[checkY][checkX].toHomePheromones
                     }
+                    wallCnt = 0
+                } else {
+                    if (wallCnt < 2) {
+                        wallCnt++
+                    } else {
+                        break
+                    }
                 }
-                else {
-                    break
-                }
-            }
-            else {
+            } else {
                 break
             }
         }
@@ -179,9 +188,9 @@ class Ant {
         let choosingProbability = []
         let probability = []
 
-        if(this.dst > MAX_DISTANCE){
+        if (this.dst > MAX_DISTANCE) {
             let a = Math.random()
-            if(a < CHANCE_TO_GO_HOME) {
+            if (a < CHANCE_TO_GO_HOME) {
                 this.foodFind = 1
                 this.improveValue = 0
             }
@@ -213,7 +222,7 @@ class Ant {
                 }
             }
             for (let f of neighborFields) {
-                const singleWish = Math.pow((this.getWishForToHome(f) + 1), 2)  / (this.getWishForToFood(f)[0] + 1)
+                const singleWish = Math.pow((this.getWishForToHome(f) + 1), 2) / (this.getWishForToFood(f)[0] + 1)
                 wish.push(singleWish)
                 sumWish += singleWish
             }
@@ -460,8 +469,7 @@ function updateCells(changedCells = null) {
 
         if (loc.food > 0) {
             cell.classList.add("food")
-        }
-        else if (loc.Y === startY && loc.X === startX) {
+        } else if (loc.Y === startY && loc.X === startX) {
             cell.classList.add("start")
         } else if (antsHere === 1) {
             cell.classList.add('ant')
