@@ -11,14 +11,14 @@ body {
 }
 
 .cell {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     border: 1px solid #eee;
     display: inline-block;
 }
 
 .row {
-    height: 9px;
+    height: 7px;
 }
 
 .nest-btn{
@@ -248,6 +248,12 @@ button[onclick="clr()"]:active {
 
 .side-wall{
     background-color: black;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 
