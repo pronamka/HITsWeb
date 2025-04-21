@@ -4,9 +4,7 @@ body {
     overflow: auto;
 }
 
-* {
-    box-sizing: border-box;
-}
+
 
 #header {
     display: flex;
