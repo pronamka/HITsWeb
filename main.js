@@ -7,6 +7,24 @@ const algorithmNames = new Array(
     'neural-network'
 );
 
+const algorithmFiles = {
+    ant: ['Ants/Screens/Ants.html', ['Ants/Styles/Ants.css'], ['Ants/Scripts/Ants.js']],
+    'decision-tree': [
+        'decision_tree/decision_tree.html',
+        ['decision_tree/decision_tree.css'],
+        [
+            'decision_tree/decision_tree.js',
+            'decision_tree/get_input.js',
+            'decision_tree/visualizer.js',
+        ],
+    ],
+    'neural-network': [
+        'neural_network/neural_network.html',
+        ['neural_network/neural_network.css'],
+        ['neural_network/neural_network.js'],
+    ],
+};
+
 const headerButtonPrefix = 'go-to-algorithm-';
 const algorithmTabPrefix = 'algorithm-';
 
@@ -28,3 +46,35 @@ const displayTab = (tabIndex) => {
 };
 
 displayTab(4);
+
+function loadTab(algorithmName, file, cssPaths = null, jsPaths = null) {
+    fetch(file)
+        .then((response) => response.text())
+        .then((html) => {
+            document.getElementById(`algorithm-${algorithmName}`).innerHTML = html;
+
+            if (cssPaths) {
+                cssPaths.forEach((path) => {
+                    const link = document.createElement('link');
+                    link.rel = 'stylesheet';
+                    link.href = path;
+                    document.head.appendChild(link);
+                });
+            }
+
+            if (jsPaths) {
+                jsPaths.forEach((path) => {
+                    const script = document.createElement('script');
+                    script.type = 'module';
+                    script.src = path;
+                    document.body.appendChild(script);
+                });
+            }
+        });
+}
+
+window.onload = () => {
+    for (const [algorithmName, files] of Object.entries(algorithmFiles)) {
+        loadTab(algorithmName, ...files);
+    }
+};
