@@ -1,12 +1,15 @@
-const algorithmNames = ['a-star',
+const algorithmNames = [
+    'a-star',
     'clusterize',
     'genetics',
     'ant',
     'decision-tree',
-    'neural-network'];
+    'neural-network',
+];
 
 const algorithmFiles = {
-    'ant': ['Ants/Screens/Ants.html', ['Ants/Styles/Ants.css'], ['Ants/Scripts/Ants.js']],
+    'a-star': ['aStar/Screens/maze.html', ['aStar/Styles/maze.css'], ['aStar/Scripts/maze.js']],
+    ant: ['Ants/Screens/Ants.html', ['Ants/Styles/Ants.css'], ['Ants/Scripts/Ants.js']],
     'decision-tree': [
         'decision_tree/decision_tree.html',
         ['decision_tree/decision_tree.css'],
@@ -43,7 +46,7 @@ const displayTab = (tabIndex) => {
     algorithmTabs[tabIndex].style.display = 'block';
 };
 
-displayTab(4);
+displayTab(0);
 
 function loadTab(algorithmName, file, cssPaths = null, jsPaths = null) {
     fetch(file)
