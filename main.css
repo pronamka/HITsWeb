@@ -4,6 +4,14 @@ body {
     overflow: auto;
 }
 
+button:hover {
+    cursor: pointer;
+}
+
+label:hover {
+    cursor: pointer;
+}
+
 #header {
     display: flex;
     flex-direction: row;
@@ -37,6 +45,44 @@ body {
     cursor: pointer;
     background-color: rgb(60, 51, 51);
     color: white;
+}
+
+.main-part {
+    width: 74%;
+    text-align: center;
+    margin-left: 13%;
+    display: table-column;
+}
+
+.interview-right {
+    font-weight: 120;
+    margin-left: 5%;
+    width: 80%;
+    margin-top: 10px;
+    text-align: left;
+    font-size: 20px;
+    font-family: 'Arial', serif;
+    padding: 0;
+    display: inline-block;
+    line-height: 1;
+}
+
+.interview-left {
+    font-weight: 120;
+    margin-left: 25%;
+    width: 70%;
+    margin-top: 10px;
+    text-align: left;
+    font-size: 20px;
+    font-family: 'Arial', serif;
+    padding: 0;
+    display: inline-block;
+    line-height: 1;
+}
+
+.bottom {
+    width: 100%;
+    height: 300px;
 }
 
 .algorithm-main-part {
@@ -107,6 +153,37 @@ button {
     padding: 0;
     display: inline-block;
     line-height: 1;
+}
+
+.side-border-left {
+    background-image: url('Ants/images/sideBarImage.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: fixed;
+    left: 0;
+    width: 13vw;
+    height: 100%;
+    z-index: 10;
+}
+
+.side-border-right {
+    background-image: url('Ants/images/sideBarImage.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: fixed;
+    right: 0;
+    width: 13vw;
+    height: 100%;
+    z-index: 10;
+}
+
+.interactive-elements {
+    margin-top: 70px;
+    flex-direction: row;
+    gap: 10px;
+    display: inline-flex;
 }
 
 @media screen and (max-width: 1850px) {
