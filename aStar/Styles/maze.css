@@ -1,3 +1,8 @@
+#a-star-algorithm-symbol {
+    width: 128px;
+    height: 128px;
+}
+
 .a-star-column {
     margin-left: 10px;
     margin-right: 10px;
@@ -77,7 +82,7 @@
     background-image: url('../images/stopHover.png');
 }
 
-input[type='number'] {
+#size {
     display: block;
     border: 1px solid black;
     width: 10vw;
@@ -87,6 +92,7 @@ input[type='number'] {
     border-radius: 10px;
     margin-bottom: 10px;
     box-sizing: border-box;
+    text-align: right;
 }
 
 #board {
