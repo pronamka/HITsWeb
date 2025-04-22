@@ -1,28 +1,31 @@
+function getMostFrequentTargetValue(data, targetAttribute) {
+    let targetValues = {};
+    for (let i = 0; i < data.length; i++) {
+        if (!targetValues[data[i][targetAttribute]]) {
+            targetValues[data[i][targetAttribute]] = 0;
+        }
+        targetValues[data[i][targetAttribute]]++;
+    }
+    let keys = Object.keys(targetValues);
+    let maxOccurances = 0;
+    let index = 0;
+    for (let i = 0; i < keys.length; i++) {
+        if (targetValues[keys[i]] > maxOccurances) {
+            maxOccurances = targetValues[keys[i]];
+            index = i;
+        }
+    }
+    return keys[index];
+}
+
 class TerminalNode {
     constructor(nodeId, data, targetAttribute) {
         this.nodeId = nodeId;
+        if (nodeId == 32) {
+            console.log(data, targetAttribute);
+        }
         this.isTerminal = true;
-        this.value = this.getMostFrequentTargetValue(data, targetAttribute);
-    }
-
-    getMostFrequentTargetValue(data, targetAttribute) {
-        let targetValues = {};
-        for (let i = 0; i < data.length; i++) {
-            if (!targetValues[data[i][targetAttribute]]) {
-                targetValues[data[i][targetAttribute]] = 0;
-            }
-            targetValues[data[i][targetAttribute]]++;
-        }
-        let keys = Object.keys(targetValues);
-        let maxOccurances = 0;
-        let index = 0;
-        for (let i = 0; i < keys.length; i++) {
-            if (targetValues[keys[i]] > maxOccurances) {
-                maxOccurances = targetValues[keys[i]];
-                index = i;
-            }
-        }
-        return keys[index];
+        this.value = getMostFrequentTargetValue(data, targetAttribute);
     }
 }
 
@@ -55,12 +58,27 @@ class DecisionNode {
             this.children[0] = new TerminalNode(
                 this.nodeId * 2,
                 Array.prototype.concat(...this.groups),
-                this.attributeName
+                this.targetAttribute
             );
             return;
         }
 
         if (this.depth >= this.maximumDepth) {
+            let groupTargetValues = [];
+            for (let i = 0; i < this.groups.length; i++) {
+                groupTargetValues[i] = getMostFrequentTargetValue(
+                    this.groups[i],
+                    this.targetAttribute
+                );
+            }
+            if (groupTargetValues[0] == groupTargetValues[1]) {
+                this.children[0] = new TerminalNode(
+                    this.nodeId * 2,
+                    Array.prototype.concat(...this.groups),
+                    this.targetAttribute
+                );
+                return;
+            }
             for (let i = 0; i < this.groups.length; i++) {
                 this.children[i] = new TerminalNode(
                     this.nodeId * 2 + i,
@@ -102,7 +120,10 @@ class DataSplitter {
         this.targetAttribute = targetAttribute;
 
         this.attributes = Object.keys(trainingData[0]);
-        this.attributes.splice(this.attributes.indexOf(this.targetAttribute, 1));
+        this.attributes.splice(this.attributes.indexOf(this.targetAttribute), 1);
+
+        this.bannedAttributes = ['id', 'name'];
+        this.attributes = this.attributes.filter((attr) => !this.bannedAttributes.includes(attr));
 
         this.classesDistribution = {};
         for (let i = 0; i < trainingData.length; i++) {
@@ -168,17 +189,28 @@ class DataSplitter {
         let bestValue;
         let bestGiniIndex = 1;
         let splitGroups;
-        for (let attributeValue = 0; attributeValue < this.attributes.length; attributeValue++) {
+        for (let attributeIndex = 0; attributeIndex < this.attributes.length; attributeIndex++) {
+            let attribute = this.attributes[attributeIndex];
+            let sampleValue = this.data[0][attribute];
+            let isNumeric = typeof sampleValue === 'number';
+
+            let uniqueValues = new Set(this.data.map((row) => row[attribute]));
+
+            // Если это строка с подозрительно большим количеством уникальных значений — пропускаем
+            if (!isNumeric && uniqueValues.size > this.data.length * 0.5) {
+                continue;
+            }
+
             for (let rowIndex = 0; rowIndex < this.data.length; rowIndex++) {
                 let groups = this.splitIntoTwo(
-                    this.attributes[attributeValue],
-                    this.data[rowIndex][this.attributes[attributeValue]]
+                    this.attributes[attributeIndex],
+                    this.data[rowIndex][this.attributes[attributeIndex]]
                 );
                 let giniIndex = this.calculateGiniIndex(groups);
 
                 if (giniIndex < bestGiniIndex) {
-                    bestAttribute = this.attributes[attributeValue];
-                    bestValue = this.data[rowIndex][this.attributes[attributeValue]];
+                    bestAttribute = this.attributes[attributeIndex];
+                    bestValue = this.data[rowIndex][this.attributes[attributeIndex]];
                     bestGiniIndex = giniIndex;
                     splitGroups = groups;
                 }
@@ -195,7 +227,7 @@ export class DecisionTree {
         this.minimalGroupSize = 5;
 
         this.root = new DecisionNode(
-            0,
+            1,
             split[0],
             split[1],
             targetAttribute,
