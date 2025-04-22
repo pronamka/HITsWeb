@@ -26,6 +26,10 @@ function buildTree() {
             alert('Fill in all the fields.');
             return;
         }
+        let label = document.getElementById(
+            'algorithm-decision-tree-file-upload-file-upload-label'
+        );
+        label.innerText = 'Upload Dataset';
 
         tree = new DecisionTree(trainingData, targetAttribute);
         treeVisualization = new DecisionTreeVisualizer(tree.root, 'algorith-decision-tree-graph');
@@ -98,5 +102,17 @@ function parseLine(line, headers) {
     return oneSet;
 }
 
+function changeLabel() {
+    let files = trainDataInput.files;
+    if (files.length == 0) {
+        alert('No file chosen!');
+        return;
+    }
+    let file = files[0];
+    let label = document.getElementById('algorithm-decision-tree-file-upload-file-upload-label');
+    label.innerText = file.name;
+}
+
 buildTreeButton.addEventListener('click', buildTree);
 useTreeButton.addEventListener('click', getPrediction);
+trainDataInput.addEventListener('change', changeLabel);
