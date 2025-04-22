@@ -212,7 +212,7 @@ class Ant {
                 const [curFoodWish, antiWish] = this.getWishForToFood(f)
                 const wishToFood = curFoodWish + 1
                 const wishToHome = this.getWishForToHome(f) + 1
-                const singleWish = Math.pow(wishToFood, 2.5) / wishToHome / (antiWish + 1)
+                const singleWish = Math.pow(wishToFood, 2) / wishToHome / (antiWish + 1)
                 wish.push(singleWish)
                 sumWish += singleWish
             }
@@ -230,7 +230,7 @@ class Ant {
                 const [curFoodWish, antiWish] = this.getWishForToFood(f)
                 const wishToFood = curFoodWish + 1
                 const wishToHome = this.getWishForToHome(f) + 1
-                const singleWish = Math.pow(wishToHome, 2.5) / wishToFood / (antiWish + 1);
+                const singleWish = Math.pow(wishToHome, 2) / wishToFood / (antiWish + 1);
 
                 wish.push(singleWish);
                 sumWish += singleWish;
