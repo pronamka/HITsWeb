@@ -1,12 +1,12 @@
-const WIDTH = 101;
-const HEIGHT = 101;
-const EVAPORATION_FOOD = 0.000025;
-const EVAPORATION_HOME = 0.000025;
+const WIDTH = 100;
+const HEIGHT = 100;
+const EVAPORATION_FOOD = 0.000006;
+const EVAPORATION_HOME = 0.000006;
 const TO_FOOD_REFUSE_COEF = 0.99;
 const MAX_DISTANCE = 500;
 const CHANCE_TO_GO_HOME = 0.01;
 const RANGE = 15;
-const INCREASE_COEF = 4;
+const INCREASE_COEF = 3;
 
 let ants_ = [];
 let matrix = [];
@@ -37,6 +37,7 @@ document.getElementById("foodBtn").addEventListener("click", () => {
 });
 document.getElementById("nestBtn").addEventListener("click", () => {
     paintState = 3;
+    console.log(paintState)
 });
 
 function drawTrue() {
@@ -118,7 +119,7 @@ class Ant {
                         if (wallCnt < 3) {
                             wallCnt++;
                         } else {
-                            return [wish, endsCnt];
+                            return [wish, endsCnt * 30];
                         }
                     }
                 } else {
@@ -194,7 +195,7 @@ class Ant {
                 const [curFoodWish, antiWish] = this.getWishForToFood(f)
                 const wishToFood = curFoodWish + 1
                 const wishToHome = this.getWishForToHome(f) + 1
-                const singleWish = Math.pow(wishToFood, 1.5) / wishToHome / (antiWish + 1)
+                const singleWish = Math.pow(wishToFood, 2.5) / wishToHome / (antiWish + 1)
                 wish.push(singleWish)
                 sumWish += singleWish
             }
@@ -213,7 +214,7 @@ class Ant {
                 const [curFoodWish, antiWish] = this.getWishForToFood(f)
                 const wishToFood = curFoodWish + 1
                 const wishToHome = this.getWishForToHome(f) + 1
-                const singleWish = Math.pow(wishToHome, 2) / wishToFood / (antiWish + 1);
+                const singleWish = Math.pow(wishToHome, 2.5) / wishToFood / (antiWish + 1);
                 wish.push(singleWish);
                 sumWish += singleWish;
             }
@@ -317,13 +318,7 @@ function initDesk() {
             const handleCellEvent = () => {
                 if (draw) {
                     let curCell = document.getElementById(`cell-${i}-${j}`)
-                    if (paintState === 1) {
-                        matrix[i][j].wall = true;
-                        matrix[i][j].food = 0;
-                        curCell.style.backgroundColor = "";
-                        curCell.classList.add('wall');
-                        curCell.classList.remove('food');
-                    } else if (paintState === 0) {
+                    if (paintState === 0) {
                         matrix[i][j].wall = false;
                         matrix[i][j].food = 0;
                         curCell.style.backgroundColor = "";
@@ -340,6 +335,7 @@ function initDesk() {
             cell.addEventListener("mouseenter", handleCellEvent)
 
             cell.addEventListener("click", () => {
+                console.log(cell)
                 if (isRunning === false) {
                     if (paintState === 3) {
                         document.getElementById(`cell-${startY}-${startX}`).classList.remove("start");
@@ -362,7 +358,7 @@ function initDesk() {
                     if (paintState === 1) {
                         for (let y = -1; y < 2; y++) {
                             for (let x = -1; x < 2; x++) {
-                                if (i + y >= 0 && i + y < HEIGHT && j + x >= 0 && j + x < WIDTH) {
+                                if (i + y > 0 && i + y < HEIGHT - 1 && j + x > 0 && j + x < WIDTH - 1) {
                                     matrix[i + y][j + x].wall = true;
                                     matrix[i + y][j + x].food = 0;
                                     let curCell = document.getElementById(`cell-${i + y}-${j + x}`);
@@ -451,4 +447,4 @@ initDesk();
 
 
 document.getElementById('startBtn').addEventListener("click",startSimulation);
-document.getElementById('removeBtn').addEventListener("click",removeAll);
+document.getElementById('removeAllBtn').addEventListener("click",removeAll);
