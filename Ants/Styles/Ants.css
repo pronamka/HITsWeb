@@ -166,26 +166,26 @@ button {
     background-image: url("../images/startIcon2.png");
 }
 
-button[onclick="startSimulation()"]:hover {
+#startBtn:hover {
     background-image: url("../images/startIcon2.png");
 }
 
 
-button[onclick="startSimulation()"]:active {
+#startBtn:active {
     background-image: url("../images/startIcon2.png");
 }
 
 
-button[onclick="removeAll()"]{
+#removeAllBtn{
     background-image: url("../images/krest.png");
 }
 
-button[onclick="removeAll()"]:hover {
+#removeAllBtn:hover {
     background-image: url("../images/krest2.png");
 }
 
 
-button[onclick="removeAll()"]:active {
+#removeAllBtn:active {
     background-image: url("../images/krest2.png");
 }
 

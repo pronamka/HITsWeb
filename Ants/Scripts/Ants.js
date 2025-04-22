@@ -29,7 +29,7 @@ const grid = document.getElementById('grid');
 document.getElementById("wallBtn").addEventListener("click", () => {
     paintState = 1;
 });
-document.getElementById("removeBtn").addEventListener("click", () => {
+document.getElementById("clearBtn").addEventListener("click", () => {
     paintState = 0;
 });
 document.getElementById("foodBtn").addEventListener("click", () => {
@@ -449,3 +449,7 @@ function removeAll() {
 }
 
 initDesk();
+
+
+document.getElementById('startBtn').addEventListener("click",startSimulation);
+document.getElementById('removeBtn').addEventListener("click",removeAll);
