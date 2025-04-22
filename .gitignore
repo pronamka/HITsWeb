@@ -9,6 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+/Ants/Screens/ANTS_OBJORA.html
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

@@ -4,9 +4,7 @@ body {
     overflow: auto;
 }
 
-* {
-    box-sizing: border-box;
-}
+
 
 #header {
     display: flex;
@@ -35,8 +33,6 @@ body {
     font-family: 'Arial', serif;
     display: inline-block;
     line-height: 1;
-    /*margin-left:1vw;
-    margin-right:1vw;*/
 }
 
 .go-to-algorithm-button:hover {
@@ -59,87 +55,8 @@ body {
     min-height: 1025px;
 }
 
-.cell {
-    width: 8px;
-    height: 8px;
-    border: 1px solid #eee;
-    display: inline-block;
-}
-.nest-btn {
-    background-image: url('images/homeIcon.png');
-}
 .screen {
     display: inline;
-}
-
-.main-part {
-    width: 64%;
-    text-align: center;
-    margin-left: 18%;
-    display: table-column;
-}
-
-.interview-right {
-    font-weight: 120;
-    margin-left: 5%;
-    width: 80%;
-    margin-top: 10px;
-    text-align: left;
-    font-size: 20px;
-    font-family: 'Arial', serif;
-    padding: 0;
-    display: inline-block;
-    line-height: 1;
-}
-
-.interview-left {
-    font-weight: 120;
-    margin-left: 25%;
-    width: 70%;
-    margin-top: 10px;
-    text-align: left;
-    font-size: 20px;
-    font-family: 'Arial', serif;
-    padding: 0;
-    display: inline-block;
-    line-height: 1;
-}
-
-.bottom {
-    width: 100%;
-    height: 300px;
-}
-
-.food {
-    background-color: #4caf50;
-}
-
-.pheromone {
-    background-color: #2196f3;
-}
-
-.side-border-left {
-    background-image: url('images/sideBarImage.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: fixed;
-    left: 0;
-    width: 18vw;
-    height: 100%;
-    z-index: 10;
-}
-
-.side-border-right {
-    background-image: url('images/sideBarImage.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: fixed;
-    right: 0;
-    width: 18vw;
-    height: 100%;
-    z-index: 10;
 }
 
 .algorithm-settings {

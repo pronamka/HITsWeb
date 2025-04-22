@@ -1,0 +1,230 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    min-width: 1200px;
+    min-height: 800px;
+    overflow: auto;
+    font-family: "Arial", sans-serif;
+}
+
+.screen {
+    display: inline;
+}
+
+.main-part {
+    width: 64%;
+    text-align: center;
+    margin-left: 18%;
+    display: table-column;
+}
+
+.column{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.interactive-elements{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 50px;
+    gap: 10px;
+}
+
+.interview-right{
+    font-weight: 120;
+    margin-left: 5%;
+    margin-right: 20px;
+    width: 80%;
+    margin-top: 10px;
+    text-align: left;
+    font-size: 20px;
+    font-family: "Arial", serif;
+    padding: 0;
+    display: inline-block;
+    line-height: 1;
+}
+
+.interview-left{
+    font-weight: 120;
+    margin-left: 25%;
+    width: 70%;
+    margin-top: 10px;
+    text-align: left;
+    font-size: 20px;
+    font-family: "Arial", serif;
+    padding: 0;
+    display: inline-block;
+    line-height: 1;
+}
+
+.bottom {
+    width: 100%;
+    height: 150px;
+}
+
+.side-border-left {
+    background-image: url('../images/sideBarImage.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: fixed;
+    left: 0;
+    width: 18%;
+    height: 100%;
+
+}
+
+.side-border-right {
+    background-image: url('../images/sideBarImage.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: fixed;
+    right: 0;
+    width: 18%;
+    height: 100%;
+
+}
+
+.star-Pic{
+    margin-left: 20px;
+    margin-top: 275px;
+    rotate: 30deg;
+    width: 80px;
+    height: 80px;
+}
+
+button {
+    margin-bottom: 10px;
+    color: black;
+    border: rgb(153, 153, 153);
+    width: 80px;
+    height: 40px;
+}
+
+.startBtn, .stopBtn, .startBtn:hover, .stopBtn:hover, .startBtn.pressed, .stopBtn.pressed{
+    margin-bottom: 10px;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.startBtn{
+    background-image: url("../images/start.png");
+}
+
+.stopBtn{
+    background-image: url("../images/stop.png");
+}
+
+.startBtn:hover, .startBtn.pressed{
+    background-image: url("../images/startHover.png");
+}
+
+.stopBtn:hover, .stopBtn.pressed{
+    background-image: url("../images/stopHover.png");
+}
+
+input[type="number"]{
+    width: 75px;
+    height: 20px;
+    text-align: center;
+}
+
+.underline {
+    width: 500px;
+    height: 1px;
+    background-color: black;
+    margin: 10px auto 10px 5%;
+}
+
+.header-text {
+    text-align: left;
+    font-size: 100px;
+    font-family: "Arial", serif;
+    padding: 0;
+    display: inline-block;
+    line-height: 1;
+}
+
+#board {
+    display: inline-block;
+    width: fit-content;
+    font-size: 0;
+}
+
+.row {
+    margin: 0;
+    padding: 0;
+}
+
+.tile-closed {
+    background-color: rgb(153, 153, 153);
+    width: var(--tile-size);
+    height: var(--tile-size);
+    display: inline-block;
+    border: 1px solid rgb(153, 153, 153);
+    box-sizing: border-box;
+}
+
+.tile-open {
+    width: var(--tile-size);
+    height: var(--tile-size);
+    display: inline-block;
+    border: 1px solid rgb(153, 153, 153);
+    box-sizing: border-box;
+}
+
+.tile-start {
+    background-color: rgb(202, 78, 78);
+    width: var(--tile-size);
+    height: var(--tile-size);
+    display: inline-block;
+    border: 1px solid rgb(153, 153, 153);
+    box-sizing: border-box;
+}
+
+.tile-finish {
+    background-color: rgb(126, 174, 137);
+    width: var(--tile-size);
+    height: var(--tile-size);
+    display: inline-block;
+    border: 1px solid rgb(153, 153, 153);
+    box-sizing: border-box;
+}
+
+.tile-to-searh {
+    background-color: rgb(246, 255, 161);
+    width: var(--tile-size);
+    height: var(--tile-size);;
+    display: inline-block;
+    border: 1px solid rgb(153, 153, 153);
+    box-sizing: border-box;
+}
+
+.tile-visited {
+    background-color: rgb(255, 215, 169);
+    width: var(--tile-size);
+    height: var(--tile-size);
+    display: inline-block;
+    border: 1px solid rgb(153, 153, 153);
+    box-sizing: border-box;
+}
+
+.tile-path {
+    background-color: rgb(156, 197, 217);
+    width: var(--tile-size);
+    height: var(--tile-size);
+    display: inline-block;
+    border: 1px solid rgb(153, 153, 153);
+    box-sizing: border-box;
+}
