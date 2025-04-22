@@ -1,7 +1,7 @@
-const WIDTH = 100;
-const HEIGHT = 100;
-const EVAPORATION_FOOD = 0.000006;
-const EVAPORATION_HOME = 0.000006;
+const WIDTH = 110;
+const HEIGHT = 110;
+const EVAPORATION_FOOD = 0.000008;
+const EVAPORATION_HOME = 0.000008;
 const TO_FOOD_REFUSE_COEF = 0.99;
 const MAX_DISTANCE = 500;
 const CHANCE_TO_GO_HOME = 0.01;
@@ -19,8 +19,8 @@ let stopSimulation = false;
 let startButton = document.getElementById('startBtn');
 let antsInputField = document.getElementById('ants');
 let speed = 83.3;
-let startX = 50;
-let startY = 50;
+let startX = 35;
+let startY = 35;
 
 const grid = document.getElementById('grid');
 
@@ -106,7 +106,7 @@ class Ant {
         const curX = this.curLoc.X;
 
         for (let i = 1; i < RANGE; i++) {
-            const halfWidth = Math.floor(i / 2);
+            const halfWidth = i;
 
             for (let offset = -halfWidth; offset <= halfWidth; offset++) {
                 const checkYOffset = curY + vec[0] * i + vec[1] * offset;
@@ -149,7 +149,7 @@ class Ant {
         const curX = this.curLoc.X;
 
         for (let i = 0; i < RANGE; i++) {
-            const halfWidth = Math.floor(i / 2);
+            const halfWidth = i;
 
             for (let offset = -halfWidth; offset <= halfWidth; offset++) {
                 const checkYOffset = curY + vec[0] * i + vec[1] * offset;
@@ -390,6 +390,8 @@ function initDesk() {
             });
         }
     }
+
+    document.getElementById(`cell-${startY}-${startX}`).classList.add("start")
 }
 
 function updateCells(changedCells = null) {
@@ -426,9 +428,12 @@ function updateCells(changedCells = null) {
 }
 
 async function startSimulation() {
+    if (isRunning) {
+        return;
+    }
     ants_ = [];
     ants = antsInputField.value;
-    if (ants <= 0 || isRunning) {
+    if (isRunning) {
         return;
     }
     isRunning = true;
