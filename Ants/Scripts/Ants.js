@@ -6,7 +6,7 @@ const TO_FOOD_REFUSE_COEF = 0.99;
 const MAX_DISTANCE = 500;
 const CHANCE_TO_GO_HOME = 0.01;
 const RANGE = 15;
-const INCREASE_COEF = 3;
+const INCREASE_COEF = 3.3;
 
 let ants_ = [];
 let matrix = [];
@@ -106,7 +106,7 @@ class Ant {
         const curX = this.curLoc.X;
 
         for (let i = 1; i < RANGE; i++) {
-            const halfWidth = i;
+            const halfWidth = Math.floor(i / 2);
 
             for (let offset = -halfWidth; offset <= halfWidth; offset++) {
                 const checkYOffset = curY + vec[0] * i + vec[1] * offset;
@@ -149,7 +149,7 @@ class Ant {
         const curX = this.curLoc.X;
 
         for (let i = 0; i < RANGE; i++) {
-            const halfWidth = i;
+            const halfWidth = Math.floor(i / 2);
 
             for (let offset = -halfWidth; offset <= halfWidth; offset++) {
                 const checkYOffset = curY + vec[0] * i + vec[1] * offset;
