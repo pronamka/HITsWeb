@@ -26,6 +26,7 @@
     color: black;
     border-radius: 10px;
     margin-bottom: 10px;
+    box-sizing: border-box;
 }
 
 #algorithm-neural-network-digit-prediction {

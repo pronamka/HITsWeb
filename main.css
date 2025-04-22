@@ -4,8 +4,6 @@ body {
     overflow: auto;
 }
 
-
-
 #header {
     display: flex;
     flex-direction: row;
@@ -102,7 +100,7 @@ button {
 }
 
 .header-text {
-    margin-top: 300px;
+    margin-top: 10vh;
     text-align: left;
     font-size: 100px;
     font-family: 'Arial', serif;
