@@ -46,7 +46,9 @@ const displayTab = (tabIndex) => {
     algorithmTabs[tabIndex].style.display = 'block';
 };
 
+
 displayTab(0);
+
 
 function loadTab(algorithmName, file, cssPaths = null, jsPaths = null) {
     fetch(file)
