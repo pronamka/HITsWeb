@@ -4,6 +4,14 @@ body {
     overflow: auto;
 }
 
+button:hover {
+    cursor: pointer;
+}
+
+label:hover {
+    cursor: pointer;
+}
+
 #header {
     display: flex;
     flex-direction: row;
