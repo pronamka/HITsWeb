@@ -1,7 +1,7 @@
 const WIDTH = 101;
 const HEIGHT = 101;
-const EVAPORATION_FOOD = 0.00003;
-const EVAPORATION_HOME = 0.00003;
+const EVAPORATION_FOOD = 0.000025;
+const EVAPORATION_HOME = 0.000025;
 const TO_FOOD_REFUSE_COEF = 0.99;
 const MAX_DISTANCE = 500;
 const CHANCE_TO_GO_HOME = 0.01;
@@ -55,7 +55,6 @@ class Location {
         this.food = food;
         this.IsChanged = false;
         this.antsHere = 0;
-        this.mazeVisited = false;
         this.toHomePheromones = 0;
         this.toFoodPheromones = 0;
     }
@@ -100,7 +99,7 @@ class Ant {
 
         for (let i = 1; i < RANGE; i++) {
 
-            const halfWidth = Math.floor(i / 3);
+            const halfWidth = Math.floor(i / 2);
 
             for (let offset = -halfWidth; offset <= halfWidth; offset++) {
                 const checkYOffset = curY + vec[0] * i + vec[1] * offset;
@@ -139,7 +138,7 @@ class Ant {
 
         for (let i = 0; i < RANGE; i++) {
 
-            const halfWidth = Math.floor(i / 3);
+            const halfWidth = Math.floor(i / 2);
 
             for (let offset = -halfWidth; offset <= halfWidth; offset++) {
                 const checkYOffset = curY + vec[0] * i + vec[1] * offset;
@@ -195,7 +194,7 @@ class Ant {
                 const [curFoodWish, antiWish] = this.getWishForToFood(f)
                 const wishToFood = curFoodWish + 1
                 const wishToHome = this.getWishForToHome(f) + 1
-                const singleWish = Math.pow(wishToFood, 2) / wishToHome / (antiWish + 1)
+                const singleWish = Math.pow(wishToFood, 1.5) / wishToHome / (antiWish + 1)
                 wish.push(singleWish)
                 sumWish += singleWish
             }
