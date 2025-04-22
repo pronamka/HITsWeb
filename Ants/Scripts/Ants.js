@@ -1,12 +1,13 @@
 const WIDTH = 110;
 const HEIGHT = 110;
-const EVAPORATION_FOOD = 0.000008;
-const EVAPORATION_HOME = 0.000008;
-const TO_FOOD_REFUSE_COEF = 0.99;
+const EVAPORATION_FOOD = 0.000005;
+const EVAPORATION_HOME = 0.000005;
+const TO_FOOD_REFUSE_COEFFICIENT = 0.99;
 const MAX_DISTANCE = 500;
 const CHANCE_TO_GO_HOME = 0.01;
 const RANGE = 15;
-const INCREASE_COEF = 3.3;
+const INCREASE_COEFFICIENT = 4;
+const HERD_COEFFICIENT = 1.65
 
 let ants_ = [];
 let matrix = [];
@@ -106,7 +107,7 @@ class Ant {
         const curX = this.curLoc.X;
 
         for (let i = 1; i < RANGE; i++) {
-            const halfWidth = Math.floor(i / 2);
+            const halfWidth = Math.floor(i / 3);
 
             for (let offset = -halfWidth; offset <= halfWidth; offset++) {
                 const checkYOffset = curY + vec[0] * i + vec[1] * offset;
@@ -120,7 +121,7 @@ class Ant {
                 ) {
                     const cell = matrix[checkYOffset][checkXOffset];
                     if (!cell.wall) {
-                        if (cell.food > 0) {
+                        if (cell.food > 0 && i <= 10) {
                             wish += 1000000;
                         } else {
                             wish += cell.toFoodPheromones;
@@ -149,7 +150,7 @@ class Ant {
         const curX = this.curLoc.X;
 
         for (let i = 0; i < RANGE; i++) {
-            const halfWidth = Math.floor(i / 2);
+            const halfWidth = Math.floor(i / 3);
 
             for (let offset = -halfWidth; offset <= halfWidth; offset++) {
                 const checkYOffset = curY + vec[0] * i + vec[1] * offset;
@@ -165,7 +166,7 @@ class Ant {
                     if (!cell.wall) {
                         const isHome =
                             checkYOffset === this.start.Y && checkXOffset === this.start.X;
-                        if (isHome) {
+                        if (isHome && i <= 10) {
                             wish += 1000000;
                         } else {
                             wish += cell.toHomePheromones;
@@ -203,7 +204,7 @@ class Ant {
             for (let f of neighborFields) {
                 if (f.food > 0) {
                     this.foodFind = 1;
-                    this.improveValue = (10000000 / Math.pow(this.dst, INCREASE_COEF)) * f.food;
+                    this.improveValue = (10000000 / Math.pow(this.dst, INCREASE_COEFFICIENT));
                     break;
                 }
             }
@@ -212,12 +213,12 @@ class Ant {
                 const [curFoodWish, antiWish] = this.getWishForToFood(f)
                 const wishToFood = curFoodWish + 1
                 const wishToHome = this.getWishForToHome(f) + 1
-                const singleWish = Math.pow(wishToFood, 2) / wishToHome / (antiWish + 1)
+                const singleWish = Math.pow(wishToFood, HERD_COEFFICIENT) / wishToHome / (antiWish + 1)
                 wish.push(singleWish)
                 sumWish += singleWish
             }
             this.dst++;
-            this.curLoc.toHomePheromones += 10000000 / Math.pow(this.dst, INCREASE_COEF);
+            this.curLoc.toHomePheromones += 10000000 / Math.pow(this.dst, INCREASE_COEFFICIENT);
         } else {
             for (let f of neighborFields) {
                 if (f.X === this.start.X && f.Y === this.start.Y) {
@@ -230,13 +231,13 @@ class Ant {
                 const [curFoodWish, antiWish] = this.getWishForToFood(f)
                 const wishToFood = curFoodWish + 1
                 const wishToHome = this.getWishForToHome(f) + 1
-                const singleWish = Math.pow(wishToHome, 2) / wishToFood / (antiWish + 1);
+                const singleWish = Math.pow(wishToHome, HERD_COEFFICIENT) / Math.pow(wishToFood, 0.5) / (antiWish+ 1);
 
                 wish.push(singleWish);
                 sumWish += singleWish;
             }
             this.curLoc.toFoodPheromones += this.improveValue;
-            this.improveValue *= TO_FOOD_REFUSE_COEF;
+            this.improveValue *= TO_FOOD_REFUSE_COEFFICIENT;
         }
 
         if (wish.length === 0 || sumWish === 0) {
