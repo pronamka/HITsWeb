@@ -38,7 +38,7 @@ function buildTree() {
     });
 }
 
-function getPrediction() {
+async function getPrediction() {
     let data = testDataInput.value;
     if (!data) {
         alert('Input test data');
@@ -52,7 +52,7 @@ function getPrediction() {
     headers.splice(headers.indexOf(targetAttribute), 1);
     console.log(headers);
     data = parseLine(data, headers);
-    let prediciton = tree.getPrediction(data);
+    let prediciton = await tree.getPrediction(data);
     predictionField.innerText = `Prediction: ${prediciton}`;
     console.log(prediciton);
 }
