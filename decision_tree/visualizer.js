@@ -1,3 +1,6 @@
+let CANVAS_WIDTH;
+let CANVAS_HEIGHT;
+
 function getChildren(treeNode) {
     if (treeNode.isTerminal) {
         return [];
@@ -13,14 +16,27 @@ function getText(node) {
     return [treeNode.attributeName, treeNode.attributeValue.toString()];
 }
 
+function wrapText(text, maxPixelWidth) {
+    const maxCharsPerLine = Math.floor(maxPixelWidth / 7);
+    const lines = [];
+
+    for (let i = 0; i < text.length; i += maxCharsPerLine) {
+        lines.push(text.substring(i, i + maxCharsPerLine));
+    }
+
+    return lines;
+}
+
 export class DecisionTreeVisualizer {
     constructor(rootNode, treeContainerId) {
         this.rootNode = rootNode;
         this.container = d3.select(`#${treeContainerId}`);
         this.container.html('');
 
-        this.width = 1000;
-        this.height = 1000;
+        this.width = document.getElementById(treeContainerId).clientWidth;
+        CANVAS_WIDTH = this.width;
+        this.height = 500;
+        CANVAS_HEIGHT = this.height;
 
         this.svg = this.getSVGField();
 
@@ -34,14 +50,7 @@ export class DecisionTreeVisualizer {
 
         this.styleNodes();
         this.addText();
-
-        this.nodes
-            .on('mouseover', function (event, d) {
-                d3.select(this).select('text').text(d.attributeValue);
-            })
-            .on('mouseout', function (event, d) {
-                d3.select(this).select('text').text(d.attributeName);
-            });
+        this.makeInteractive();
     }
 
     getSVGField() {
@@ -60,56 +69,109 @@ export class DecisionTreeVisualizer {
             .enter()
             .append('g')
             .attr('id', (d) => `algorithm-decision-tree-node-${d.data.nodeId}`)
-            .attr('class', 'node')
-            .attr('transform', (d) => `translate(${d.y},${d.x})`)
+            .attr('class', 'algorithm-decision-tree-node')
+            .attr('transform', (d) => `translate(${d.x},${d.y})`)
             .style('cursor', 'pointer');
     }
 
     styleNodes() {
-        this.nodes
-            .append('rect')
-            .attr('rx', 8)
-            .attr('fill', (d) => (d.data.isTerminal ? 'lightblue' : 'red'))
-            .attr('x', (d) => {
-                const text = getText(d);
-                const textLength = text.length * 7;
-                return -textLength / 2 - 10;
-            })
-            .attr('y', -20)
-            .attr('width', function (d) {
-                const text = getText(d);
-                return text.length * 7 + 20;
-            })
-            .attr('height', 40)
-            .on('mouseover', function (event, d) {
-                d3.select(this).attr('fill', 'yellow');
-            })
-            .on('mouseout', function (event, d) {
-                d3.select(this).attr('fill', (d) => (d.data.isTerminal ? 'lightblue' : 'red'));
-            });
+        this.nodes.each(function (d) {
+            const nodeGroup = d3.select(this);
+            const textLines = wrapText(getText(d)[0], CANVAS_WIDTH / Math.pow(2, d.data.depth));
+            const maxLineLength = Math.max(...textLines.map((line) => line.length));
+            const width = Math.max(maxLineLength * 7 + 5, 20);
+            const height = textLines.length * 20 + 8;
+
+            nodeGroup
+                .insert('rect', 'text')
+                .attr('rx', 8)
+                .attr('fill', d.data.isTerminal ? '#22b14d' : 'white')
+                .attr('stroke', 'black')
+                .attr('stroke-width', 1)
+                .attr('x', -width / 2)
+                .attr('y', -height / 2)
+                .attr('width', width)
+                .attr('height', height);
+        });
     }
 
     addText() {
+        this.nodes.each(function (d) {
+            const group = d3.select(this);
+            const lines = wrapText(getText(d)[0], CANVAS_WIDTH / Math.pow(2, d.data.depth));
+            const textGroup = group.append('g').attr('class', 'text-group');
+
+            lines.forEach((line, i) => {
+                textGroup
+                    .append('text')
+                    .attr('text-anchor', 'middle')
+                    .attr('alignment-baseline', 'middle')
+                    .attr('fill', 'black')
+                    .style('font-size', '12px')
+                    .attr('y', i * 14 - (lines.length - 1) * 7)
+                    .text(line);
+            });
+            d.textLines = lines;
+            d.attributeName = getText(d)[0];
+            d.attributeValue = getText(d)[1];
+        });
+    }
+
+    makeInteractive() {
         this.nodes
-            .append('text')
-            .attr('text-anchor', 'middle')
-            .attr('alignment-baseline', 'middle')
-            .attr('fill', 'black')
-            .style('font-size', '12px')
-            .text((d) => getText(d)[0])
-            .each((d) => {
-                let text = getText(d);
-                console.log(text);
-                d.attributeName = text[0];
-                d.attributeValue = text[1];
+            .on('mouseover', function (event, d) {
+                const group = d3.select(this);
+                group.select('.text-group').remove();
+
+                const lines = wrapText(
+                    d.attributeValue.toString(),
+                    CANVAS_WIDTH / Math.pow(2, d.data.depth)
+                );
+                const textGroup = group.append('g').attr('class', 'text-group');
+
+                lines.forEach((line, i) => {
+                    textGroup
+                        .append('text')
+                        .attr('text-anchor', 'middle')
+                        .attr('alignment-baseline', 'middle')
+                        .attr('fill', 'black')
+                        .style('font-size', '12px')
+                        .attr('y', i * 14 - (lines.length - 1) * 7)
+                        .text(line);
+                });
+                d3.select(this).select('rect').attr('fill', 'black');
+                d3.select(this).select('text').attr('fill', 'white');
+            })
+            .on('mouseout', function (event, d) {
+                const group = d3.select(this);
+                group.select('.text-group').remove();
+
+                const lines = wrapText(d.attributeName, CANVAS_WIDTH / Math.pow(2, d.data.depth));
+                const textGroup = group.append('g').attr('class', 'text-group');
+
+                lines.forEach((line, i) => {
+                    textGroup
+                        .append('text')
+                        .attr('text-anchor', 'middle')
+                        .attr('alignment-baseline', 'middle')
+                        .attr('fill', 'black')
+                        .style('font-size', '12px')
+                        .attr('y', i * 14 - (lines.length - 1) * 7)
+                        .text(line);
+                });
+                d3.select(this)
+                    .select('rect')
+                    .attr('fill', d.data.isTerminal ? '#22b14d' : 'white');
+
+                d3.select(this).select('text').attr('fill', 'black');
             });
     }
 
     buildLinks() {
         let nodesLinker = d3
-            .linkHorizontal()
-            .x((d) => d.y)
-            .y((d) => d.x);
+            .linkVertical()
+            .x((d) => d.x)
+            .y((d) => d.y);
         this.svg
             .selectAll('.link')
             .data(this.hierarchyData.links())
