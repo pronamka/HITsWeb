@@ -19,13 +19,14 @@ function getMostFrequentTargetValue(data, targetAttribute) {
 }
 
 class TerminalNode {
-    constructor(nodeId, data, targetAttribute) {
+    constructor(nodeId, data, targetAttribute, currentDepth = 5) {
         this.nodeId = nodeId;
         if (nodeId == 32) {
             console.log(data, targetAttribute);
         }
         this.isTerminal = true;
         this.value = getMostFrequentTargetValue(data, targetAttribute);
+        this.depth = currentDepth;
     }
 }
 
@@ -58,7 +59,8 @@ class DecisionNode {
             this.children[0] = new TerminalNode(
                 this.nodeId * 2,
                 Array.prototype.concat(...this.groups),
-                this.targetAttribute
+                this.targetAttribute,
+                this.depth + 1
             );
             return;
         }
@@ -75,7 +77,8 @@ class DecisionNode {
                 this.children[0] = new TerminalNode(
                     this.nodeId * 2,
                     Array.prototype.concat(...this.groups),
-                    this.targetAttribute
+                    this.targetAttribute,
+                    this.depth + 1
                 );
                 return;
             }
@@ -83,7 +86,8 @@ class DecisionNode {
                 this.children[i] = new TerminalNode(
                     this.nodeId * 2 + i,
                     this.groups[i],
-                    this.targetAttribute
+                    this.targetAttribute,
+                    this.depth + 1
                 );
             }
             return;
@@ -94,7 +98,8 @@ class DecisionNode {
                 this.children[i] = new TerminalNode(
                     this.nodeId * 2 + i,
                     this.groups[i],
-                    this.targetAttribute
+                    this.targetAttribute,
+                    this.depth + 1
                 );
                 continue;
             }
@@ -238,39 +243,60 @@ export class DecisionTree {
         );
     }
 
-    getPrediction(data) {
+    async getPrediction(data) {
         let currentNode = this.root;
-        this.highlightNode(currentNode);
-        let prevNode;
+        let path = [];
+
         while (!currentNode.isTerminal) {
-            prevNode = currentNode;
-            if (typeof currentNode.attributeValue == 'string') {
-                if (data[currentNode.attributeName] == currentNode.attributeValue) {
-                    currentNode = currentNode.children[0];
-                } else {
-                    currentNode = currentNode.children[1];
-                }
+            path.push(currentNode);
+
+            if (typeof currentNode.attributeValue === 'string') {
+                currentNode =
+                    data[currentNode.attributeName] == currentNode.attributeValue
+                        ? currentNode.children[0]
+                        : currentNode.children[1];
             } else {
-                if (data[currentNode.attributeName] < currentNode.attributeValue) {
-                    currentNode = currentNode.children[0];
-                } else {
-                    currentNode = currentNode.children[1];
-                }
+                currentNode =
+                    data[currentNode.attributeName] < currentNode.attributeValue
+                        ? currentNode.children[0]
+                        : currentNode.children[1];
             }
-            this.highlightNode(currentNode);
         }
+
+        path.push(currentNode);
+
+        for (let i = 0; i < path.length; i++) {
+            await this.highlightNode(path[i]);
+        }
+
+        for (let i = path.length - 1; i >= 0; i--) {
+            await this.dehighlightNode(path[i]);
+        }
+
         return currentNode.value;
     }
 
     highlightNode(node) {
-        d3.select(`#algorithm-decision-tree-node-${node.nodeId} rect`).attr('fill', 'orange');
+        return new Promise((resolve) => {
+            const selector = `#algorithm-decision-tree-node-${node.nodeId} rect`;
+            d3.select(selector)
+                .transition()
+                .duration(300)
+                .attr('fill', 'orange')
+                .on('end', () => setTimeout(resolve, 500));
+        });
     }
 
     dehighlightNode(node) {
-        d3.select(`#algorithm-decision-tree-node-${node.nodeId} rect`).attr(
-            'fill',
-            node.isTerminal ? 'lightblue' : 'red'
-        );
+        return new Promise((resolve) => {
+            const selector = `#algorithm-decision-tree-node-${node.nodeId} rect`;
+            const originalColor = node.isTerminal ? '#22b14d' : 'white';
+            d3.select(selector)
+                .transition()
+                .duration(300)
+                .attr('fill', originalColor)
+                .on('end', resolve);
+        });
     }
 }
 
