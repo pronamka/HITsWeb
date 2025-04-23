@@ -91,3 +91,11 @@
     background-color: black;
     color: white;
 }
+
+.algorithm-decision-tree-board {
+    width: 100%;
+}
+
+#algorith-decision-tree-graph {
+    width: 100%;
+}
