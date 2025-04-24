@@ -5,6 +5,7 @@ export class Ant {
     constructor(start = new Location(0, 0)) {
         this.start = start;
         this.curLoc = start;
+        this.visitedLocations = [];
         this.dst = 0;
         this.foodFind = 0;
         this.improveValue = 0;
@@ -126,6 +127,21 @@ export class Ant {
         return wish;
     }
 
+    #isRecentlyVisited(loc) {
+        return this.visitedLocations.some(visited =>
+            visited && visited.X === loc.X && visited.Y === loc.Y
+        );
+    }
+
+    #updateVisitedLocations() {
+        this.visitedLocations.unshift(this.curLoc);
+
+        if (this.visitedLocations.length > 2) {
+            this.visitedLocations.pop();
+        }
+    }
+
+
     makeChoice(matrix) {
         const neighborFields = this.#getNeighborLocs(matrix);
 
@@ -145,21 +161,27 @@ export class Ant {
             for (let f of neighborFields) {
                 if (f.food > 0) {
                     this.foodFind = 1;
-                    this.improveValue = (10000000 / Math.pow(this.dst, Config.INCREASE_COEFFICIENT));
+                    this.improveValue = (Config.EQUALIZATION_COEFFICIENT / Math.pow(this.dst, Config.INCREASE_COEFFICIENT));
                     break;
                 }
             }
-            for (let f of neighborFields) {
+            for (let i = 0; i < neighborFields.length; i++) {
+                const f = neighborFields[i];
 
+                if (this.#isRecentlyVisited(f)) {
+                    wish.push(0);
+                    continue;
+                }
                 const [curFoodWish, antiWish] = this.#getWishForToFood(f, matrix)
                 const wishToFood = curFoodWish + 1
                 const wishToHome = this.#getWishForToHome(f, matrix) + 1
                 const singleWish = Math.pow(wishToFood, Config.HERD_COEFFICIENT) / wishToHome / (antiWish + 1)
                 wish.push(singleWish)
                 sumWish += singleWish
+
             }
             this.dst++;
-            this.curLoc.toHomePheromones += 10000000 / Math.pow(this.dst, Config.INCREASE_COEFFICIENT);
+            this.curLoc.toHomePheromones += Config.EQUALIZATION_COEFFICIENT / Math.pow(this.dst, Config.INCREASE_COEFFICIENT) + Config.MIN_IMPROVE_VALUE;
         } else {
             for (let f of neighborFields) {
                 if (f.X === this.start.X && f.Y === this.start.Y) {
@@ -177,7 +199,7 @@ export class Ant {
                 wish.push(singleWish);
                 sumWish += singleWish;
             }
-            this.curLoc.toFoodPheromones += this.improveValue;
+            this.curLoc.toFoodPheromones += this.improveValue + Config.MIN_IMPROVE_VALUE;
             this.improveValue *= Config.TO_FOOD_REFUSE_COEFFICIENT;
         }
 
@@ -202,6 +224,8 @@ export class Ant {
                 break;
             }
         }
+        this.#updateVisitedLocations();
+
         this.curLoc.antsHere--;
         this.curLoc = nextStep;
         this.curLoc.antsHere++;
