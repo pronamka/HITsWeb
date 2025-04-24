@@ -128,7 +128,7 @@ class Ant {
                         }
                         wallCnt = 0;
                     } else {
-                        if (wallCnt < 3) {
+                        if (wallCnt < 2) {
                             wallCnt++;
                         } else {
                             return [wish, endsCnt * 30];
@@ -173,7 +173,7 @@ class Ant {
                         }
                         wallCnt = 0;
                     } else {
-                        if (wallCnt < 3) {
+                        if (wallCnt < 2) {
                             wallCnt++;
                         } else {
                             return wish;

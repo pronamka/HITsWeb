@@ -1,0 +1,56 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ant Colony Optimization</title>
+    <link rel="stylesheet" href="../Styles/clusterization.css">
+    <link rel="stylesheet" href="../../main.css">
+</head>
+<body>
+
+<div class="side-border-left"></div>
+<div class=main-part>
+    <div style="display: inline-flex">
+        <h1 class="header-text">
+            CLUSTER <br>
+            ANALYSIS
+            <div class="underline"></div>
+        </h1>
+    </div>
+    <div style="text-align: left">
+        <h2 class="interview-right">Clustering analysis is a powerful method in data mining that automatically groups
+            similar objects together. It helps discover hidden patterns by organizing data points into meaningful
+            clusters.
+            <div class="underline"></div>
+        </h2>
+        <h2 class="interview-left">Different algorithms approach this task using various mathematical techniques,
+            calculating distances between points and determining optimal groupings based on specific criteria. <br>
+            for each solution is weighted so that more suitable solutions receive more pheromones than less suitable
+            ones.
+            <div class="underline"></div>
+        </h2>
+        <h2 class="interview-right">Explore clustering yourself! Place points on the grid and observe how different
+            methods create clusters!
+            <div class="underline"></div>
+        </h2>
+    </div>
+    <div class="interactive-elements">
+        <div class="column">
+            <button id="kmeans-start-btn" class="kmeans-start-btn-deactivate"></button>
+            <button id="hierarchical-start-btn" class="hierarchical-start-btn-deactivate"></button>
+            <button id="miniBatchKMeans-start-btn" class="miniBatchKMeans-start-btn-deactivate"></button>
+        </div>
+        <div id="grid" class="grid"></div>
+        <div class="column">
+            <div class="text-field">
+                <input class="text-field-input" type="number" name="clusters" id="clusters" placeholder="clusters"
+                       value="4">
+            </div>
+            <button onclick="clearGrid()" id="clear-Btn" class ="clear-Btn"> </button>
+        </div>
+    </div>
+    <div class="bottom"></div>
+</div>
+<div class="side-border-right"></div>
+<script src="../Scripts/clusterization.js"></script>
+</body>
+</html>
