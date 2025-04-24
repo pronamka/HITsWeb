@@ -102,18 +102,6 @@ button {
     background-image: url('../images/krest2.png');
 }
 
-button[onclick='clr()'] {
-    background-image: url(../images/refreshIcon.png);
-}
-
-button[onclick='clr()']:hover {
-    background-image: url('../images/refreshIcon2.png');
-}
-
-button[onclick='clr()']:active {
-    background-image: url('../images/refreshIcon2.png');
-}
-
 .wall-btn {
     background-image: url(../images/wallIcon.png);
 }
@@ -163,28 +151,4 @@ input::-webkit-inner-spin-button {
     background-clip: padding-box;
     border: 2px solid black;
     border-radius: 0.25rem;
-}
-
-@media screen and (max-width: 1850px) {
-    .side-border-left,
-    .side-border-right {
-        display: none;
-    }
-    .interview-right {
-        margin-left: 5%;
-        width: 90%;
-    }
-    .interview-left {
-        margin-left: 25%;
-        width: 90%;
-    }
-
-    .main-part {
-        width: 100%;
-        margin-left: 0;
-    }
-
-    body {
-        min-width: 100%;
-    }
 }
