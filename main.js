@@ -14,7 +14,7 @@ const algorithmFiles = {
         ['Clusterization/Styles/clusterization.css'],
         ['Clusterization/Scripts/clusterization.js'],
     ],
-    ant: ['Ants/Screens/Ants.html', ['Ants/Styles/Ants.css'], ['Ants/Scripts/Ants.js']],
+    ant: ['Ants/Screens/ants.html', ['Ants/Styles/ants.css'], ['Ants/Scripts/ants.js']],
     'decision-tree': [
         'decision_tree/decision_tree.html',
         ['decision_tree/decision_tree.css'],
@@ -72,6 +72,7 @@ function loadTab(algorithmName, file, cssPaths = null, jsPaths = null) {
                 jsPaths.forEach((path) => {
                     const script = document.createElement('script');
                     script.type = 'module';
+                    script.defer = true;
                     script.src = path;
                     document.body.appendChild(script);
                 });
