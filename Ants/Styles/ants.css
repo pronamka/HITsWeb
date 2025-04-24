@@ -46,11 +46,11 @@
     height: 256px;
 }
 
-.ants11-20 {
+.more-than-two-ants {
     background-color: #8ae300;
 }
 
-.ants5-10 {
+.two-ants {
     background-color: #f1da3f;
 }
 
@@ -134,11 +134,8 @@ input::-webkit-inner-spin-button {
     margin: 0;
 }
 
-.text-field {
-    margin-top: 5px;
-    margin-bottom: 1rem;
-}
-.text-field__input {
+
+.text-field-input-ants {
     text-align: center;
     display: block;
     height: 40px;

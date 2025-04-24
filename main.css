@@ -12,6 +12,12 @@ label:hover {
     cursor: pointer;
 }
 
+
+.text-field {
+    margin-top: 5px;
+    margin-bottom: 1rem;
+}
+
 #header {
     display: flex;
     flex-direction: row;
@@ -37,7 +43,6 @@ label:hover {
     font-weight: 120;
     font-size: 20px;
     font-family: 'Arial', serif;
-    display: inline-block;
     line-height: 1;
 }
 
