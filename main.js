@@ -9,6 +9,11 @@ const algorithmNames = [
 
 const algorithmFiles = {
     'a-star': ['aStar/Screens/maze.html', ['aStar/Styles/maze.css'], ['aStar/Scripts/maze.js']],
+    clusterize: [
+        'Clusterization/Screens/clusterization.html',
+        ['Clusterization/Styles/clusterization.css'],
+        ['Clusterization/Scripts/clusterization.js'],
+    ],
     ant: ['Ants/Screens/Ants.html', ['Ants/Styles/Ants.css'], ['Ants/Scripts/Ants.js']],
     'decision-tree': [
         'decision_tree/decision_tree.html',
@@ -46,9 +51,7 @@ const displayTab = (tabIndex) => {
     algorithmTabs[tabIndex].style.display = 'block';
 };
 
-
-displayTab(0);
-
+displayTab(1);
 
 function loadTab(algorithmName, file, cssPaths = null, jsPaths = null) {
     fetch(file)
