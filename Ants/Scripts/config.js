@@ -11,7 +11,7 @@ export class Config{
     static RANGE = 15;
     static INCREASE_COEFFICIENT = 4;
     static HERD_COEFFICIENT = 1.65;
-    static MIN_IMPROVE_VALUE = 0.0000001;
+    static MIN_IMPROVE_VALUE = 0.00000001;
     static EQUALIZATION_COEFFICIENT = 10000000
 
     static DEFAULT_START_X = 35;
