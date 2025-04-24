@@ -92,7 +92,7 @@ class DigitsRecognizer:
         self.weights, self.biases = self._init_weights_and_biases()
 
     @staticmethod
-    def _load_parameters() -> tuple[list[np.ndarray], list[np.ndarray]]:
+    def _load_parameters() -> tuple[np.ndarray, np.ndarray]:
         weights = np.load(PATH_TO_WEIGHTS, allow_pickle=True)
         biases = np.load(PATH_TO_BIASES, allow_pickle=True)
         return weights, biases
@@ -232,7 +232,7 @@ class DigitsRecognizer:
         weights_gradients, biases_gradients = self.backward_propagation(
             x_batch, raw_results, activated_results, one_hot)
         self.update_parameters(weights_gradients, biases_gradients)
-        return np.argmax(activated_results[-1], axis=0)
+        return activated_results[-1]
 
     def predict(self, input_data: np.ndarray, with_percentage: bool = False) -> np.ndarray:
         if input_data.ndim == 1:

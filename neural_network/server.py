@@ -28,13 +28,16 @@ def recognize_digit():
     digit = request.get_json().get("digit")
     image = np.array(data) / 255
     if digit:
-        prediction_int = digits_recognizer.retrain(image, digit)[0]
+        predictions = digits_recognizer.retrain(image, digit)
         digits_recognizer.retrain(training_data, training_labels)
         print(digits_recognizer.predict(image, with_percentage=True))
     else:
-        prediction_int = digits_recognizer.predict(image)[0]
-    print(prediction_int)
-    return jsonify({"digit": int(prediction_int)})
+        predictions = digits_recognizer.predict(image, with_percentage=True)
+
+    print(predictions)
+    prediction_int = int(np.argmax(predictions, axis=0)[0])
+    percentages = (predictions*100).flatten().tolist()
+    return jsonify({"digit": prediction_int, "percentages": percentages})
 
 
 app.run(host='127.0.0.1', port=5000)
