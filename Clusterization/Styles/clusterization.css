@@ -4,27 +4,26 @@
     min-height: 1025px;
 }
 
-.cell {
+.algorithm-clusterize-cell {
     display: inline-block;
     width: 45px;
     height: 45px;
     border: 1px solid #eee;
 }
 
-.sub-cell{
+.algorithm-clusterize-sub-cell {
     width: 15px;
     height: 45px;
     display: inline-block;
 }
 
-.sub-sub-cell{
+.algorithm-clusterize-sub-sub-cell {
     width: 50%;
     height: 45px;
     display: inline-block;
 }
 
-
-.row {
+.algorithm-clusterize-row {
     height: 46px;
 }
 
@@ -32,7 +31,7 @@
     display: inline;
 }
 
-.column {
+.algorithm-clusterize-column {
     margin-left: 10px;
     margin-right: 10px;
     flex-direction: column;
@@ -40,61 +39,59 @@
     width: 60px;
 }
 
-
 #kmeans-start-btn {
     margin-top: 100px;
     width: 60px;
     height: 60px;
 }
 
-#kmeans-start-btn:hover{
-    background-image: url("../images/oneActive.png");
+#kmeans-start-btn:hover {
+    background-image: url('../images/oneActive.png');
 }
 
-.kmeans-start-btn-activate{
-    background-image: url("../images/oneActive.png");
+.kmeans-start-btn-activate {
+    background-image: url('../images/oneActive.png');
 }
 
-.kmeans-start-btn-deactivate{
-    background-image: url("../images/one.png");
+.kmeans-start-btn-deactivate {
+    background-image: url('../images/one.png');
 }
 
-#hierarchical-start-btn{
+#hierarchical-start-btn {
     margin-top: 100px;
     width: 60px;
     height: 60px;
 }
 
-#hierarchical-start-btn:hover{
-    background-image: url("../images/twoActive.png");
+#hierarchical-start-btn:hover {
+    background-image: url('../images/twoActive.png');
 }
 
-.hierarchical-start-btn-activate{
-    background-image: url("../images/twoActive.png");
+.hierarchical-start-btn-activate {
+    background-image: url('../images/twoActive.png');
 }
 
-.hierarchical-start-btn-deactivate{
-    background-image: url("../images/two.png");
+.hierarchical-start-btn-deactivate {
+    background-image: url('../images/two.png');
 }
 
-#miniBatchKMeans-start-btn{
+#miniBatchKMeans-start-btn {
     margin-top: 100px;
     width: 60px;
     height: 60px;
 }
 
-#miniBatchKMeans-start-btn:hover{
-    background-image: url("../images/threeActive.png");
+#miniBatchKMeans-start-btn:hover {
+    background-image: url('../images/threeActive.png');
 }
 
-.miniBatchKMeans-start-btn-activate{
-    background-image: url("../images/threeActive.png");
+.miniBatchKMeans-start-btn-activate {
+    background-image: url('../images/threeActive.png');
 }
 
-.miniBatchKMeans-start-btn-deactivate{
-    background-image: url("../images/three.png");
+.miniBatchKMeans-start-btn-deactivate {
+    background-image: url('../images/three.png');
 }
-
 
 .user-info {
     margin: 20px;
@@ -127,7 +124,7 @@ input::-webkit-inner-spin-button {
     border-radius: 0.25rem;
 }
 
-.clear-Btn{
+.clear-Btn {
     margin-top: 80px;
     color: white;
     border: none;
@@ -138,28 +135,4 @@ input::-webkit-inner-spin-button {
     background-position: center;
     background-repeat: no-repeat;
     background-image: url(../images/mopIcon.png);
-}
-
-@media screen and (max-width: 1850px) {
-    .side-border-left,
-    .side-border-right {
-        display: none;
-    }
-    .interview-right {
-        margin-left: 5%;
-        width: 90%;
-    }
-    .interview-left {
-        margin-left: 25%;
-        width: 90%;
-    }
-
-    .main-part {
-        width: 100%;
-        margin-left: 0;
-    }
-
-    body {
-        min-width: 100%;
-    }
 }
