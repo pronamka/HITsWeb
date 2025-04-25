@@ -1,10 +1,10 @@
 function getMostFrequentTargetValue(data, targetAttribute) {
     let targetValues = {};
-    for (let i = 0; i < data.length; i++) {
-        if (!targetValues[data[i][targetAttribute]]) {
-            targetValues[data[i][targetAttribute]] = 0;
+    for (let sample of data) {
+        if (!targetValues[sample[targetAttribute]]) {
+            targetValues[sample[targetAttribute]] = 0;
         }
-        targetValues[data[i][targetAttribute]]++;
+        targetValues[sample[targetAttribute]]++;
     }
     let keys = Object.keys(targetValues);
     let maxOccurances = 0;
@@ -143,11 +143,11 @@ class DataSplitter {
         this.attributes = this.attributes.filter((attr) => !this.bannedAttributes.includes(attr));
 
         this.classesDistribution = {};
-        for (let i = 0; i < trainingData.length; i++) {
-            if (!this.classesDistribution[trainingData[i][this.targetAttribute]]) {
-                this.classesDistribution[trainingData[i][this.targetAttribute]] = 0;
+        for (let sample of trainingData) {
+            if (!this.classesDistribution[sample[this.targetAttribute]]) {
+                this.classesDistribution[sample[this.targetAttribute]] = 0;
             }
-            this.classesDistribution[trainingData[i][this.targetAttribute]]++;
+            this.classesDistribution[sample[this.targetAttribute]]++;
         }
 
         this.classes = Object.keys(this.classesDistribution);
@@ -155,17 +155,17 @@ class DataSplitter {
 
     calculateEntropyOnGroup(data) {
         let targetValues = {};
-        for (let i = 0; i < data.length; i++) {
-            if (!targetValues[data[i][this.targetAttribute]]) {
-                targetValues[data[i][this.targetAttribute]] = 0;
+        for (let sample of data) {
+            if (!targetValues[sample[this.targetAttribute]]) {
+                targetValues[sample[this.targetAttribute]] = 0;
             }
-            targetValues[data[i][this.targetAttribute]]++;
+            targetValues[sample[this.targetAttribute]]++;
         }
 
         let entropy = 0;
         targetValues = Object.values(targetValues);
-        for (let i = 0; i < targetValues.length; i++) {
-            let proportion = targetValues[i] / data.length;
+        for (let targetVariation of targetValues) {
+            let proportion = targetVariation / data.length;
             entropy += proportion * proportion;
         }
         return entropy;
@@ -173,9 +173,9 @@ class DataSplitter {
 
     calculateGiniIndex(groups) {
         let giniIndex = 0;
-        for (let i = 0; i < groups.length; i++) {
-            let entropy = this.calculateEntropyOnGroup(groups[i]);
-            giniIndex += (1.0 - entropy) * (groups[i].length / this.data.length);
+        for (let group of groups) {
+            let entropy = this.calculateEntropyOnGroup(group);
+            giniIndex += (1.0 - entropy) * (group.length / this.data.length);
         }
         return giniIndex;
     }
@@ -183,19 +183,19 @@ class DataSplitter {
     splitIntoTwo(attribute, value) {
         let left = [];
         let right = [];
-        for (let i = 0; i < this.data.length; i++) {
-            if (typeof this.data[i][attribute] == 'string') {
-                if (this.data[i][attribute] == value) {
-                    left.push(this.data[i]);
+        for (let sample of this.data) {
+            if (typeof sample[attribute] == 'string') {
+                if (sample[attribute] == value) {
+                    left.push(sample);
                 } else {
-                    right.push(this.data[i]);
+                    right.push(sample);
                 }
                 continue;
             }
-            if (this.data[i][attribute] < value) {
-                left.push(this.data[i]);
+            if (sample[attribute] < value) {
+                left.push(sample);
             } else {
-                right.push(this.data[i]);
+                right.push(sample);
             }
         }
         return [left, right];
@@ -206,8 +206,8 @@ class DataSplitter {
         let bestValue;
         let bestGiniIndex = 1;
         let splitGroups;
-        for (let attributeIndex = 0; attributeIndex < this.attributes.length; attributeIndex++) {
-            let attribute = this.attributes[attributeIndex];
+        for (let attr of this.attributes) {
+            let attribute = attr;
             let sampleValue = this.data[0][attribute];
             let isNumeric = typeof sampleValue === 'number';
 
@@ -216,17 +216,13 @@ class DataSplitter {
             if (!isNumeric && uniqueValues.size > this.data.length * 0.5) {
                 continue;
             }
-
-            for (let rowIndex = 0; rowIndex < this.data.length; rowIndex++) {
-                let groups = this.splitIntoTwo(
-                    this.attributes[attributeIndex],
-                    this.data[rowIndex][this.attributes[attributeIndex]]
-                );
+            for (let sample of this.data) {
+                let groups = this.splitIntoTwo(attr, sample[attr]);
                 let giniIndex = this.calculateGiniIndex(groups);
 
                 if (giniIndex < bestGiniIndex) {
-                    bestAttribute = this.attributes[attributeIndex];
-                    bestValue = this.data[rowIndex][this.attributes[attributeIndex]];
+                    bestAttribute = attr;
+                    bestValue = sample[attr];
                     bestGiniIndex = giniIndex;
                     splitGroups = groups;
                 }
