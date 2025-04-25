@@ -31,13 +31,101 @@
 
 #algorithm-neural-network-digit-prediction {
     font-weight: 120;
-    margin-left: 5%;
     width: 100%;
-    margin-top: 10px;
-    text-align: left;
-    font-size: 20px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    text-align: center;
+    font-size: 40px;
     font-family: 'Arial', serif;
     padding: 0;
     display: inline-block;
     line-height: 1;
+}
+
+.algorithm-neural-network-certainty-container {
+    width: 100%;
+    background-color: #eee;
+    border-radius: 1vh;
+    overflow: hidden;
+    height: 2vh;
+    margin: 1vh 0;
+}
+
+.algorithm-neural-network-certainty-bar {
+    height: 100%;
+    background-color: #4caf50;
+    text-align: right;
+    padding-right: 4px;
+    font-size: 15px;
+    line-height: 2vh;
+    color: black;
+    white-space: nowrap;
+    transition: width 0.3s ease;
+}
+
+.algorithm-neural-network-settings-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 30vw;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.algorithm-neural-network-board-manipulation-container {
+    width: 45%;
+    border: 1px solid black;
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-top: 3px;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#algorithm-neural-network-digit-prediction-wrapper {
+    width: 100%;
+    border: 1px solid black;
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-top: 3px;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    margin-right: 2.5%;
+    margin-left: 2.5%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 12vh;
+    align-items: center;
+    justify-content: space-evenly;
+}
+#algorithm-neural-network-digit-all-predictions-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.algorithm-neural-network-predicted-digit {
+    display: block;
+}
+
+.algorithm-neural-network-prediction-block-wrapper {
+    width: 30%;
+    border: 1px solid black;
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-top: 3px;
+    border-radius: 10px;
+    margin-bottom: 5px;
+}
+
+#algorithm-neural-network-digit-prediction-container {
+    width: 50%;
+}
+
+#algorithm-neural-network-digit-prediction-title {
+    width: 25%;
 }
