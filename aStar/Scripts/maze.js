@@ -1,3 +1,6 @@
+import {Config} from "./config.js";
+import {Node} from "./node.js"
+
 //==============================
 //          GLOBALS
 //==============================
@@ -16,6 +19,7 @@ buttonStop.addEventListener('click', () => {
     buttonStop.classList.add('pressed');
 });
 
+let array = []; // array of states
 let startX;
 let startY;
 let finishX;
@@ -30,9 +34,8 @@ function drawEmptyBoard(eSize) {
     const board = document.getElementById('board');
     board.innerHTML = '';
 
-    const maxBoardSizePx = Math.min(window.innerWidth, window.innerHeight) * 0.7;
-    const maxTileSize = 20;
-    const tileSizePx = Math.min(Math.floor(maxBoardSizePx / eSize), maxTileSize);
+    const maxBoardSizePx = Math.min(window.innerWidth, window.innerHeight) * Config.MAX_BOARD_SIZE_PX_COEFFICIENT;
+    const tileSizePx = Math.min(Math.floor(maxBoardSizePx / eSize), Config.MAX_TILE_SIZE);
     document.documentElement.style.setProperty('--tile-size', `${tileSizePx}px`);
 
     for (let y = 0; y < eSize; y++) {
@@ -44,7 +47,7 @@ function drawEmptyBoard(eSize) {
             tile.className = 'tile-' + getTileClass(0);
             tile.id = `tile-${y}-${x}`;
 
-            const index = y * eSize + x;
+//            const index = y * eSize + x;
             const tile_id = `tile-${y}-${x}`;
             tile.addEventListener('click', () => changeState(x, y, tile_id));
 
@@ -65,9 +68,8 @@ function generateMaze() {
     thinkTiles = [];
     size = document.getElementById('size').value;
 
-    const maxBoardSizePx = Math.min(window.innerWidth, window.innerHeight) * 0.7;
-    const maxTileSize = 20;
-    const tileSizePx = Math.min(Math.floor(maxBoardSizePx / size), maxTileSize);
+    const maxBoardSizePx = Math.min(window.innerWidth, window.innerHeight) * Config.MAX_BOARD_SIZE_PX_COEFFICIENT;
+    const tileSizePx = Math.min(Math.floor(maxBoardSizePx / size), Config.MAX_TILE_SIZE);
     document.documentElement.style.setProperty('--tile-size', `${tileSizePx}px`);
 
     const board = document.getElementById('board');
@@ -85,7 +87,7 @@ function generateMaze() {
     );
     setTile(sX, sY, 0);
 
-    var digger = { x: sX, y: sY };
+    let digger = { x: sX, y: sY };
 
     while (!isMaze(size)) {
         dig(digger, size);
@@ -99,8 +101,7 @@ function generateMaze() {
     );
     setTile(startX, startY, 2);
 
-    finishX;
-    finishY;
+
     do {
         finishX = getRandomFrom(
             Array.from({ length: size }, (_, index) => index).filter((x) => isEven(x))
@@ -113,7 +114,7 @@ function generateMaze() {
     setTile(finishX, finishY, 3);
 }
 
-let array = []; // array of states
+
 
 function drawWalls(size) {
     for (let y = 0; y < size; y++) {
@@ -125,7 +126,7 @@ function drawWalls(size) {
             tile.className = 'tile-' + getTileClass(1);
             tile.id = `tile-${y}-${x}`;
 
-            const index = y * size + x;
+//            const index = y * size + x;
             const tile_id = `tile-${y}-${x}`;
             tile.addEventListener('click', () => changeState(x, y, tile_id));
 
@@ -192,18 +193,8 @@ function dig(digger, size) {
 const createArray = (size, initial) => Array.from({ length: size * size }, (_, i) => initial(i));
 
 function getTileClass(value) {
-    return classMap.get(value);
+    return Config.CLASS_MAP.get(value);
 }
-
-const classMap = new Map([
-    [0, 'open'],
-    [1, 'closed'],
-    [2, 'start'],
-    [3, 'finish'],
-    [4, 'to-searh'],
-    [5, 'visited'],
-    [6, 'path'],
-]);
 
 function changeState(x, y, tile_id) {
     const index = y * size + x;
@@ -277,21 +268,7 @@ if (size > 27) {
     waitingTime = 10;
 }
 
-class Node {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.g = 0;
-        this.h = 0;
-        this.f = 0;
-        this.parent = null;
-    }
 
-    setHeuristic(goal) {
-        this.h = Math.abs(this.x - goal.x) + Math.abs(this.y - goal.y);
-        this.f = this.g + this.h;
-    }
-}
 
 class aStar {
     constructor(grid, start, end) {
@@ -303,7 +280,7 @@ class aStar {
     }
 
     isOpen(x, y) {
-        return this.grid[y] && this.grid[y][x] != 1;
+        return this.grid[y] && this.grid[y][x] !== 1;
     }
 
     getNeighbours(node) {
@@ -465,7 +442,7 @@ async function solve() {
         const end = { x: finishX, y: finishY };
 
         const astar = new aStar(grid, start, end);
-        let path = await astar.findPath();
+        await astar.findPath();
     } finally {
         button1.classList.remove('pressed');
         button.disabled = false;
@@ -473,8 +450,7 @@ async function solve() {
         isStopped = false;
 
         grid = [];
-        let path = [];
     }
 }
 
-drawEmptyBoard(35);
+drawEmptyBoard(Config.START_FIELD_SIZE);

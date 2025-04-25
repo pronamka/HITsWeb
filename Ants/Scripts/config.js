@@ -13,6 +13,7 @@ export class Config{
     static HERD_COEFFICIENT = 1.65;
     static MIN_IMPROVE_VALUE = 0.00000001;
     static EQUALIZATION_COEFFICIENT = 10000000
+    static MAX_ANTS_COUNT = 2000;
 
     static DEFAULT_START_X = 35;
     static DEFAULT_START_Y = 35;
