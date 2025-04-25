@@ -13,7 +13,7 @@ button.addEventListener('click', generateMaze);
 const button1 = document.getElementById('astar');
 button1.addEventListener('click', () => solve());
 
-const buttonStop = document.getElementById('stopAlg');
+const buttonStop = document.getElementById('stopAlgo');
 buttonStop.addEventListener('click', () => {
     isStopped = true;
     buttonStop.classList.add('pressed');
@@ -64,6 +64,7 @@ function drawEmptyBoard(eSize) {
 
 function generateMaze() {
     buttonStop.classList.remove('pressed');
+    hideMessage()
 
     thinkTiles = [];
     size = document.getElementById('size').value;
@@ -114,8 +115,6 @@ function generateMaze() {
     setTile(finishX, finishY, 3);
 }
 
-
-
 function drawWalls(size) {
     for (let y = 0; y < size; y++) {
         const row = document.createElement('div');
@@ -126,7 +125,6 @@ function drawWalls(size) {
             tile.className = 'tile-' + getTileClass(1);
             tile.id = `tile-${y}-${x}`;
 
-//            const index = y * size + x;
             const tile_id = `tile-${y}-${x}`;
             tile.addEventListener('click', () => changeState(x, y, tile_id));
 
@@ -257,17 +255,29 @@ function isMaze(size) {
     return true;
 }
 
+function showMessage(text) {
+    const msg = document.getElementById('a-star-message');
+    msg.textContent = text;
+    msg.classList.remove('hidden');
+    msg.classList.add('show');
+}
+
+function hideMessage() {
+    const msg = document.getElementById('a-star-message');
+    msg.classList.remove('show');
+    msg.classList.add('hidden');
+}
+
 //==============================
 //         ASTAR ALG
 //==============================
 
 let waitingTime;
-if (size > 27) {
-    waitingTime = 2;
+if (size > 10) {
+    waitingTime = 0.05;
 } else {
-    waitingTime = 10;
+    waitingTime = 1;
 }
-
 
 
 class aStar {
@@ -350,6 +360,7 @@ class aStar {
                     temp = temp.parent;
                 }
 
+                hideMessage();
                 return path.reverse();
             }
 
@@ -396,7 +407,8 @@ class aStar {
             }
         }
 
-        return []; // No path found
+        showMessage("No path found!");
+        return [];
     }
 }
 
@@ -411,6 +423,7 @@ async function solve() {
     isStopped = false;
     button.disabled = true;
     button1.disabled = true;
+    hideMessage();
 
     try {
         //rewrite array into grid for astar
