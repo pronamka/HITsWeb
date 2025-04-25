@@ -1,4 +1,5 @@
 const algorithmNames = [
+    'start-page',
     'a-star',
     'clusterize',
     'genetics',
@@ -8,6 +9,7 @@ const algorithmNames = [
 ];
 
 const algorithmFiles = {
+    'start-page': ['start-page/startPage.html', ['start-page/startPage.css']],
     'a-star': ['aStar/Screens/maze.html', ['aStar/Styles/maze.css'], ['aStar/Scripts/maze.js']],
     clusterize: [
         'Clusterization/Screens/clusterization.html',
