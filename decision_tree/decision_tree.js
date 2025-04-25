@@ -21,9 +21,6 @@ function getMostFrequentTargetValue(data, targetAttribute) {
 class TerminalNode {
     constructor(nodeId, data, targetAttribute, currentDepth = 5) {
         this.nodeId = nodeId;
-        if (nodeId == 32) {
-            console.log(data, targetAttribute);
-        }
         this.isTerminal = true;
         this.value = getMostFrequentTargetValue(data, targetAttribute);
         this.depth = currentDepth;
@@ -39,7 +36,8 @@ class DecisionNode {
         dataGroups,
         currentDepth,
         maximumDepth,
-        minimalGroupSize
+        minimalGroupSize,
+        maxGiniScore
     ) {
         this.nodeId = nodeId;
         this.attributeName = attributeName;
@@ -49,13 +47,14 @@ class DecisionNode {
         this.depth = currentDepth;
         this.maximumDepth = maximumDepth;
         this.minimalGroupSize = minimalGroupSize;
+        this.maxGiniScore = maxGiniScore;
         this.isTerminal = false;
         this.children = [];
         this.addChildren();
     }
 
     addChildren() {
-        if (this.groups[0].length == 0 || this.groups[1].length == 0) {
+        if (this.groups[0].length === 0 || this.groups[1].length === 0) {
             this.children[0] = new TerminalNode(
                 this.nodeId * 2,
                 Array.prototype.concat(...this.groups),
@@ -103,7 +102,19 @@ class DecisionNode {
                 );
                 continue;
             }
-            let split = new DataSplitter(this.groups[i], this.targetAttribute).findBestSplit();
+
+            let dataSplitter = new DataSplitter(this.groups[i], this.targetAttribute);
+            let split = dataSplitter.findBestSplit();
+
+            if (split[3] > this.maxGiniScore) {
+                this.children[i] = new TerminalNode(
+                    this.nodeId * 2 + i,
+                    this.groups[i],
+                    this.targetAttribute,
+                    this.depth + 1
+                );
+                continue;
+            }
 
             this.children[i] = new DecisionNode(
                 this.nodeId * 2 + i,
@@ -113,7 +124,8 @@ class DecisionNode {
                 split[2],
                 this.depth + 1,
                 this.maximumDepth,
-                this.minimalGroupSize
+                this.minimalGroupSize,
+                this.maxGiniScore
             );
         }
     }
@@ -201,7 +213,6 @@ class DataSplitter {
 
             let uniqueValues = new Set(this.data.map((row) => row[attribute]));
 
-            // Если это строка с подозрительно большим количеством уникальных значений — пропускаем
             if (!isNumeric && uniqueValues.size > this.data.length * 0.5) {
                 continue;
             }
@@ -226,11 +237,11 @@ class DataSplitter {
 }
 
 export class DecisionTree {
-    constructor(trainingData, targetAttribute, maxDepth = 5, minGroupSize = 5) {
+    constructor(trainingData, targetAttribute, maxDepth = 5, minGroupSize = 5, maxGiniScore = 0.4) {
         let split = new DataSplitter(trainingData, targetAttribute).findBestSplit();
         this.maximumDepth = maxDepth;
         this.minimalGroupSize = minGroupSize;
-
+        this.maxGiniScore = maxGiniScore;
         this.root = new DecisionNode(
             1,
             split[0],
@@ -239,7 +250,8 @@ export class DecisionTree {
             split[2],
             1,
             this.maximumDepth,
-            this.minimalGroupSize
+            this.minimalGroupSize,
+            this.maxGiniScore
         );
     }
 

@@ -31,9 +31,11 @@
                 <input type="text" id="algorithm-decision-tree-target-attribute-input" placeholder="Input the name of the value to predict" class="algorithm-decision-tree-input">
                 <div class="algorithm-decision-tree-tree-paramemters">
                     <p>Maximal Tree Depth:</p>
-                    <input type="text" value="5" id="algorithm-decision-tree-max-depth-input" placeholder="Input the maximum depth of the tree" class="algorithm-decision-tree-input">
+                    <input type="number" value="5" id="algorithm-decision-tree-max-depth-input" placeholder="Input the maximum depth of the tree" class="algorithm-decision-tree-input">
                     <p>Minimal Group Size:</p>
-                    <input type="text" value="5" id="algorithm-decision-tree-min-group-input" placeholder="Input the minimum amount of elements pro group" class="algorithm-decision-tree-input">
+                    <input type="number" value="5" id="algorithm-decision-tree-min-group-input" placeholder="Input the minimum amount of elements pro group" class="algorithm-decision-tree-input">
+                    <p>Maximal Gini Score:</p>
+                    <input type="number" value="0.4" id="algorithm-decision-tree-max-gini-input" placeholder="Input the maximal gini score at which a split should be done" class="algorithm-decision-tree-input">
                 </div>
                 <button id="algorithm-decision-tree-train-button" class="algorithm-decision-tree-button">Start Training</button>
             </div>
