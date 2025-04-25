@@ -11,5 +11,6 @@ export class Config {
         [6, 'path'],
     ]);
     static START_FIELD_SIZE = 35
+    static MAX_FIELD_SIZE = 100;
 
 }

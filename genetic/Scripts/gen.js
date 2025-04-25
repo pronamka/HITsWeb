@@ -2,13 +2,14 @@
 //          GLOBALS
 //==============================
 
+import {Config} from "./config.js";
+
 const canvas = document.getElementById('algorithm-genetics-graphCanvas');
 const ctx = canvas.getContext('2d');
 
-const radius = 200;
+
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
-const nodeRadius = 20;
 
 const nodes = [];
 
@@ -24,6 +25,8 @@ buttonStop.addEventListener('click', () => {
     buttonStop.classList.add('pressed');
     startAlgBtn.classList.remove('pressed');
 });
+
+const genInput = document.getElementById('algorithm-genetics-size')
 
 //==============================
 //       DISPLAY GRAPH
@@ -41,13 +44,13 @@ function generateGraph() {
     startAlgBtn.classList.remove('pressed');
     buttonStop.classList.remove('pressed');
 
-    numNodes = parseInt(document.getElementById('algorithm-genetics-size').value, 10);
+    numNodes = parseInt(genInput.value, 10);
     nodes.length = 0;
 
     for (let i = 0; i < numNodes; i++) {
         const angle = ((2 * Math.PI) / numNodes) * i;
-        const x = centerX + radius * Math.cos(angle);
-        const y = centerY + radius * Math.sin(angle);
+        const x = centerX + Config.RADIUS * Math.cos(angle);
+        const y = centerY + Config.RADIUS * Math.sin(angle);
         nodes.push({ x, y });
     }
 
@@ -91,7 +94,7 @@ function drawGraph() {
     // draw nodes
     nodes.forEach((node, index) => {
         ctx.beginPath();
-        ctx.arc(node.x, node.y, nodeRadius, 0, 2 * Math.PI);
+        ctx.arc(node.x, node.y, Config.NODE_RADIUS, 0, 2 * Math.PI);
         ctx.fillStyle = 'rgb(118, 187, 134)';
         ctx.fill();
 
@@ -171,7 +174,7 @@ function getNodeAtPosition(x, y) {
     return nodes.find((node) => {
         const dx = x - node.x;
         const dy = y - node.y;
-        return Math.sqrt(dx * dx + dy * dy) <= nodeRadius;
+        return Math.sqrt(dx * dx + dy * dy) <= Config.NODE_RADIUS;
     });
 }
 
@@ -182,14 +185,10 @@ function getNodeAtPosition(x, y) {
 const startAlgBtn = document.getElementById('genetic-start');
 startAlgBtn.addEventListener('click', runGenerations);
 
-const populationSize = 1000;
-const mutationPercent = 5;
-const generations = 5000;
-
 function generatePopulation() {
     const population = [];
 
-    for (let i = 0; i < populationSize; i++) {
+    for (let i = 0; i < Config.POPULATION_SIZE; i++) {
         const individual = shuffle([...Array(numNodes).keys()]);
 
         const distance = routeDistance(individual, adjMatrix);
@@ -200,12 +199,12 @@ function generatePopulation() {
 }
 
 function regeneratePopulation(oldPopulation, eliteFraction = 0.1) {
-    const eliteCount = Math.floor(populationSize * eliteFraction);
+    const eliteCount = Math.floor(Config.POPULATION_SIZE * eliteFraction);
     const sorted = [...oldPopulation].sort((a, b) => b.fitness - a.fitness);
     const elites = sorted.slice(0, eliteCount);
 
     const newPopulation = [];
-    for (let i = 0; i < populationSize - eliteCount; i++) {
+    for (let i = 0; i < Config.POPULATION_SIZE - eliteCount; i++) {
         const individual = shuffle([...Array(numNodes).keys()]);
         const distance = routeDistance(individual, adjMatrix);
         const fitness = Math.pow(1 / distance, 4);
@@ -240,10 +239,13 @@ function evolve(population, matrix, offspringCount, eliteCount) {
         .concat(survivors)
         .concat(children)
         .sort((a, b) => b.fitness - a.fitness)
-        .slice(0, populationSize);
+        .slice(0, Config.POPULATION_SIZE);
 }
 
 async function runGenerations() {
+    if(genInput.value === ''){
+        return
+    }
     shouldStop = false;
     startAlgBtn.classList.add('pressed');
     buttonStop.classList.remove('pressed');
@@ -252,7 +254,7 @@ async function runGenerations() {
     let bestSoFar = null;
 
     let gen = 0;
-    while (gen < generations) {
+    while (gen < Config.GENERATIONS) {
         if (shouldStop) return;
 
         if (graphChanged) {
@@ -261,13 +263,13 @@ async function runGenerations() {
             graphChanged = false;
         }
 
-        population = evolve(population, adjMatrix, Math.floor(populationSize * 0.5), 30);
+        population = evolve(population, adjMatrix, Math.floor(Config.POPULATION_SIZE * 0.5), 30);
         const best = population.reduce((a, b) => (a.fitness > b.fitness ? a : b));
         bestSoFar = best;
 
         drawGraph();
         displayRoute(bestSoFar.route);
-        await sleep(200);
+        await sleep(Config.SLEEP_TIME);
 
         gen++;
     }
@@ -327,7 +329,7 @@ function orderCrossover(mama, papa) {
 
 function mutate(individual) {
     const currMutationPercent = Math.floor(Math.random() * 100);
-    if (currMutationPercent < mutationPercent) {
+    if (currMutationPercent < Config.MUTATION_PERCENT) {
         let i = Math.floor(Math.random() * individual.length);
         let j = Math.floor(Math.random() * individual.length);
         
@@ -348,3 +350,21 @@ function tourSelection(population, tourSize = 5) {
     }
     return contestants.reduce((a, b) => (a.fitness > b.fitness ? a : b));
 }
+
+genInput.addEventListener('input', function () {
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if(this.value.length > `${Config.MAX_VERTEX_CNT}`.length){
+        this.value = this.value.slice(0, `${Config.MAX_VERTEX_CNT}`.length)
+        console.log(this.value)
+    }
+
+    const num = parseInt(this.value);
+
+    if (num > Config.MAX_VERTEX_CNT) {
+        this.value = this.value.slice(0, this.value.length - 1);
+    }
+
+    if(this.value === '0'){
+        this.value = 1;
+    }
+});

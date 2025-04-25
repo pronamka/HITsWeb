@@ -30,7 +30,6 @@ document.getElementById('foodBtn').addEventListener('click', () => {
 });
 document.getElementById('nestBtn').addEventListener('click', () => {
     paintState = Config.PAINT_STATE.NEST;
-    console.log(paintState)
 });
 
 document.getElementById('startBtn').addEventListener("click",startSimulation);
@@ -205,15 +204,14 @@ function updateCells(changedCells = null) {
 }
 
 async function startSimulation() {
-    if (isRunning) {
-        return;
-    }
+
     ants_ = [];
     ants = antsInput.value;
-    if (isRunning || ants === 0) {
+    if (isRunning || ants === 0 || ants === '') {
         return;
     }
 
+    startButton.removeEventListener("click", startSimulation)
     isRunning = true;
     stopSimulation = false;
     startButton.classList.remove(Config.START_BUTTON_FIRST_STATE);
@@ -233,6 +231,7 @@ async function startSimulation() {
 function removeAll() {
     startButton.classList.remove(Config.START_BUTTON_SECOND_STATE);
     startButton.classList.add(Config.START_BUTTON_FIRST_STATE);
+    startButton.addEventListener("click", startSimulation)
     stopSimulation = true;
     isRunning = false;
     matrix = [];

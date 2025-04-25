@@ -204,6 +204,10 @@ button {
     line-height: 1;
 }
 
+.text-interview-position{
+    text-align: left
+}
+
 .side-border-left {
     background-image: url('images/sideBarImage.png');
     background-size: cover;
