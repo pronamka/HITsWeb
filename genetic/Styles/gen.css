@@ -1,18 +1,4 @@
-body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    min-width: 1200px;
-    min-height: 800px;
-    overflow: auto;
-    font-family: "Arial", sans-serif;
-}
-
-.screen {
-    display: inline;
-}
-
-canvas {
+#algorithm-genetics-graphCanvas {
     border: 1px solid rgb(174, 174, 174);
     display: block;
     margin-right: 0;
@@ -20,101 +6,16 @@ canvas {
     cursor: pointer;
 }
 
-.main-part {
-    width: 64%;
-    text-align: center;
-    margin-left: 18%;
-    display: table-column;
-}
-
-.column{
+.algorithm-genetics-column {
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 10px;
+    width: 8vw;
 }
 
-.interactive-elements{
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    margin-top: 50px;
-    gap: 10px;
-}
-
-.interview-right{
-    font-weight: 120;
-    margin-left: 5%;
-    margin-right: 20px;
-    width: 80%;
-    margin-top: 10px;
-    text-align: left;
-    font-size: 20px;
-    font-family: "Arial", serif;
-    padding: 0;
-    display: inline-block;
-    line-height: 1;
-}
-
-.interview-left{
-    font-weight: 120;
-    margin-left: 25%;
-    width: 70%;
-    margin-top: 10px;
-    text-align: left;
-    font-size: 20px;
-    font-family: "Arial", serif;
-    padding: 0;
-    display: inline-block;
-    line-height: 1;
-}
-
-.bottom {
-    width: 100%;
-    height: 150px;
-}
-
-.side-border-left {
-    background-image: url('../images/sideBarImage.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: fixed;
-    left: 0;
-    width: 18%;
-    height: 100%;
-
-}
-
-.side-border-right {
-    background-image: url('../images/sideBarImage.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: fixed;
-    right: 0;
-    width: 18%;
-    height: 100%;
-
-}
-
-.underline {
-    width: 500px;
-    height: 1px;
-    background-color: black;
-    margin: 10px auto 10px 5%;
-}
-
-.header-text {
-    text-align: left;
-    font-size: 100px;
-    font-family: "Arial", serif;
-    padding: 0;
-    display: inline-block;
-    line-height: 1;
-}
-
-.genetic-startBtn, .genetic-startBtn:hover, .genetic-startBtn.pressed{
+.genetic-startBtn,
+.genetic-startBtn:hover,
+.genetic-startBtn.pressed {
     margin-bottom: 10px;
     color: white;
     border: none;
@@ -126,50 +27,44 @@ canvas {
     background-repeat: no-repeat;
 }
 
-.genetic-startBtn{
-    background-image: url("../images/start.png");
+.genetic-startBtn {
+    background-image: url('../images/start.png');
 }
 
-.genetic-startBtn:hover, .genetic-startBtn.pressed{
-    background-image: url("../images/startHover.png");
+.genetic-startBtn:hover,
+.genetic-startBtn.pressed {
+    background-image: url('../images/startHover.png');
 }
 
-#size {
+#algorithm-genetics-size {
     display: block;
     border: 1px solid black;
+    width: 8vw;
+    height: 4vh;
     padding: 0.5vw;
     color: black;
     border-radius: 10px;
     margin-bottom: 10px;
     box-sizing: border-box;
     text-align: right;
-    width: 75px;
-    height: 20px;
 }
 
-button {
-    margin-bottom: 10px;
-    color: white;
-    border: none;
-    width: 40px;
-    height: 40px;
-    background-color: transparent;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.algorithm-genetic-btn{
+.algorithm-genetic-btn {
     display: block;
     border: 1px solid black;
-    width: 80px;
-    height: 50px;
+    width: 8vw;
+    height: 4vh;
     padding: 0.5vw;
     color: black;
     border-radius: 10px;
 }
 
-.algorithm-genetic-btn:hover{
+.algorithm-genetic-btn:hover {
     background-color: black;
     color: white;
+}
+
+.algorithm-genetics-symbol {
+    rotate: 320deg;
+    margin-top: 6vh;
 }

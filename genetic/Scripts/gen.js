@@ -2,7 +2,7 @@
 //          GLOBALS
 //==============================
 
-const canvas = document.getElementById('graphCanvas');
+const canvas = document.getElementById('algorithm-genetics-graphCanvas');
 const ctx = canvas.getContext('2d');
 
 const radius = 200;
@@ -19,7 +19,7 @@ let adjMatrix = [];
 //       DISPLAY GRAPH
 //==============================
 
-const button = document.getElementById('generate');
+const button = document.getElementById('algorithm-genetics-generate');
 button.addEventListener('click', generateGraph);
 
 let draggedNode = null;
@@ -27,11 +27,11 @@ let offsetX = 0;
 let offsetY = 0;
 
 function generateGraph() {
-    numNodes = parseInt(document.getElementById('size').value, 10);
+    numNodes = parseInt(document.getElementById('algorithm-genetics-size').value, 10);
     nodes.length = 0;
 
     for (let i = 0; i < numNodes; i++) {
-        const angle = (2 * Math.PI / numNodes) * i;
+        const angle = ((2 * Math.PI) / numNodes) * i;
         const x = centerX + radius * Math.cos(angle);
         const y = centerY + radius * Math.sin(angle);
         nodes.push({ x, y });
@@ -63,7 +63,7 @@ function drawGraph() {
             //calculate distance
             const dx = toNode.x - fromNode.x;
             const dy = toNode.y - fromNode.y;
-            const distance = (Math.sqrt(dx * dx + dy * dy)).toFixed(0);
+            const distance = Math.sqrt(dx * dx + dy * dy).toFixed(0);
             adjMatrix[i][j] = distance;
             adjMatrix[j][i] = distance;
 
@@ -71,7 +71,6 @@ function drawGraph() {
             const midY = (fromNode.y + toNode.y) / 2;
 
             ctx.fillText(distance, midX, midY);
-
         }
     });
 
@@ -88,11 +87,10 @@ function drawGraph() {
         ctx.textBaseline = 'middle';
         ctx.fillText(index + 1, node.x, node.y);
     });
-
 }
 
-function displayRoute(route){
-    if(!route || route.length === 0) return;
+function displayRoute(route) {
+    if (!route || route.length === 0) return;
 
     ctx.lineWidth = 3;
     ctx.strokeStyle = '#76bb86';
@@ -101,7 +99,7 @@ function displayRoute(route){
     const start = nodes[route[0]];
     ctx.moveTo(start.x, start.y);
 
-    for (let i = 1; i < route.length; i++){
+    for (let i = 1; i < route.length; i++) {
         const node = nodes[route[i]];
         ctx.lineTo(node.x, node.y);
     }
@@ -128,20 +126,20 @@ canvas.addEventListener('mousedown', (e) => {
     const y = e.clientY - rect.top;
     const node = getNodeAtPosition(x, y);
     if (node) {
-    draggedNode = node;
-    offsetX = x - node.x;
-    offsetY = y - node.y;
+        draggedNode = node;
+        offsetX = x - node.x;
+        offsetY = y - node.y;
     }
 });
 
 canvas.addEventListener('mousemove', (e) => {
     if (draggedNode) {
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    draggedNode.x = x - offsetX;
-    draggedNode.y = y - offsetY;
-    drawGraph();
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        draggedNode.x = x - offsetX;
+        draggedNode.y = y - offsetY;
+        drawGraph();
     }
 });
 
@@ -154,10 +152,10 @@ canvas.addEventListener('mouseleave', () => {
 });
 
 function getNodeAtPosition(x, y) {
-    return nodes.find(node => {
-    const dx = x - node.x;
-    const dy = y - node.y;
-    return Math.sqrt(dx * dx + dy * dy) <= nodeRadius;
+    return nodes.find((node) => {
+        const dx = x - node.x;
+        const dy = y - node.y;
+        return Math.sqrt(dx * dx + dy * dy) <= nodeRadius;
     });
 }
 
@@ -165,7 +163,7 @@ function getNodeAtPosition(x, y) {
 //      GENETIC ALGORITHM
 //==============================
 
-const startAlgBtn = document.getElementById('genetic');
+const startAlgBtn = document.getElementById('algorithm-genetics-genetic');
 startAlgBtn.addEventListener('click', runGenerations);
 
 const populationSize = 1000;
@@ -238,9 +236,9 @@ function mutate(individual) {
     return individual;
 }
 
-function tourSelection(population, tourSize = 5){
+function tourSelection(population, tourSize = 5) {
     const contestants = [];
-    for (let i = 0; i < tourSize; i++){
+    for (let i = 0; i < tourSize; i++) {
         const randIndex = Math.floor(Math.random() * population.length);
         contestants.push(population[randIndex]);
     }
@@ -254,7 +252,7 @@ function evolve(population, matrix, offspringCount, eliteCount) {
     const survivors = sortedPopulation.slice(0, size - offspringCount);
     const children = [];
 
-    for (let i = 0; i < offspringCount; i++){
+    for (let i = 0; i < offspringCount; i++) {
         const mom = tourSelection(population).route;
         const dad = tourSelection(population).route;
 
@@ -267,7 +265,11 @@ function evolve(population, matrix, offspringCount, eliteCount) {
         children.push({ route: mutated, distance: dist, fitness: fit });
     }
 
-    return elites.concat(survivors).concat(children).sort((a, b) => b.fitness - a.fitness).slice(0, populationSize);
+    return elites
+        .concat(survivors)
+        .concat(children)
+        .sort((a, b) => b.fitness - a.fitness)
+        .slice(0, populationSize);
 }
 
 async function runGenerations() {

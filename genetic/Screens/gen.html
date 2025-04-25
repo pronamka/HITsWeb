@@ -1,49 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Genetic Algorithm</title>
-    <link rel="stylesheet" href="../Styles/gen.css">
-</head>
-<body>
-
-<div class="side-border-left"></div>
-<div class=main-part>
-    <div style="display: inline-flex">
-        <h1 class="header-text">
-            GENETIC<br>ALGORITHM
-            <div class="underline"></div>
-        </h1>
-    </div>
-    <div style="text-align: left">
-        <h2 class="interview-right">The genetic algorithm is a method for solving both 
-            constrained and unconstrained optimization problems
-             that is based on natural selection, the process that drives biological evolution.
-            <div class="underline"></div>
-        </h2>
-        <h2 class="interview-left">It is employed to solve the TSP by generating a preset number 
-            of random tours and then improving the population until a stop condition is satisfied 
-            and the best chromosome which is a tour is returned as the solution.
-            <div class="underline"></div>
-        </h2>
-        <h2 class="interview-right">You can generate a graph, customize it by pulling vertex
-            and see the algorithm find an optimal path.
-            <div class="underline"></div>
-        </h2>
-    </div>
-    <br>
-    <div class="interactive-elements">
-        <div class="column">
-            <button id="generate" class="algorithm-genetic-btn">Generate graph</button>
-            <input type="number" min="2" max="30" value="8" id="size"/>
-        </div>
-        <canvas id="graphCanvas" width="600" height="600"></canvas>
-        <div class="column">
-            <button id="genetic" class="genetic-startBtn"></button>
-        </div>
-    </div>
-    <div class="bottom"></div>
+<div style="display: inline-flex">
+    <h1 class="header-text">
+        GENETIC<br>ALGORITHM
+        <div class="underline"></div>
+    </h1>
+    <img src="genetic/genetic.png" alt="" class="algorithm-symbol algorithm-genetics-symbol">
 </div>
-<div class="side-border-right"></div>
-<script src="../Scripts/gen.js"></script>
-</body>
-</html>
+<div style="text-align: left">
+    <h2 class="interview-right">The genetic algorithm is a method for solving both 
+        constrained and unconstrained optimization problems
+            that is based on natural selection, the process that drives biological evolution.
+        <div class="underline"></div>
+    </h2>
+    <h2 class="interview-left">It is employed to solve the TSP by generating a preset number 
+        of random tours and then improving the population until a stop condition is satisfied 
+        and the best chromosome which is a tour is returned as the solution.
+        <div class="underline"></div>
+    </h2>
+    <h2 class="interview-right">You can generate a graph, customize it by pulling vertex
+        and see the algorithm find an optimal path.
+        <div class="underline"></div>
+    </h2>
+</div>
+<br>
+<div class="interactive-elements">
+    <div class="algorithm-genetics-column">
+        <button id="algorithm-genetics-generate" class="algorithm-genetic-btn">Generate graph</button>
+        <input type="number" min="2" max="30" value="8" id="algorithm-genetics-size"/>
+    </div>
+    <canvas id="algorithm-genetics-graphCanvas" width="600" height="600"></canvas>
+    <div class="algorithm-genetics-column">
+        <button id="algorithm-genetics-genetic" class="genetic-startBtn"></button>
+    </div>
+</div>
+<div class="bottom"></div>
