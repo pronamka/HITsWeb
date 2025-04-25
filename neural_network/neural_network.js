@@ -1,6 +1,10 @@
 let predictionValue = document.getElementById('algorithm-neural-network-digit-prediction');
 let retrainModelInput = document.getElementById('algorithm-neural-network-retrain-model-input');
 
+let predictionsContainer = document.getElementById(
+    'algorithm-neural-network-digit-all-predictions-container'
+);
+
 let canvas = document.getElementById('algorithm-neural-network-drawing-canvas');
 let canvasContext = canvas.getContext('2d');
 
@@ -173,6 +177,69 @@ class ImageEditor {
     }
 }
 
+function createPredictionLabel(prediction) {
+    let predictedDigit = document.createElement('div');
+    predictedDigit.innerHTML = prediction;
+    predictedDigit.className = 'algorithm-neural-network-predicted-digit';
+    return predictedDigit;
+}
+
+function createCertaintyBar(certainty) {
+    let predictionsBlock = document.createElement('div');
+    predictionsBlock.className = 'algorithm-neural-network-certainty-container';
+
+    let certaintyBar = document.createElement('div');
+    certaintyBar.className = 'algorithm-neural-network-certainty-bar';
+
+    certaintyBar.style.width = certainty + '%';
+    certaintyBar.textContent = certainty + '%';
+    predictionsBlock.appendChild(certaintyBar);
+    return predictionsBlock;
+}
+
+function createPredictionWithPercentage(prediction, certainty) {
+    let certaintyBlock = createCertaintyBar(certainty);
+    let predictionBlock = createPredictionLabel(prediction);
+
+    let wrapper = document.createElement('div');
+    wrapper.className = 'algorithm-neural-network-prediction-block-wrapper';
+    wrapper.appendChild(predictionBlock);
+    wrapper.appendChild(certaintyBlock);
+
+    predictionsContainer.appendChild(wrapper);
+}
+
+function updateCertainty(percentages) {
+    predictionsContainer.innerHTML = '';
+    for (let i = 0; i < percentages.length; i++) {
+        createPredictionWithPercentage(i, percentages[i]);
+    }
+}
+
+function displayMainPrediction(prediction, certainty) {
+    let container = document.getElementById('algorithm-neural-network-digit-prediction-container');
+
+    if (container.lastChild.id != 'algorithm-neural-network-digit-prediction') {
+        container.removeChild(container.lastChild);
+    }
+
+    predictionValue.textContent = `${prediction}`;
+    let predictionsBlock = createCertaintyBar(certainty);
+
+    document
+        .getElementById('algorithm-neural-network-digit-prediction-container')
+        .appendChild(predictionsBlock);
+}
+
+function processResponse(data) {
+    console.log('Predicted digit:', data.digit);
+    let percentages = data.percentages;
+
+    displayMainPrediction(data.digit, percentages[data.digit]);
+
+    updateCertainty(percentages);
+}
+
 function sendPicture(resizedArray) {
     fetch('http://127.0.0.1:5000/recognize_digit', {
         method: 'POST',
@@ -187,8 +254,7 @@ function sendPicture(resizedArray) {
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log('Predicted digit:', data.digit);
-            predictionValue.textContent = `Prediction: ${data.digit}`;
+            processResponse(data);
         })
         .catch((error) => console.error('Error:', error));
 }
