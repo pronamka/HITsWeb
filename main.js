@@ -14,6 +14,7 @@ const algorithmFiles = {
         ['Clusterization/Styles/clusterization.css'],
         ['Clusterization/Scripts/clusterization.js'],
     ],
+    genetics: ['genetic/Screens/gen.html', ['genetic/Styles/gen.css'], ['genetic/Scripts/gen.js']],
     ant: ['Ants/Screens/ants.html', ['Ants/Styles/ants.css'], ['Ants/Scripts/ants.js']],
     'decision-tree': [
         'decision_tree/decision_tree.html',
