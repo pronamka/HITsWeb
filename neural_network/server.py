@@ -36,7 +36,7 @@ def recognize_digit():
 
     print(predictions)
     prediction_int = int(np.argmax(predictions, axis=0)[0])
-    percentages = (predictions*100).flatten().tolist()
+    percentages = np.round((predictions*100), 0).flatten().tolist()
     return jsonify({"digit": prediction_int, "percentages": percentages})
 
 
