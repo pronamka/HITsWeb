@@ -16,23 +16,20 @@
         <div class="underline"></div>
     </h2>
 </div>
-<div class="interactive-elements">
-    <div class="algorithm-settings">
-        <div id="algorithm-neural-network-settings">
+<div class="interactive-elements algorithm-neural-network-interactive-elements">
+    <div class="algorithm-settings algorithm-neural-network-settings-container">
+        <div id="algorithm-neural-network-make-prediction-block" class="algorithm-neural-network-board-manipulation-container">
+            <h3>Make Prediction</h3>
             <button id="algorithm-neural-network-clean-canvas-button" class="neural-network-button">
                 Clean Canvas    
             </button>
             <button id="algorithm-neural-network-send-picture-button" class="neural-network-button">
                 Recognize Digit
             </button>
-            <h3 id="algorithm-neural-network-digit-prediction">Prediction: </h3>
         </div>
-    </div>
-    <div class="algorithm-board">
-        <canvas id="algorithm-neural-network-drawing-canvas"></canvas>
-    </div>
-    <div class="algorithm-settings">
-        <div id="algorithm-neural-network-settings">
+        
+        <div id="algorithm-neural-network-retrain-block" class="algorithm-neural-network-board-manipulation-container">
+            <h3>Retrain Model</h3>
             <input type="number" id="algorithm-neural-network-retrain-model-input">
             <button id="algorithm-neural-network-retrain-model-button" class="neural-network-button">
                 Train Model
@@ -41,6 +38,20 @@
                 Save Model
             </button>
         </div>
+        
+        <div id="algorithm-neural-network-digit-prediction-wrapper">
+            <h3 id="algorithm-neural-network-digit-prediction-title">Prediction</h3>
+            <div id="algorithm-neural-network-digit-prediction-container">
+                <p id="algorithm-neural-network-digit-prediction"></p>
+            </div>
+            
+        </div>
+        <div id="algorithm-neural-network-digit-all-predictions-container">
+            
+        </div>
+    </div>
+    <div class="algorithm-board">
+        <canvas id="algorithm-neural-network-drawing-canvas"></canvas>
     </div>
 </div>
 <div class="bottom"></div>
