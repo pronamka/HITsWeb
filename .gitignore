@@ -404,6 +404,7 @@ FodyWeavers.xsd
 
 .prettierrc
 .idea
+d3.v7.min.js
 snippets.txt
 neural_network/snippets.txt
 neural_network/training_data
