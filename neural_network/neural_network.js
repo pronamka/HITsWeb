@@ -273,7 +273,7 @@ class ClientServerInterractor {
             mode: 'cors',
             body: JSON.stringify({
                 image: Array.from(resizedArray),
-                digit: this.retrainModelInput.value,
+                digit: Math.round(this.retrainModelInput.value),
             }),
         })
             .then((response) => response.json())
