@@ -1,0 +1,29 @@
+<div class="algorithm-main-part">
+    <h1 class="header-text">
+        THIS IS <br> HITS WEB
+        <div class="underline"></div>
+        <label>by team: how much six</label>
+    </h1>
+    <img src="aStar/images/start-page-icon.png" alt="" class="algorithm-symbol" id="a-star-algorithm-symbol">
+</div>
+<div class="interview-container">
+    <h2 class="interview-right">Frontend application made by us.
+        Dive into the fascinating world of algorithms with our interactive visualizations.
+        Whether you're a student, developer, or just curious about how smart systems work, 
+        this site offers an intuitive and engaging way to see powerful algorithms in action.
+        <div class="underline"></div>
+    </h2>
+    <h2 class="interview-left">From pathfinding with A* to data grouping through clustering, 
+        from evolving solutions using genetic algorithms to decision-making with decision trees 
+        — we break down complex concepts into simple, visual steps. You can explore how artificial 
+        neural networks learn or how ant colony optimization mimics nature to solve problems efficiently.
+        <div class="underline"></div>
+    </h2>
+    <h2 class="interview-right">Our goal is to make learning algorithms not only accessible but also enjoyable. 
+        Each algorithm demonstration is carefully crafted to show the inner workings in real time,
+         helping you understand both the logic and the beauty behind the code. Start exploring and see how machines think!
+        <div class="underline"></div>
+    </h2>
+</div>
+</div>
+<div class="bottom"></div>
