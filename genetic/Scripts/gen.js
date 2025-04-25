@@ -267,7 +267,7 @@ async function runGenerations() {
 
         drawGraph();
         displayRoute(bestSoFar.route);
-        await sleep(10);
+        await sleep(200);
 
         gen++;
     }

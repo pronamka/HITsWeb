@@ -1,30 +1,29 @@
-.grid {
+.grid-cluster {
     display: inline-block;
-    min-width: 1025px;
-    min-height: 1025px;
+
 }
 
 .algorithm-clusterize-cell {
     display: inline-block;
-    width: 45px;
-    height: 45px;
+    width: 2.4vw;
+    height: 2.4vw;
     border: 1px solid #eee;
 }
 
 .algorithm-clusterize-sub-cell {
-    width: 15px;
-    height: 45px;
+    width: 0.8vw;
+    height: 2.4vw;
     display: inline-block;
 }
 
 .algorithm-clusterize-sub-sub-cell {
     width: 50%;
-    height: 45px;
+    height: 2.4vw;
     display: inline-block;
 }
 
 .algorithm-clusterize-row {
-    height: 46px;
+    height: calc(2.4vw + 1px);
 }
 
 .screen {
@@ -109,7 +108,7 @@ input::-webkit-inner-spin-button {
     text-align: center;
     display: block;
     height: 60px;
-    width: 75px;
+    width: 60px;
     font-family: Arial, serif;
     font-size: 1.2rem;
     font-weight: 700;
