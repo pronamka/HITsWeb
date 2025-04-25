@@ -3,7 +3,7 @@ import {Location} from "./location.js";
 import {Config} from "./config.js";
 
 const startButton = document.getElementById('startBtn');
-const antsInputField = document.getElementById('ants');
+const antsInput = document.getElementById('ants');
 
 let ants_ = [];
 let matrix = [];
@@ -209,10 +209,11 @@ async function startSimulation() {
         return;
     }
     ants_ = [];
-    ants = antsInputField.value;
-    if (isRunning) {
+    ants = antsInput.value;
+    if (isRunning || ants === 0) {
         return;
     }
+
     isRunning = true;
     stopSimulation = false;
     startButton.classList.remove(Config.START_BUTTON_FIRST_STATE);
@@ -237,5 +238,21 @@ function removeAll() {
     matrix = [];
     initDesk();
 }
+
+antsInput.addEventListener('input', function () {
+    this.value = this.value.replace(/[^0-9]/g, '');
+
+    if(this.value.length > `${Config.MAX_ANTS_COUNT}`.length){
+        this.value = this.value.slice(0, `${Config.MAX_ANTS_COUNT}`.length)
+        console.log(this.value)
+    }
+
+    const num = parseInt(this.value);
+
+    if (num > Config.MAX_ANTS_COUNT) {
+        this.value = this.value.slice(0, this.value.length - 1);
+    }
+
+});
 
 initDesk();
