@@ -13,11 +13,9 @@
     width: 8vw;
 }
 
-.genetic-startBtn,
-.genetic-startBtn:hover,
-.genetic-startBtn.pressed,
-.genetic-stopBtn, .genetic-stopBtn:hover,
-.genetic-stopBtn.pressed {
+.small-button-symbol,
+.small-button-symbol:hover,
+.small-button-symbol.pressed {
     margin-bottom: 10px;
     color: white;
     border: none;
@@ -29,50 +27,16 @@
     background-repeat: no-repeat;
 }
 
-.genetic-startBtn {
-    background-image: url('../images/start.png');
-}
-
-.genetic-startBtn:hover,
-.genetic-startBtn.pressed {
-    background-image: url('../images/startHover.png');
-}
-
-.genetic-stopBtn {
-    background-image: url('../images/stop.png');
-}
-
-.genetic-stopBtn:hover,
-.genetic-stopBtn.pressed {
-    background-image: url('../images/stopHover.png');
-}
-
 #algorithm-genetics-size {
-    display: block;
-    border: 1px solid black;
     width: 8vw;
-    height: 4vh;
     padding: 0.5vw;
-    color: black;
-    border-radius: 10px;
     margin-bottom: 10px;
-    box-sizing: border-box;
     text-align: right;
 }
 
-.algorithm-genetic-btn {
-    display: block;
-    border: 1px solid black;
+.algorithm-genetic-generate-button {
     width: 8vw;
-    height: 4vh;
     padding: 0.5vw;
-    color: black;
-    border-radius: 10px;
-}
-
-.algorithm-genetic-btn:hover {
-    background-color: black;
-    color: white;
 }
 
 .algorithm-genetics-symbol {

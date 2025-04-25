@@ -1,11 +1,6 @@
 .algorithm-decision-tree-button {
-    display: block;
-    border: 1px solid black;
     width: 100%;
-    height: 4vh;
     padding: 0.5vw;
-    color: black;
-    border-radius: 10px;
 }
 
 .algorithm-decision-tree-button:hover {
@@ -14,28 +9,16 @@
 }
 
 .algorithm-decision-tree-input {
-    display: block;
-    border: 1px solid black;
     width: 100%;
-    height: 4vh;
     padding: 0.5vw;
-    color: black;
-    border-radius: 10px;
     margin-bottom: 10px;
-    box-sizing: border-box;
 }
 
 #algorithm-decision-tree-prediction {
-    font-weight: 120;
     margin-left: 5%;
-    width: 100%;
     margin-top: 10px;
     text-align: left;
     font-size: 20px;
-    font-family: 'Arial', serif;
-    padding: 0;
-    display: inline-block;
-    line-height: 1;
 }
 
 .algorithm-decision-tree-interactive-elements {
@@ -64,7 +47,6 @@
     display: block;
     font-weight: 120;
     margin-left: 5%;
-    /*width: 100%;*/
     margin-top: 10px;
     font-size: 30px;
     font-family: 'Arial', serif;
@@ -77,13 +59,8 @@
 }
 
 .algorithm-decision-tree-file-upload-file-upload-label {
-    display: inline-block;
-    border: 1px solid black;
     width: 60%;
-    height: 4vh;
     padding: 0.5vw;
-    color: black;
-    border-radius: 10px;
     margin-bottom: 10px;
     box-sizing: border-box;
 }
