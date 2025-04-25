@@ -1,55 +1,58 @@
-let predictionValue = document.getElementById('algorithm-neural-network-digit-prediction');
-let retrainModelInput = document.getElementById('algorithm-neural-network-retrain-model-input');
+class Canvas {
+    static canvasId = 'algorithm-neural-network-drawing-canvas';
 
-let predictionsContainer = document.getElementById(
-    'algorithm-neural-network-digit-all-predictions-container'
-);
+    constructor() {
+        this.canvas = document.getElementById(Canvas.canvasId);
+        this.canvasContext = this.canvas.getContext('2d');
 
-let canvas = document.getElementById('algorithm-neural-network-drawing-canvas');
-let canvasContext = canvas.getContext('2d');
+        this.canvasOffsetX = this.canvas.offsetLeft;
+        this.canvasOffsetY = this.canvas.offsetTop;
 
-const canvasOffsetX = canvas.offsetLeft;
-const canvasOffsetY = canvas.offsetTop;
+        this.canvas.height = Math.floor((window.innerHeight - this.canvasOffsetY - 300) / 28) * 28;
+        this.canvas.width = this.canvas.height;
 
-canvas.height = Math.floor((window.innerHeight - canvasOffsetY - 300) / 28) * 28;
-canvas.width = canvas.height;
+        this.isPainting = false;
+        this.lineWidth = 30;
 
-let isPainting = false;
-let lineWidth = 30;
+        this.canvasContext.lineWidth = this.lineWidth;
+        this.canvasContext.lineCap = 'round';
+        this.canvasContext.strokeStyle = 'black';
 
-canvasContext.lineWidth = lineWidth;
-canvasContext.lineCap = 'round';
-canvasContext.strokeStyle = 'black';
-
-canvas.addEventListener('mousedown', (e) => {
-    isPainting = true;
-});
-
-canvas.addEventListener('mouseup', (e) => {
-    isPainting = false;
-    canvasContext.stroke();
-    canvasContext.beginPath();
-});
-
-canvas.addEventListener('mouseleave', (e) => {
-    isPainting = false;
-    canvasContext.stroke();
-    canvasContext.beginPath();
-});
-
-canvas.addEventListener('mousemove', (e) => {
-    if (!isPainting) {
-        return;
+        this.addListeners();
     }
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    canvasContext.lineTo(x, y);
-    canvasContext.stroke();
-});
+
+    addListeners() {
+        this.canvas.addEventListener('mousedown', (e) => {
+            this.isPainting = true;
+        });
+
+        this.canvas.addEventListener('mouseup', (e) => {
+            this.isPainting = false;
+            this.canvasContext.stroke();
+            this.canvasContext.beginPath();
+        });
+
+        this.canvas.addEventListener('mouseleave', (e) => {
+            this.isPainting = false;
+            this.canvasContext.stroke();
+            this.canvasContext.beginPath();
+        });
+
+        this.canvas.addEventListener('mousemove', (e) => {
+            if (!this.isPainting) {
+                return;
+            }
+            const rect = this.canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            this.canvasContext.lineTo(x, y);
+            this.canvasContext.stroke();
+        });
+    }
+}
 
 class ImageEditor {
-    constructor() {
+    constructor(canvas, canvasContext) {
         this.originalCanvas = canvas;
         this.originalContext = canvasContext;
         this.originalWidth = canvas.width;
@@ -157,7 +160,12 @@ class ImageEditor {
 
     getImage() {
         let originalImage = this.extractAlphaChannel(
-            canvasContext.getImageData(0, 0, canvas.width, canvas.height).data
+            this.originalContext.getImageData(
+                0,
+                0,
+                this.originalCanvas.width,
+                this.originalCanvas.height
+            ).data
         );
 
         let matrixRepresentation = this.arrayToMatrix(
@@ -177,112 +185,148 @@ class ImageEditor {
     }
 }
 
-function createPredictionLabel(prediction) {
-    let predictedDigit = document.createElement('div');
-    predictedDigit.innerHTML = prediction;
-    predictedDigit.className = 'algorithm-neural-network-predicted-digit';
-    return predictedDigit;
-}
+class PredictionsLayoutCreator {
+    static predictedDigitClass = 'algorithm-neural-network-predicted-digit';
+    static predictionBlockClass = 'algorithm-neural-network-certainty-container';
+    static certaintyBarClass = 'algorithm-neural-network-certainty-bar';
+    static predictionWrapperClass = 'algorithm-neural-network-prediction-block-wrapper';
 
-function createCertaintyBar(certainty) {
-    let predictionsBlock = document.createElement('div');
-    predictionsBlock.className = 'algorithm-neural-network-certainty-container';
+    static mainPredictionId = 'algorithm-neural-network-digit-prediction';
+    static predictionValue = document.getElementById(this.mainPredictionId);
+    static mainPredictionContainer = document.getElementById(
+        'algorithm-neural-network-digit-prediction-container'
+    );
 
-    let certaintyBar = document.createElement('div');
-    certaintyBar.className = 'algorithm-neural-network-certainty-bar';
+    static allPredictionsContainer = document.getElementById(
+        'algorithm-neural-network-digit-all-predictions-container'
+    );
 
-    certaintyBar.style.width = certainty + '%';
-    certaintyBar.textContent = certainty + '%';
-    predictionsBlock.appendChild(certaintyBar);
-    return predictionsBlock;
-}
+    static createPredictionLabel(prediction) {
+        let predictedDigit = document.createElement('div');
+        predictedDigit.innerHTML = prediction;
+        predictedDigit.className = this.predictedDigitClass;
+        return predictedDigit;
+    }
 
-function createPredictionWithPercentage(prediction, certainty) {
-    let certaintyBlock = createCertaintyBar(certainty);
-    let predictionBlock = createPredictionLabel(prediction);
+    static createCertaintyBar(certainty) {
+        let predictionsBlock = document.createElement('div');
+        predictionsBlock.className = this.predictionBlockClass;
 
-    let wrapper = document.createElement('div');
-    wrapper.className = 'algorithm-neural-network-prediction-block-wrapper';
-    wrapper.appendChild(predictionBlock);
-    wrapper.appendChild(certaintyBlock);
+        let certaintyBar = document.createElement('div');
+        certaintyBar.className = this.certaintyBarClass;
+        certaintyBar.style.width = certainty + '%';
+        certaintyBar.textContent = certainty + '%';
 
-    predictionsContainer.appendChild(wrapper);
-}
+        predictionsBlock.appendChild(certaintyBar);
+        return predictionsBlock;
+    }
 
-function updateCertainty(percentages) {
-    predictionsContainer.innerHTML = '';
-    for (let i = 0; i < percentages.length; i++) {
-        createPredictionWithPercentage(i, percentages[i]);
+    static createPredictionWithPercentage(prediction, certainty) {
+        let certaintyBlock = this.createCertaintyBar(certainty);
+        let predictionBlock = this.createPredictionLabel(prediction);
+
+        let wrapper = document.createElement('div');
+        wrapper.className = this.predictionWrapperClass;
+        wrapper.appendChild(predictionBlock);
+        wrapper.appendChild(certaintyBlock);
+
+        this.allPredictionsContainer.appendChild(wrapper);
+    }
+
+    static updateCertainty(percentages) {
+        this.allPredictionsContainer.innerHTML = '';
+        for (let i = 0; i < percentages.length; i++) {
+            this.createPredictionWithPercentage(i, percentages[i]);
+        }
+    }
+
+    static displayMainPrediction(prediction, certainty) {
+        if (this.mainPredictionContainer.lastChild.id !== this.mainPredictionId) {
+            this.mainPredictionContainer.removeChild(this.mainPredictionContainer.lastChild);
+        }
+
+        this.predictionValue.textContent = `${prediction}`;
+        let predictionsBlock = this.createCertaintyBar(certainty);
+
+        this.mainPredictionContainer.appendChild(predictionsBlock);
     }
 }
 
-function displayMainPrediction(prediction, certainty) {
-    let container = document.getElementById('algorithm-neural-network-digit-prediction-container');
+class ClientServerInterractor {
+    static retrainModelInput = document.getElementById(
+        'algorithm-neural-network-retrain-model-input'
+    );
 
-    if (container.lastChild.id != 'algorithm-neural-network-digit-prediction') {
-        container.removeChild(container.lastChild);
+    static processResponse(data) {
+        console.log('Predicted digit:', data.digit);
+        let percentages = data.percentages;
+        PredictionsLayoutCreator.displayMainPrediction(data.digit, percentages[data.digit]);
+        PredictionsLayoutCreator.updateCertainty(percentages);
     }
 
-    predictionValue.textContent = `${prediction}`;
-    let predictionsBlock = createCertaintyBar(certainty);
-
-    document
-        .getElementById('algorithm-neural-network-digit-prediction-container')
-        .appendChild(predictionsBlock);
-}
-
-function processResponse(data) {
-    console.log('Predicted digit:', data.digit);
-    let percentages = data.percentages;
-
-    displayMainPrediction(data.digit, percentages[data.digit]);
-
-    updateCertainty(percentages);
-}
-
-function sendPicture(resizedArray) {
-    fetch('http://127.0.0.1:5000/recognize_digit', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        mode: 'cors',
-        body: JSON.stringify({
-            image: Array.from(resizedArray),
-            digit: retrainModelInput.value,
-        }),
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            processResponse(data);
+    static sendPicture(resizedArray) {
+        fetch('http://127.0.0.1:5000/recognize_digit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            mode: 'cors',
+            body: JSON.stringify({
+                image: Array.from(resizedArray),
+                digit: this.retrainModelInput.value,
+            }),
         })
-        .catch((error) => console.error('Error:', error));
+            .then((response) => response.json())
+            .then((data) => {
+                this.processResponse(data);
+            })
+            .catch((error) => console.error('Error:', error));
+    }
+
+    static saveModel() {
+        fetch('http://127.0.0.1:5000/save_model', {
+            method: 'GET',
+            mode: 'cors',
+        }).then(alert('Model saved successfully!'));
+    }
 }
 
-let cleanCanvasButton = document.getElementById('algorithm-neural-network-clean-canvas-button');
-cleanCanvasButton.addEventListener('click', () => {
-    canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-});
+class NeuralNetworkAlgorithm {
+    static cleanCanvasButton = document.getElementById(
+        'algorithm-neural-network-clean-canvas-button'
+    );
+    static sendPictureButton = document.getElementById(
+        'algorithm-neural-network-send-picture-button'
+    );
+    static retrainModelButton = document.getElementById(
+        'algorithm-neural-network-retrain-model-button'
+    );
+    static saveModelButton = document.getElementById('algorithm-neural-network-save-model-button');
 
-let sendPictureButton = document.getElementById('algorithm-neural-network-send-picture-button');
-sendPictureButton.addEventListener('click', () => {
-    let imageEditor = new ImageEditor();
-    sendPicture(imageEditor.getImage());
-    canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-});
+    static canvas = new Canvas();
 
-let retrainModelButton = document.getElementById('algorithm-neural-network-retrain-model-button');
-retrainModelButton.addEventListener('click', () => {
-    let imageEditor = new ImageEditor();
-    sendPicture(imageEditor.getImage());
-    retrainModelInput.value = '';
-    canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-});
+    static setUp() {
+        let canvas = this.canvas.canvas;
+        let canvasContext = this.canvas.canvasContext;
+        this.cleanCanvasButton.addEventListener('click', () => {
+            canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+        });
 
-let saveModelButton = document.getElementById('algorithm-neural-network-save-model-button');
-saveModelButton.addEventListener('click', () => {
-    fetch('http://127.0.0.1:5000/save_model', {
-        method: 'GET',
-        mode: 'cors',
-    });
-});
+        this.sendPictureButton.addEventListener('click', () => {
+            let imageEditor = new ImageEditor(canvas, canvasContext);
+            ClientServerInterractor.sendPicture(imageEditor.getImage());
+            canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+        });
+
+        this.retrainModelButton.addEventListener('click', () => {
+            let imageEditor = new ImageEditor(canvas, canvasContext);
+            ClientServerInterractor.sendPicture(imageEditor.getImage());
+            retrainModelInput.value = '';
+            canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+        });
+
+        this.saveModelButton.addEventListener('click', ClientServerInterractor.saveModel);
+    }
+}
+
+NeuralNetworkAlgorithm.setUp();
