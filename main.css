@@ -152,6 +152,29 @@ button {
     border-radius: 10px;
 }
 
+.general-button:hover {
+    background-color: black;
+    color: white;
+}
+
+.general-start-button {
+    background-image: url('images/start.png');
+}
+
+.general-start-button:hover,
+.general-start-button.pressed {
+    background-image: url('images/startHover.png');
+}
+
+.general-stop-button {
+    background-image: url('images/stop.png');
+}
+
+.general-stop-button:hover,
+.general-stop-button.pressed {
+    background-image: url('images/stopHover.png');
+}
+
 .general-input {
     display: block;
     border: 1px solid black;
@@ -188,7 +211,7 @@ button {
 }
 
 .side-border-left {
-    background-image: url('Ants/images/sideBarImage.png');
+    background-image: url('images/sideBarImage.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -200,7 +223,7 @@ button {
 }
 
 .side-border-right {
-    background-image: url('Ants/images/sideBarImage.png');
+    background-image: url('images/sideBarImage.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

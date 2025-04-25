@@ -1,9 +1,3 @@
-.grid {
-    display: inline-block;
-    min-width: 1025px;
-    min-height: 1025px;
-}
-
 .cell {
     width: 9px;
     height: 9px;
@@ -17,9 +11,6 @@
 
 .nest-btn {
     background-image: url('../images/homeIcon.png');
-}
-.screen {
-    display: inline;
 }
 
 .food {
@@ -38,14 +29,6 @@
     width: 40px;
 }
 
-.ant-Pic {
-    margin-left: 20px;
-    margin-top: 75px;
-    rotate: 30deg;
-    width: 256px;
-    height: 256px;
-}
-
 .more-than-two-ants {
     background-color: #8ae300;
 }
@@ -62,44 +45,23 @@
     background-color: #f1521a;
 }
 
-button {
-    margin-bottom: 10px;
-    color: white;
-    border: none;
-    width: 55px;
-    height: 55px;
-    background-color: transparent;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
 .btnStartState1 {
-    background-image: url('../images/startIcon.png');
+    background-image: url('../../images/start.png');
 }
 
-.btnStartState2 {
-    background-image: url('../images/startIcon2.png');
-}
-
-#startBtn:hover {
-    background-image: url('../images/startIcon2.png');
-}
-
+.btnStartState2,
+#startBtn:hover,
 #startBtn:active {
-    background-image: url('../images/startIcon2.png');
+    background-image: url('../../images/startHover.png');
 }
 
 #removeAllBtn {
-    background-image: url('../images/krest.png');
+    background-image: url('../../images/stop.png');
 }
 
-#removeAllBtn:hover {
-    background-image: url('../images/krest2.png');
-}
-
+#removeAllBtn:hover,
 #removeAllBtn:active {
-    background-image: url('../images/krest2.png');
+    background-image: url('../../images/stopHover.png');
 }
 
 .wall-btn {
@@ -133,7 +95,6 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-
 
 .text-field-input-ants {
     text-align: center;
