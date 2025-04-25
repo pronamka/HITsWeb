@@ -315,6 +315,7 @@ clusterInput.addEventListener('keypress', function (e) {
     }
 });
 clearBtn.addEventListener('click', clearGrid);
+
 clusterInput.addEventListener('input', function () {
     this.value = this.value.replace(/[^1-9]/g, '');
 

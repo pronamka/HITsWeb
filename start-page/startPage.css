@@ -1,10 +1,12 @@
 #start-page-algorithm-symbol {
-    width: 200px;
-    height: 200px;
+    width: 13vw;
+    height: 13vw;
     rotate: 0deg;
 }
 
 .team-label {
+    font-size: 20px;
+    margin-left: 2vw;
     margin-top: auto;
     margin-bottom: auto;
 }

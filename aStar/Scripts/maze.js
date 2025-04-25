@@ -19,6 +19,8 @@ buttonStop.addEventListener('click', () => {
     buttonStop.classList.add('pressed');
 });
 
+const aStarInput = document.getElementById('size');
+
 let array = []; // array of states
 let startX;
 let startY;
@@ -63,11 +65,15 @@ function drawEmptyBoard(eSize) {
 //==============================
 
 function generateMaze() {
+    size = aStarInput.value;
+    if (size < 3 || size === ''){
+        return
+    }
+
     buttonStop.classList.remove('pressed');
     hideMessage()
 
     thinkTiles = [];
-    size = document.getElementById('size').value;
 
     const maxBoardSizePx = Math.min(window.innerWidth, window.innerHeight) * Config.MAX_BOARD_SIZE_PX_COEFFICIENT;
     const tileSizePx = Math.min(Math.floor(maxBoardSizePx / size), Config.MAX_TILE_SIZE);
@@ -465,5 +471,24 @@ async function solve() {
         grid = [];
     }
 }
+
+aStarInput.addEventListener('input', function () {
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if(this.value.length > `${Config.MAX_FIELD_SIZE}`.length){
+        this.value = this.value.slice(0, `${Config.MAX_FIELD_SIZE}`.length)
+        console.log(this.value)
+    }
+
+    const num = parseInt(this.value);
+
+    if (num > Config.MAX_FIELD_SIZE) {
+        this.value = this.value.slice(0, this.value.length - 1);
+    }
+
+    if(parseInt(this.value, 10) === 0){
+        this.value = '';
+    }
+
+});
 
 drawEmptyBoard(Config.START_FIELD_SIZE);
