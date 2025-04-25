@@ -106,3 +106,24 @@
 #algorithm-neural-network-digit-prediction-title {
     width: 25%;
 }
+
+@media screen and (max-width: 1200px) {
+    .algorithm-neural-network-board-manipulation-container {
+        width: 100%;
+    }
+    .neural-network-button {
+        width: 95%;
+    }
+    #algorithm-neural-network-retrain-model-input {
+        width: 95%;
+    }
+    #algorithm-neural-network-digit-prediction-wrapper {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+    .algorithm-neural-network-prediction-block-wrapper {
+        width: 26%;
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+}
