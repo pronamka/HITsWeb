@@ -14,7 +14,16 @@ const nodes = [];
 
 let numNodes;
 let adjMatrix = [];
+
 let shouldStop = false;
+let graphChanged = false;
+
+const buttonStop = document.getElementById('genetic-stop');
+buttonStop.addEventListener('click', () => {
+    shouldStop = true;
+    buttonStop.classList.add('pressed');
+    startAlgBtn.classList.remove('pressed');
+});
 
 //==============================
 //       DISPLAY GRAPH
@@ -30,6 +39,7 @@ let offsetY = 0;
 function generateGraph() {
     shouldStop = true;
     startAlgBtn.classList.remove('pressed');
+    buttonStop.classList.remove('pressed');
 
     numNodes = parseInt(document.getElementById('algorithm-genetics-size').value, 10);
     nodes.length = 0;
@@ -138,6 +148,8 @@ canvas.addEventListener('mousedown', (e) => {
 
 canvas.addEventListener('mousemove', (e) => {
     if (draggedNode) {
+        graphChanged = true;
+
         const rect = canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
@@ -167,7 +179,7 @@ function getNodeAtPosition(x, y) {
 //      GENETIC ALGORITHM
 //==============================
 
-const startAlgBtn = document.getElementById('algorithm-genetics-genetic');
+const startAlgBtn = document.getElementById('genetic-start');
 startAlgBtn.addEventListener('click', runGenerations);
 
 const populationSize = 1000;
@@ -185,6 +197,22 @@ function generatePopulation() {
         population.push({ route: individual, distance, fitness });
     }
     return population;
+}
+
+function regeneratePopulation(oldPopulation, eliteFraction = 0.1) {
+    const eliteCount = Math.floor(populationSize * eliteFraction);
+    const sorted = [...oldPopulation].sort((a, b) => b.fitness - a.fitness);
+    const elites = sorted.slice(0, eliteCount);
+
+    const newPopulation = [];
+    for (let i = 0; i < populationSize - eliteCount; i++) {
+        const individual = shuffle([...Array(numNodes).keys()]);
+        const distance = routeDistance(individual, adjMatrix);
+        const fitness = Math.pow(1 / distance, 4);
+        newPopulation.push({ route: individual, distance, fitness });
+    }
+
+    return elites.concat(newPopulation);
 }
 
 function evolve(population, matrix, offspringCount, eliteCount) {
@@ -218,12 +246,20 @@ function evolve(population, matrix, offspringCount, eliteCount) {
 async function runGenerations() {
     shouldStop = false;
     startAlgBtn.classList.add('pressed');
+    buttonStop.classList.remove('pressed');
 
     let population = generatePopulation();
     let bestSoFar = null;
 
-    for (let gen = 0; gen < generations; gen++) {
+    let gen = 0;
+    while (gen < generations) {
         if (shouldStop) return;
+
+        if (graphChanged) {
+            gen = 0;
+            population = regeneratePopulation(population, 0.1);
+            graphChanged = false;
+        }
 
         population = evolve(population, adjMatrix, Math.floor(populationSize * 0.5), 30);
         const best = population.reduce((a, b) => (a.fitness > b.fitness ? a : b));
@@ -232,7 +268,11 @@ async function runGenerations() {
         drawGraph();
         displayRoute(bestSoFar.route);
         await sleep(10);
+
+        gen++;
     }
+
+    startAlgBtn.classList.remove('pressed');
 }
 
 //==============================
