@@ -28,7 +28,7 @@ const algorithmFiles = {
     'neural-network': [
         'neural_network/neural_network.html',
         ['neural_network/neural_network.css'],
-        ['neural_network/neural_network.js'],
+        ['neural_network/Scripts/neuralNetwork.js'],
     ],
 };
 
@@ -52,7 +52,7 @@ const displayTab = (tabIndex) => {
     algorithmTabs[tabIndex].style.display = 'block';
 };
 
-displayTab(1);
+displayTab(0);
 
 function loadTab(algorithmName, file, cssPaths = null, jsPaths = null) {
     fetch(file)
