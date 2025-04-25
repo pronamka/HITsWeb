@@ -8,6 +8,7 @@ let targetAttributeInput = document.getElementById(
 );
 let maxDepthInput = document.getElementById('algorithm-decision-tree-max-depth-input');
 let minGrouSizeInput = document.getElementById('algorithm-decision-tree-min-group-input');
+let maxGiniScoreInput = document.getElementById('algorithm-decision-tree-max-gini-input');
 
 let buildTreeButton = document.getElementById('algorithm-decision-tree-train-button');
 let useTreeButton = document.getElementById('algorithm-decision-tree-use-tree-button');
@@ -20,25 +21,33 @@ let dataAttributes;
 let targetAttribute;
 let maxDepth = 5;
 let minGroupSize = 5;
+let maxGiniScore = 0.4;
 let trainingData;
 
 function buildTree() {
     readFile().then(() => {
         targetAttribute = targetAttributeInput.value;
-        maxDepth = maxDepthInput.value;
-        minGroupSize = minGrouSizeInput.value;
-        console.log(trainingData, dataAttributes, targetAttribute);
+        maxDepth = Math.max(3, Math.min(7, Number(maxDepthInput.value)));
+        minGroupSize = Math.max(1, Math.min(20, Number(minGrouSizeInput.value)));
+        maxGiniScore = Math.max(0.1, Math.min(0.5, Number(maxGiniScoreInput.value)));
 
         if (!trainingData || !targetAttribute) {
             alert('Fill in all the fields.');
             return;
         }
+
         let label = document.getElementById(
             'algorithm-decision-tree-file-upload-file-upload-label'
         );
         label.innerText = 'Upload Dataset';
 
-        tree = new DecisionTree(trainingData, targetAttribute, maxDepth, minGroupSize);
+        tree = new DecisionTree(
+            trainingData,
+            targetAttribute,
+            maxDepth,
+            minGroupSize,
+            maxGiniScore
+        );
         treeVisualization = new DecisionTreeVisualizer(tree.root, 'algorith-decision-tree-graph');
 
         console.log(tree);
