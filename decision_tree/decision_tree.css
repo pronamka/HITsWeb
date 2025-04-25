@@ -92,3 +92,20 @@
     width: 60%;
     margin-bottom: 0px;
 }
+
+@media screen and (max-width: 1200px) {
+    .algorithm-settings-decision-tree-settings-block {
+        width: 35vw;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .algorithm-decision-tree-button {
+        width: 30vw;
+    }
+    .algorithm-decision-tree-input {
+        width: 30vw;
+    }
+    .algorithm-decision-tree-tree-paramemters {
+        width: 30vw;
+    }
+}

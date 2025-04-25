@@ -8,8 +8,11 @@ export class Canvas {
         this.canvasOffsetX = this.canvas.offsetLeft;
         this.canvasOffsetY = this.canvas.offsetTop;
 
-        this.canvas.height = Math.floor((window.innerHeight - this.canvasOffsetY - 300) / 28) * 28;
-        this.canvas.width = this.canvas.height;
+        this.canvas.width = Math.min(
+            616,
+            Math.floor((window.innerWidth - this.canvasOffsetY - 300) / 28) * 28
+        );
+        this.canvas.height = this.canvas.width;
 
         this.isPainting = false;
         this.lineWidth = 30;

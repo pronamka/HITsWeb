@@ -47,7 +47,7 @@ label:hover {
 
 .go-to-algorithm-button:hover {
     cursor: pointer;
-    background-color: rgb(60, 51, 51);
+    background-color: black;
     color: white;
 }
 
@@ -204,32 +204,28 @@ button {
     line-height: 1;
 }
 
+
 .text-interview-position{
     text-align: left
 }
 
-.side-border-left {
+.side-border {
     background-image: url('images/sideBarImage.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     position: fixed;
-    left: 0;
     width: 13vw;
     height: 100%;
     z-index: 10;
 }
 
+.side-border-left {
+    left: 0;
+}
+
 .side-border-right {
-    background-image: url('images/sideBarImage.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: fixed;
     right: 0;
-    width: 13vw;
-    height: 100%;
-    z-index: 10;
 }
 
 .interactive-elements {

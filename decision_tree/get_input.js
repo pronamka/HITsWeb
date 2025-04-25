@@ -52,6 +52,11 @@ class TextEditor {
     static parseFile(input) {
         const lines = input.trim().split('\n');
         const headers = lines[0].split(',');
+        for (let i = 0; i < headers.length; i++) {
+            if (headers[i] == '\r') {
+                headers.splice(i, 1);
+            }
+        }
         let data = Array();
         for (let i = 1; i < lines.length; i++) {
             data.push(TextEditor.parseLine(lines[i], headers));
@@ -129,10 +134,12 @@ async function getPrediction() {
     }
     let headers = [...dataAttributes];
     headers.splice(headers.indexOf(targetAttribute), 1);
-    if (headers.length !== data[0].length) {
-        alert("The amount of input parameters doesn't match.");
-    }
     data = TextEditor.parseLine(data, headers);
+    if (headers.length !== Object.keys(data).length) {
+        alert("The amount of input parameters doesn't match.");
+        return;
+    }
+
     let prediciton = await tree.getPrediction(data);
     predictionField.innerText = `Prediction: ${prediciton}`;
 }
