@@ -14,6 +14,7 @@ const nodes = [];
 
 let numNodes;
 let adjMatrix = [];
+let shouldStop = false;
 
 //==============================
 //       DISPLAY GRAPH
@@ -27,6 +28,9 @@ let offsetX = 0;
 let offsetY = 0;
 
 function generateGraph() {
+    shouldStop = true;
+    startAlgBtn.classList.remove('pressed');
+
     numNodes = parseInt(document.getElementById('algorithm-genetics-size').value, 10);
     nodes.length = 0;
 
@@ -170,6 +174,75 @@ const populationSize = 1000;
 const mutationPercent = 5;
 const generations = 5000;
 
+function generatePopulation() {
+    const population = [];
+
+    for (let i = 0; i < populationSize; i++) {
+        const individual = shuffle([...Array(numNodes).keys()]);
+
+        const distance = routeDistance(individual, adjMatrix);
+        const fitness = Math.pow(1 / distance, 4);
+        population.push({ route: individual, distance, fitness });
+    }
+    return population;
+}
+
+function evolve(population, matrix, offspringCount, eliteCount) {
+    const size = population.length;
+
+    const sortedPopulation = [...population].sort((a, b) => b.fitness - a.fitness);
+    const elites = sortedPopulation.slice(0, eliteCount);
+    const survivors = sortedPopulation.slice(0, size - offspringCount);
+    const children = [];
+
+    for (let i = 0; i < offspringCount; i++) {
+        const mom = tourSelection(population).route;
+        const dad = tourSelection(population).route;
+
+        const child = orderCrossover(mom, dad);
+        const mutated = mutate(child);
+
+        const dist = routeDistance(mutated, matrix);
+        const fit = Math.pow(1 / dist, 4);
+
+        children.push({ route: mutated, distance: dist, fitness: fit });
+    }
+
+    return elites
+        .concat(survivors)
+        .concat(children)
+        .sort((a, b) => b.fitness - a.fitness)
+        .slice(0, populationSize);
+}
+
+async function runGenerations() {
+    shouldStop = false;
+    startAlgBtn.classList.add('pressed');
+
+    let population = generatePopulation();
+    let bestSoFar = null;
+
+    for (let gen = 0; gen < generations; gen++) {
+        if (shouldStop) return;
+
+        population = evolve(population, adjMatrix, Math.floor(populationSize * 0.5), 30);
+        const best = population.reduce((a, b) => (a.fitness > b.fitness ? a : b));
+        bestSoFar = best;
+
+        drawGraph();
+        displayRoute(bestSoFar.route);
+        await sleep(10);
+    }
+}
+
+//==============================
+//      HELPER FUNCTIONS
+//==============================
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -185,17 +258,6 @@ function routeDistance(route, adjMatrix) {
     }
     distance += adjMatrix[route[route.length - 1]][route[0]];
     return distance;
-}
-
-function generatePopulation() {
-    const population = [];
-    for (let i = 0; i < populationSize; i++) {
-        const individual = shuffle([...Array(numNodes).keys()]);
-        const distance = routeDistance(individual, adjMatrix);
-        const fitness = 1 / distance;
-        population.push({ route: individual, distance, fitness });
-    }
-    return population;
 }
 
 function orderCrossover(mama, papa) {
@@ -226,12 +288,14 @@ function orderCrossover(mama, papa) {
 function mutate(individual) {
     const currMutationPercent = Math.floor(Math.random() * 100);
     if (currMutationPercent < mutationPercent) {
-        const i = Math.floor(Math.random() * individual.length);
+        let i = Math.floor(Math.random() * individual.length);
         let j = Math.floor(Math.random() * individual.length);
-        while (j === i) {
-            j = Math.floor(Math.random() * individual.length);
+        
+        if(j < i){
+            [i,j] = [j,i];
         }
-        [individual[i], individual[j]] = [individual[j], individual[i]];
+        let slice = individual.slice(i, j + 1).reverse();
+        individual.splice(i, slice.length, ...slice);
     }
     return individual;
 }
@@ -243,45 +307,4 @@ function tourSelection(population, tourSize = 5) {
         contestants.push(population[randIndex]);
     }
     return contestants.reduce((a, b) => (a.fitness > b.fitness ? a : b));
-}
-
-function evolve(population, matrix, offspringCount, eliteCount) {
-    const size = population.length;
-    const sortedPopulation = [...population].sort((a, b) => b.fitness - a.fitness);
-    const elites = sortedPopulation.slice(0, eliteCount);
-    const survivors = sortedPopulation.slice(0, size - offspringCount);
-    const children = [];
-
-    for (let i = 0; i < offspringCount; i++) {
-        const mom = tourSelection(population).route;
-        const dad = tourSelection(population).route;
-
-        const child = orderCrossover(mom, dad);
-        const mutated = mutate(child);
-
-        const dist = routeDistance(mutated, matrix);
-        const fit = 1 / dist;
-
-        children.push({ route: mutated, distance: dist, fitness: fit });
-    }
-
-    return elites
-        .concat(survivors)
-        .concat(children)
-        .sort((a, b) => b.fitness - a.fitness)
-        .slice(0, populationSize);
-}
-
-async function runGenerations() {
-    let population = generatePopulation();
-    let bestSoFar = null;
-
-    for (let gen = 0; gen < generations; gen++) {
-        population = evolve(population, adjMatrix, 10);
-        const best = population.reduce((a, b) => (a.fitness > b.fitness ? a : b));
-        bestSoFar = best;
-        drawGraph();
-        displayRoute(bestSoFar.route);
-        await sleep(10);
-    }
 }
