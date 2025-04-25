@@ -121,6 +121,9 @@ class NeuralNetworkAlgorithm {
     static retrainModelButton = document.getElementById(
         'algorithm-neural-network-retrain-model-button'
     );
+    static retrainModelInput = document.getElementById(
+        'algorithm-neural-network-retrain-model-input'
+    );
     static saveModelButton = document.getElementById('algorithm-neural-network-save-model-button');
 
     static canvas = new Canvas();
@@ -128,6 +131,13 @@ class NeuralNetworkAlgorithm {
     static setUp() {
         let canvas = this.canvas.canvas;
         let canvasContext = this.canvas.canvasContext;
+        this.retrainModelInput.addEventListener('input', function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+
+            if (this.value.length > 1) {
+                this.value = this.value.slice(0, 1);
+            }
+        });
         this.cleanCanvasButton.addEventListener('click', () => {
             canvasContext.clearRect(0, 0, canvas.width, canvas.height);
         });
