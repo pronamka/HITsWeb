@@ -6,7 +6,7 @@ export class Config{
     static EVAPORATION_HOME = 0.000005;
 
     static TO_FOOD_REFUSE_COEFFICIENT = 0.99;
-    static MAX_DISTANCE = 1000;
+    static MAX_DISTANCE = 500;
     static CHANCE_TO_GO_HOME = 0.01;
     static RANGE = 15;
     static INCREASE_COEFFICIENT = 4;

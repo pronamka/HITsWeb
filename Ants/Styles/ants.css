@@ -1,16 +1,26 @@
+.grid {
+    width: fit-content;
+    display: inline-block;
+    border: 0.001vw solid #eee;
+}
+
 .cell {
-    width: 9px;
-    height: 9px;
-    border: 1px solid #eee;
+    width: 0.6vw;
+    height: 0.6vw;
+/*    border: 0.001vw solid #eee;*/
     display: inline-block;
 }
 
 .row {
-    height: 10px;
+    width: fit-content;
+    height: 0.6vw;
 }
 
 .nest-btn {
     background-image: url('../images/homeIcon.png');
+}
+.screen {
+    display: inline;
 }
 
 .food {
@@ -22,11 +32,19 @@
 }
 
 .column {
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 0.2vw;
+    margin-right: 0.2vw;
     flex-direction: column;
     gap: 10px;
-    width: 40px;
+    width: 60px;
+}
+
+.ant-Pic {
+    margin-left: 20px;
+    margin-top: 75px;
+    rotate: 30deg;
+    width: 256px;
+    height: 256px;
 }
 
 .more-than-two-ants {
@@ -45,23 +63,44 @@
     background-color: #f1521a;
 }
 
-.btnStartState1 {
-    background-image: url('../../images/start.png');
+button {
+    margin-bottom: 10px;
+    color: white;
+    border: none;
+    width: 55px;
+    height: 55px;
+    background-color: transparent;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-.btnStartState2,
-#startBtn:hover,
+.btnStartState1 {
+    background-image: url('/images/start.png');
+}
+
+.btnStartState2 {
+    background-image: url('/images/startHover.png');
+}
+
+#startBtn:hover {
+    background-image: url('/images/startHover.png');
+}
+
 #startBtn:active {
-    background-image: url('../../images/startHover.png');
+    background-image: url('/images/startHover.png');
 }
 
 #removeAllBtn {
-    background-image: url('../../images/stop.png');
+    background-image: url('/images/stop.png');
 }
 
-#removeAllBtn:hover,
+#removeAllBtn:hover {
+    background-image: url('/images/stopHover.png');
+}
+
 #removeAllBtn:active {
-    background-image: url('../../images/stopHover.png');
+    background-image: url('/images/stopHover.png');
 }
 
 .wall-btn {
@@ -96,6 +135,7 @@ input::-webkit-inner-spin-button {
     margin: 0;
 }
 
+
 .text-field-input-ants {
     text-align: center;
     display: block;
@@ -110,3 +150,17 @@ input::-webkit-inner-spin-button {
     border: 2px solid black;
     border-radius: 0.25rem;
 }
+
+
+@media screen and (max-width: 1850px) {
+    .cell {
+        width: 0.8vw;
+        height: 0.8vw;
+    }
+
+    .row {
+        width: fit-content;
+        height: 0.8vw;
+    }
+}
+
