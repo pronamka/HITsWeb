@@ -79,12 +79,13 @@
 .algorithm-decision-tree-file-upload-file-upload-label {
     display: inline-block;
     border: 1px solid black;
-    width: 10vw;
+    width: 60%;
     height: 4vh;
     padding: 0.5vw;
     color: black;
     border-radius: 10px;
     margin-bottom: 10px;
+    box-sizing: border-box;
 }
 
 .algorithm-decision-tree-file-upload-file-upload-label:hover {
@@ -98,4 +99,19 @@
 
 #algorith-decision-tree-graph {
     width: 100%;
+}
+
+.algorithm-decision-tree-tree-paramemters {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 20vw;
+}
+.algorithm-decision-tree-tree-paramemters p {
+    width: 40%;
+}
+.algorithm-decision-tree-tree-paramemters input {
+    width: 60%;
+    margin-bottom: 0px;
 }

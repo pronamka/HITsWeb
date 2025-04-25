@@ -226,10 +226,10 @@ class DataSplitter {
 }
 
 export class DecisionTree {
-    constructor(trainingData, targetAttribute) {
+    constructor(trainingData, targetAttribute, maxDepth = 5, minGroupSize = 5) {
         let split = new DataSplitter(trainingData, targetAttribute).findBestSplit();
-        this.maximumDepth = 5;
-        this.minimalGroupSize = 5;
+        this.maximumDepth = maxDepth;
+        this.minimalGroupSize = minGroupSize;
 
         this.root = new DecisionNode(
             1,

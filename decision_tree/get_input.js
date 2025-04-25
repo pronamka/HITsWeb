@@ -6,6 +6,9 @@ let testDataInput = document.getElementById('algorithm-decision-tree-test-data-i
 let targetAttributeInput = document.getElementById(
     'algorithm-decision-tree-target-attribute-input'
 );
+let maxDepthInput = document.getElementById('algorithm-decision-tree-max-depth-input');
+let minGrouSizeInput = document.getElementById('algorithm-decision-tree-min-group-input');
+
 let buildTreeButton = document.getElementById('algorithm-decision-tree-train-button');
 let useTreeButton = document.getElementById('algorithm-decision-tree-use-tree-button');
 
@@ -15,11 +18,15 @@ let tree;
 let treeVisualization;
 let dataAttributes;
 let targetAttribute;
+let maxDepth = 5;
+let minGroupSize = 5;
 let trainingData;
 
 function buildTree() {
     readFile().then(() => {
         targetAttribute = targetAttributeInput.value;
+        maxDepth = maxDepthInput.value;
+        minGroupSize = minGrouSizeInput.value;
         console.log(trainingData, dataAttributes, targetAttribute);
 
         if (!trainingData || !targetAttribute) {
@@ -31,7 +38,7 @@ function buildTree() {
         );
         label.innerText = 'Upload Dataset';
 
-        tree = new DecisionTree(trainingData, targetAttribute);
+        tree = new DecisionTree(trainingData, targetAttribute, maxDepth, minGroupSize);
         treeVisualization = new DecisionTreeVisualizer(tree.root, 'algorith-decision-tree-graph');
 
         console.log(tree);

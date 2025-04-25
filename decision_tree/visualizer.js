@@ -17,7 +17,7 @@ function getText(node) {
 }
 
 function wrapText(text, maxPixelWidth) {
-    const maxCharsPerLine = Math.floor(maxPixelWidth / 7);
+    const maxCharsPerLine = Math.max(3, Math.floor(maxPixelWidth / 7));
     const lines = [];
 
     for (let i = 0; i < text.length; i += maxCharsPerLine) {
