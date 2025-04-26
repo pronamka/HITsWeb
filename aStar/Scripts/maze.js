@@ -49,7 +49,6 @@ function drawEmptyBoard(eSize) {
             tile.className = 'tile-' + getTileClass(0);
             tile.id = `tile-${y}-${x}`;
 
-//            const index = y * eSize + x;
             const tile_id = `tile-${y}-${x}`;
             tile.addEventListener('click', () => changeState(x, y, tile_id));
 
@@ -58,6 +57,26 @@ function drawEmptyBoard(eSize) {
 
         board.appendChild(row);
     }
+
+    startX = getRandomFrom(
+        Array.from({ length: eSize }, (_, index) => index).filter((x) => isEven(x))
+    );
+    startY = getRandomFrom(
+        Array.from({ length: eSize }, (_, index) => index).filter((y) => isEven(y))
+    );
+    setTile(startX, startY, 2);
+
+
+    do {
+        finishX = getRandomFrom(
+            Array.from({ length: eSize }, (_, index) => index).filter((x) => isEven(x))
+        );
+        finishY = getRandomFrom(
+            Array.from({ length: eSize }, (_, index) => index).filter((y) => isEven(y))
+        );
+    } while (finishX === startX && finishY === startY);
+
+    setTile(finishX, finishY, 3);
 }
 
 //==============================
@@ -108,7 +127,6 @@ function generateMaze() {
     );
     setTile(startX, startY, 2);
 
-
     do {
         finishX = getRandomFrom(
             Array.from({ length: size }, (_, index) => index).filter((x) => isEven(x))
@@ -119,6 +137,7 @@ function generateMaze() {
     } while (finishX === startX && finishY === startY);
 
     setTile(finishX, finishY, 3);
+    
 }
 
 function drawWalls(size) {
@@ -460,6 +479,8 @@ async function solve() {
         const start = { x: startX, y: startY };
         const end = { x: finishX, y: finishY };
 
+        console.log("Start:", startX, startY);
+        console.log("Finish:", finishX, finishY);
         const astar = new aStar(grid, start, end);
         await astar.findPath();
     } finally {
